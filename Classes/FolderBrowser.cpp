@@ -65,6 +65,8 @@ bool FolderBrowser::init()
         listView->setItemModel(defaultItem);
         
         setTouchEnabled(true);
+        
+        checkOldSearchPath();
        
         return true;
     }
@@ -93,6 +95,7 @@ void FolderBrowser::touchEvent(CCObject *pSender, TouchEventType type)
         {
             CCNode* parent = this->getParent();
             parent->removeChild(this);
+            m_mainlayer->switchToMain();
         }
             break;
         default:
@@ -104,6 +107,7 @@ void FolderBrowser::touchEvent(CCObject *pSender, TouchEventType type)
                 m_mainlayer->importFinish(m_vFileName.at(iTag - LIST_FILE));
                 CCNode* parent = this->getParent();
                 parent->removeChild(this);
+                m_mainlayer->switchToMain();
             }
         }
             break;
@@ -167,7 +171,11 @@ void FolderBrowser::forward()
     const char * szAddress = m_ebAddress->getText();
     searchPath = szAddress;
     
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+    sprintf(address, "dir \"%s\" /b > \"%s/temp.txt\"", szAddress, szAddress);
+#else
     sprintf(address, "ls \"%s\" > \"%s/temp.txt\"", szAddress, szAddress);
+#endif
     
     //使用shell/dos命令来操作
     system(address);
@@ -186,6 +194,9 @@ void FolderBrowser::forward()
     
     //3. 将vector的内容用列表显示出来.
     updateList();
+    
+    //保存searchPath
+    CCUserDefault::sharedUserDefault()->setStringForKey(SEARCH_PATH, searchPath);
 }
 
 
@@ -223,6 +234,17 @@ bool FolderBrowser::checkIfPlist(string &str)
     return false;
 }
 
+//void FolderBrowser::registerWithTouchDispatcher()
+//{
+//    CCDirector* pDirector = CCDirector::sharedDirector();
+//    pDirector->getTouchDispatcher()->addTargetedDelegate(this, kCCMenuHandlerPriority + 1, true);
+//}
+//
+//bool FolderBrowser::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
+//{
+//    return false;
+//}
+
 
 //editbox
 void FolderBrowser::editBoxEditingDidBegin(CCEditBox* editBox)
@@ -240,3 +262,14 @@ void FolderBrowser::editBoxTextChanged(CCEditBox* editBox, const std::string& te
 void FolderBrowser::editBoxReturn(CCEditBox* editBox)
 {
 }
+
+
+void FolderBrowser::checkOldSearchPath()
+{
+    string str = CCUserDefault::sharedUserDefault()->getStringForKey(SEARCH_PATH);
+    if (!str.empty()) {
+        m_ebAddress->setText(str);
+        forward();
+    }
+}
+

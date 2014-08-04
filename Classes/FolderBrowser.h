@@ -29,6 +29,10 @@ public:
     virtual void editBoxTextChanged(CCEditBox* editBox, const std::string& text);
     virtual void editBoxReturn(CCEditBox* editBox);
     
+//    void registerWithTouchDispatcher();
+//    bool ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent);
+    void checkOldSearchPath();
+    
 private:
     bool checkIfPlist(string &str);
     

@@ -12,13 +12,15 @@ enum UITag
     PREVIEW = 16,
     BUTTON_STOP = 17,
     BUTTON_PREVIEW = 18,
-    BUTTON_NEW_PART = 19,
+    BUTTON_CLEAN = 19,
     PARTS_LIST = 20,
-    ANCHOR_X = 33,
-    ANCHOR_Y = 36,
+    POSITION_X = 33,
+    POSITION_Y = 36,
     ROTATE = 38,
     SCALE = 42,
     SPRITE_HOLDER = 43,
+    ANCHOR_X = 65,
+    ANCHOR_Y = 67,
     
     LIST_BG = 1000,
 };
@@ -60,11 +62,13 @@ bool MainScene::init(CCScene* pScene)
         initButton(BUTTON_NEXT, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_PREVIEW, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_STOP, root, this, toucheventselector(MainScene::touchEvent));
-        initButton(BUTTON_NEW_PART, root, this, toucheventselector(MainScene::touchEvent));
+        initButton(BUTTON_CLEAN, root, this, toucheventselector(MainScene::touchEvent));
         
         //输入区
         m_ebAnchor[0] = InputBox::create(ANCHOR_X, root, this, m_rootNode);
         m_ebAnchor[1] = InputBox::create(ANCHOR_Y, root, this, m_rootNode);
+        m_ebPosition[0] = InputBox::create(POSITION_X, root, this, m_rootNode);
+        m_ebPosition[1] = InputBox::create(POSITION_Y, root, this, m_rootNode);
         m_ebRotate = InputBox::create(ROTATE, root, this, m_rootNode);
         m_ebScale = InputBox::create(SCALE, root, this, m_rootNode);
         
@@ -92,8 +96,6 @@ bool MainScene::init(CCScene* pScene)
         
         setTouchEnabled(true);
         
-        //system("ls \"/Users/luoxp/ResearchProjects/tool/CocosStudio/Tool/Export\" > \"/Users/luoxp/ResearchProjects/temp.txt\"");
-        
         return true;
     }
     
@@ -119,13 +121,14 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
     switch (iTag) {
         case BUTTON_IMPORT:
         {
-            FolderBrowser *folder = FolderBrowser::create(this);
-            m_scene->addChild(folder);
+            FolderBrowser *browser = FolderBrowser::create(this);
+            m_scene->addChild(browser);
+            switchToBroswer();
         }
             break;
-        case BUTTON_NEW_PART:
+        case BUTTON_CLEAN:
         {
-            xPM->addPart("monster_70_attack1.plist");
+            xPM->clear();
             updateList();
         }
             break;
@@ -295,7 +298,7 @@ void MainScene::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)
 
 bool MainScene::checkIfStartToDrag(CCPoint point)
 {
-    if (xPM->getPartsCount() == 0) {
+    if (xPM->getPartsCount() == 0 || m_bInOtherLayer) {
         return false;
     }
     
@@ -319,7 +322,27 @@ void MainScene::importFinish(string &str)
     updateList();
 }
 
+void MainScene::switchToBroswer()
+{
+    m_bInOtherLayer = true;
+    m_ebAnchor[0]->setVisible(false);
+    m_ebPosition[0]->setVisible(false);
+    m_ebAnchor[1]->setVisible(false);
+    m_ebPosition[1]->setVisible(false);
+    m_ebRotate->setVisible(false);
+    m_ebScale->setVisible(false);
+}
 
+void MainScene::switchToMain()
+{
+    m_bInOtherLayer = false;
+    m_ebAnchor[0]->setVisible(true);
+    m_ebPosition[0]->setVisible(true);
+    m_ebAnchor[1]->setVisible(true);
+    m_ebPosition[1]->setVisible(true);
+    m_ebRotate->setVisible(true);
+    m_ebScale->setVisible(true);
+}
 
 
 

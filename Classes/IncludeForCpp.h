@@ -27,5 +27,6 @@ using namespace cocostudio::timeline;
 #define xNotify                         (CCNotificationCenter::sharedNotificationCenter())
 
 #define UPDATE_PROPERTY                 "UPDATE_PROPERTY"
+#define SEARCH_PATH                     "SEARCH_PATH"
 
 #endif

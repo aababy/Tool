@@ -22,7 +22,6 @@ public:
 
     PartManager();
     
-    void addPart(const char *pFileName);
     void importPart(const char *pFileName);
     void init(CCPoint location, CCPoint preview, CCNode *parent);
     int     getPartsCount();
@@ -46,6 +45,7 @@ public:
     
     void setDragAndDropOffset(CCPoint &point);
     void preview();
+    void clear();
     
 private:
     vector<Part*> m_vParts;

@@ -49,7 +49,8 @@ public:
     CCAnimation* getAnimation();            //这个函数是否分离出去?
     
     string  sPartName;
-    
+
+    ~Part();
 private:
     CCPoint getOffset();
     

@@ -63,6 +63,16 @@ Part::Part(const char *pFileName, CCPoint &show, CCPoint &origin, CCPoint &showF
     m_parent->addChild(m_preview);
 }
 
+Part::~Part()
+{
+    m_preview->stopAllActions();
+    CCNode *parent = m_preview->getParent();
+    parent->removeChild(m_preview);
+    
+    parent = m_sprite->getParent();
+    parent->removeChild(m_sprite);
+}
+
 int Part::getNumber(string &str)
 {
     int iDot = str.rfind('.');
@@ -173,6 +183,7 @@ void Part::setDragAndDropOffset(CCPoint &point)
 
 void Part::preview()
 {
+    m_preview->stopAllActions();
     m_preview->setVisible(true);
     m_preview->setPosition(ccpAdd(m_showForPreview, getOffset()));
     m_preview->runAction(CCAnimate::create(getAnimation()));
@@ -183,6 +194,8 @@ CCPoint Part::getOffset()
     return ccpSub(m_sprite->getPosition(), m_origin);
 
 }
+
+
 
 
 

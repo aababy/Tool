@@ -48,3 +48,9 @@ const char * InputBox::getText()
 {
     return m_edit->getText();
 }
+
+
+void InputBox::setVisible(bool visible)
+{
+    m_edit->setVisible(visible);
+}

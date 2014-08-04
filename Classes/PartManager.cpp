@@ -27,7 +27,7 @@ PartManager::PartManager()
 
 PartManager::~PartManager()
 {
-    m_vParts.clear();
+    clear();
 }
 
 void PartManager::init(CCPoint loc, CCPoint preview, CCNode *iFrameBG)
@@ -37,24 +37,24 @@ void PartManager::init(CCPoint loc, CCPoint preview, CCNode *iFrameBG)
     m_preview = preview;
 }
 
-void PartManager::addPart(const char *pFileName)
-{
-    CCPoint point = ccp(100, 0);
-    point = ccpAdd(location, point);
-    
-    Part* part = new Part(pFileName, point, location, m_preview, m_iFrameBG);
-    m_vParts.push_back(part);
-    
-    setCurOperationIndex(getPartsCount() - 1);
-}
-
 void PartManager::importPart(const char *pFileName)
 {
-    //TODO, 清除操作
-    setCurOperationIndex(0);
-    
-    m_mainPart = new Part(pFileName, location, location, m_preview, m_iFrameBG);
-    m_vParts.push_back(m_mainPart);
+    if (m_vParts.empty()) {
+        setCurOperationIndex(0);
+        
+        m_mainPart = new Part(pFileName, location, location, m_preview, m_iFrameBG);
+        m_vParts.push_back(m_mainPart);
+    }
+    else
+    {
+        CCPoint point = ccp(100, 0);
+        point = ccpAdd(location, point);
+        
+        Part* part = new Part(pFileName, point, location, m_preview, m_iFrameBG);
+        m_vParts.push_back(part);
+        
+        setCurOperationIndex(getPartsCount() - 1);
+    }
 }
 
 int PartManager::getPartsCount()
@@ -136,3 +136,14 @@ void PartManager::preview()
         m_vParts.at(i)->preview();
     }
 }
+
+void PartManager::clear()
+{
+    for (int i = 0; i < m_vParts.size(); i++) {
+        delete m_vParts.at(i);
+    }
+
+    m_vParts.clear();
+    setCurOperationIndex(-1);
+}
+

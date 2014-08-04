@@ -23,6 +23,7 @@ static CCScene* scene() \
 
 class Part;
 class InputBox;
+class FolderBrowser;
 
 class MainScene : public CCLayer, public CCEditBoxDelegate
 {
@@ -54,10 +55,13 @@ public:
     virtual void ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent);
     virtual void ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent);
     void registerWithTouchDispatcher();
+    void switchToMain();
     
 protected:
     void setFrameCount();
     ~MainScene();
+    void switchToBroswer();
+
     
     CCScene *m_scene;
     
@@ -73,6 +77,7 @@ protected:
     Layout *listroot;
        
     InputBox*   m_ebAnchor[2];
+    InputBox*   m_ebPosition[2];
     InputBox*   m_ebRotate;
     InputBox*   m_ebScale;
     
@@ -80,7 +85,8 @@ protected:
     Part  *m_curPart = NULL;
     
     CCPoint     m_oldPoint;
-    bool        m_bDragAndDrop;
+    bool        m_bDragAndDrop = false;
+    bool        m_bInOtherLayer = false;
 };
 
 #endif // __HELLOWORLD_SCENE_H__
