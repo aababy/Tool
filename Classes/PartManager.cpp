@@ -48,6 +48,8 @@ void PartManager::importPart(const char *pFileName)
         m_vParts.push_back(m_mainPart);
         
         setCurOperationIndex(0);
+        m_iMainIndex = m_mainPart->m_iCurIndex;
+        m_iMainCount = m_mainPart->m_iFrameCount;
     }
     else
     {
