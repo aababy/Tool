@@ -15,7 +15,7 @@
 
 class Part;
 
-class PartManager{
+class PartManager : public CCNode{
     
 public:
     static PartManager* getInstance(void);
@@ -47,6 +47,8 @@ public:
     void preview();
     void clear();
     
+    void update(float delta);
+    
 private:
     vector<Part*> m_vParts;
     ~PartManager();
@@ -59,6 +61,8 @@ private:
     
     int         m_iCurOperationIndex = -1;
     char        stringBuffer[20];
+    
+    bool        m_bInPreview = false;
 };
 
 

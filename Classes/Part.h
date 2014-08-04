@@ -18,7 +18,7 @@ struct FramesName
 };
 
 
-class Part {
+class Part : public CCObject{
     
 public:
     //static Part * create(const char *pFileName, CCPoint &location, ImageView *parent);
@@ -49,10 +49,13 @@ public:
     CCAnimation* getAnimation();            //这个函数是否分离出去?
     
     string  sPartName;
+    
+    int getCurFrameIndex();
 
     ~Part();
 private:
     CCPoint getOffset();
+    void actionDone();    
     
     int getNumber(string &str);
     void bubble_sort();
@@ -61,10 +64,16 @@ private:
     
     CCSprite  *m_sprite;            //用于显示帧
     ImageView *m_iFrame;
-    //ImageView *parent;
     CCPoint  m_origin;
     CCPoint  m_showForPreview;
     CCNode  *m_parent;
+    
+    CCAnimate * m_pAction;
+    
+    int m_iOldFrameIndex;
+    
+    bool m_bRunning = false;
+
 };
 
 

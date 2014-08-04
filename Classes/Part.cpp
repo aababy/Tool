@@ -120,7 +120,7 @@ const char * Part::getPreFrameName()
 
 CCAnimation* Part::getAnimation()
 {
-    CCArray* animFrames = CCArray::createWithCapacity(m_iFrameCount);
+    CCArray *animFrames = CCArray::createWithCapacity(m_iFrameCount);
     
     for (int i = 0; i < m_vFrameName.size(); i++) {
         CCSpriteFrame* frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(m_vFrameName.at(i).sFrameName.c_str());
@@ -183,10 +183,14 @@ void Part::setDragAndDropOffset(CCPoint &point)
 
 void Part::preview()
 {
+    m_iOldFrameIndex = -1;
     m_preview->stopAllActions();
     m_preview->setVisible(true);
     m_preview->setPosition(ccpAdd(m_showForPreview, getOffset()));
-    m_preview->runAction(CCAnimate::create(getAnimation()));
+    
+    m_pAction = CCAnimate::create(getAnimation());
+    m_preview->runAction(CCSequence::create(m_pAction, CCCallFunc::create(this, callfunc_selector(Part::actionDone)), NULL));
+    m_bRunning = true;
 }
 
 CCPoint Part::getOffset()
@@ -195,7 +199,33 @@ CCPoint Part::getOffset()
 
 }
 
+int Part::getCurFrameIndex()
+{
+    if (m_bRunning) {
+        
+        if (m_iOldFrameIndex == m_iFrameCount - 1) {
+            return m_iOldFrameIndex;
+        }
+        
+        CCArray* spriteArray = m_pAction->getAnimation()->getFrames();     //其中的m_pLocateSkillAction是一个CCAnimate的对象指针
+        
+        for (int i = 0; i < m_iFrameCount; i++) {
+            CCAnimationFrame * tempFrame = (CCAnimationFrame*)spriteArray->objectAtIndex(i) ;   //这里要注意了，返回的是CCAnimationFrame的指针，不是CCSpriteFrame*
+            
+            if(m_preview->isFrameDisplayed(tempFrame->getSpriteFrame()))     //m_Sprite就是正在播放动画的那个精灵
+            {
+                m_iOldFrameIndex = i;
+                return i;
+            }
+        }
+    }
+    
+    return -1;
+}
 
-
+void Part::actionDone()
+{
+    m_bRunning = false;
+}
 
 

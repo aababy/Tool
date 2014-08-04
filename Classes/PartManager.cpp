@@ -28,6 +28,7 @@ PartManager::PartManager()
 PartManager::~PartManager()
 {
     clear();
+    CCDirector::sharedDirector()->getScheduler()->unscheduleUpdateForTarget(this);
 }
 
 void PartManager::init(CCPoint loc, CCPoint preview, CCNode *iFrameBG)
@@ -35,6 +36,8 @@ void PartManager::init(CCPoint loc, CCPoint preview, CCNode *iFrameBG)
     location = loc;
     m_iFrameBG = iFrameBG;
     m_preview = preview;
+    
+    CCDirector::sharedDirector()->getScheduler()->scheduleUpdateForTarget(this, 0, false);
 }
 
 void PartManager::importPart(const char *pFileName)
@@ -132,6 +135,8 @@ void PartManager::setDragAndDropOffset(CCPoint &point)
 
 void PartManager::preview()
 {
+    m_bInPreview = true;
+    
     for (int i = 0; i < m_vParts.size(); i++) {
         m_vParts.at(i)->preview();
     }
@@ -145,5 +150,12 @@ void PartManager::clear()
 
     m_vParts.clear();
     setCurOperationIndex(-1);
+}
+
+void PartManager::update(float delta)
+{
+    if (m_bInPreview) {
+        CCLOG("######## %d", m_mainPart->getCurFrameIndex());
+    }
 }
 
