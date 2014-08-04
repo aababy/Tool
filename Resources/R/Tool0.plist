@@ -7,13 +7,13 @@
 			<key>button_bg.png</key>
 			<dict>
 				<key>width</key>
-				<integer>512</integer>
+				<integer>960</integer>
 				<key>height</key>
-				<integer>384</integer>
+				<integer>432</integer>
 				<key>originalWidth</key>
-				<integer>512</integer>
+				<integer>960</integer>
 				<key>originalHeight</key>
-				<integer>384</integer>
+				<integer>432</integer>
 				<key>x</key>
 				<integer>0</integer>
 				<key>y</key>
@@ -26,15 +26,15 @@
 			<key>edit_bg.png</key>
 			<dict>
 				<key>width</key>
-				<integer>512</integer>
+				<integer>960</integer>
 				<key>height</key>
-				<integer>384</integer>
+				<integer>432</integer>
 				<key>originalWidth</key>
-				<integer>512</integer>
+				<integer>960</integer>
 				<key>originalHeight</key>
-				<integer>384</integer>
+				<integer>432</integer>
 				<key>x</key>
-				<integer>513</integer>
+				<integer>961</integer>
 				<key>y</key>
 				<integer>0</integer>
 				<key>offsetX</key>
@@ -45,17 +45,17 @@
 			<key>preview_bg.png</key>
 			<dict>
 				<key>width</key>
-				<integer>1024</integer>
+				<integer>1920</integer>
 				<key>height</key>
-				<integer>384</integer>
+				<integer>432</integer>
 				<key>originalWidth</key>
-				<integer>1024</integer>
+				<integer>1920</integer>
 				<key>originalHeight</key>
-				<integer>384</integer>
+				<integer>432</integer>
 				<key>x</key>
 				<integer>0</integer>
 				<key>y</key>
-				<integer>385</integer>
+				<integer>433</integer>
 				<key>offsetX</key>
 				<real>0</real>
 				<key>offsetY</key>
@@ -72,9 +72,9 @@
 				<key>originalHeight</key>
 				<integer>40</integer>
 				<key>x</key>
-				<integer>1025</integer>
+				<integer>1921</integer>
 				<key>y</key>
-				<integer>385</integer>
+				<integer>433</integer>
 				<key>offsetX</key>
 				<real>0</real>
 				<key>offsetY</key>
@@ -91,9 +91,9 @@
 				<key>originalHeight</key>
 				<integer>48</integer>
 				<key>x</key>
-				<integer>1129</integer>
+				<integer>0</integer>
 				<key>y</key>
-				<integer>385</integer>
+				<integer>866</integer>
 				<key>offsetX</key>
 				<real>0</real>
 				<key>offsetY</key>

@@ -26,6 +26,7 @@ InputBox* InputBox::create(TextField *text, CCEditBoxDelegate* delegate, CCNode 
     input->m_edit->setFontColor(ccWHITE);
     input->m_edit->setMaxLength(20);
     input->m_edit->setReturnType(kKeyboardReturnTypeDone);
+    input->m_edit->setInputMode(kEditBoxInputModeSingleLine);
     input->m_edit->setDelegate(delegate);
     parent->addChild(input->m_edit);
     

@@ -9,7 +9,10 @@
 #ifndef Tool_IncludeForCpp_h
 #define Tool_IncludeForCpp_h
 
-
+#include <stdlib.h>
+#include <iostream>
+#include <fstream>
+#include <string>
 #include "cocos-ext.h"
 
 #include "MainScene.h"
@@ -17,6 +20,7 @@
 #include "Helper.h"
 #include "PartManager.h"
 #include "InputBox.h"
+#include "FolderBrowser.h"
 
 using namespace cocostudio::timeline;
 

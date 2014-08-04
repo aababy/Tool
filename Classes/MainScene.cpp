@@ -1,6 +1,5 @@
 #include "MainScene.h"
 #include "IncludeForCpp.h"
-#include <stdlib.h>
 
 enum UITag
 {
@@ -26,9 +25,29 @@ enum UITag
 
 
 //1920x1080
-
-bool MainScene::init()
+//1920x864
+//960x432
+CCScene* MainScene::scene()
 {
+    CCScene* pScene = CCScene::create();
+    MainScene* uiLayer = new MainScene();
+    if (uiLayer && uiLayer->init(pScene))
+    {
+        uiLayer->autorelease();
+        pScene->addChild(uiLayer);
+    }
+    else
+    {
+        CC_SAFE_DELETE(uiLayer);
+    }
+    return pScene;
+}
+
+
+bool MainScene::init(CCScene* pScene)
+{
+    m_scene = pScene;
+    
     if (CCLayer::init())
     {      
         m_rootNode = (NodeReader::getInstance()->createNode("R/Tool_1.ExportJson"));
@@ -59,7 +78,6 @@ bool MainScene::init()
         m_preview->initWithFile("R/cross.png");
         
         xPM->init(m_pHolder->getPosition(), m_preview->getPosition(), m_rootNode);
-        CCFileUtils::sharedFileUtils()->addSearchPath("/Users/luoxp/DigiartyTool");
         
         //列表
         listView = (UIListView*)UIHelper::seekWidgetByTag(root, PARTS_LIST);
@@ -74,8 +92,7 @@ bool MainScene::init()
         
         setTouchEnabled(true);
         
-        
-        system("ls \"/Users/luoxp/ResearchProjects/tool/CocosStudio/Tool/Export\" > \"/Users/luoxp/ResearchProjects/temp.txt\"");
+        //system("ls \"/Users/luoxp/ResearchProjects/tool/CocosStudio/Tool/Export\" > \"/Users/luoxp/ResearchProjects/temp.txt\"");
         
         return true;
     }
@@ -102,9 +119,8 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
     switch (iTag) {
         case BUTTON_IMPORT:
         {
-            xPM->importPart("monster_02_attack.plist");
-            setFrameCount();
-            updateList();
+            FolderBrowser *folder = FolderBrowser::create(this);
+            m_scene->addChild(folder);
         }
             break;
         case BUTTON_NEW_PART:
@@ -296,7 +312,12 @@ bool MainScene::checkIfStartToDrag(CCPoint point)
 }
 
 
-
+void MainScene::importFinish(string &str)
+{
+    xPM->importPart(str.c_str());
+    setFrameCount();
+    updateList();
+}
 
 
 

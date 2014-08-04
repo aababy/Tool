@@ -28,18 +28,19 @@ class MainScene : public CCLayer, public CCEditBoxDelegate
 {
 public:
     // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
-    virtual bool init();  
+    virtual bool init(CCScene* pScene);  
     
     // a selector callback
     void menuCloseCallback(CCObject* pSender);
     
     // implement the "static node()" method manually
-    UI_SCENE_CREATE_FUNC(MainScene);
+    static CCScene* scene();
     
     void touchEvent(CCObject *pSender, TouchEventType type);
     void updateList();
     void updateProperty(CCObject *sender);
     void dragAndDrop(CCObject *pSender, TouchEventType type);
+    void importFinish(string &str);
     
     //editbox
     virtual void editBoxEditingDidBegin(CCEditBox* editBox);
@@ -57,6 +58,8 @@ public:
 protected:
     void setFrameCount();
     ~MainScene();
+    
+    CCScene *m_scene;
     
     Layout *m_pWidget;
     CCNode *m_rootNode;
