@@ -30,8 +30,7 @@ public:
     //主体Index
     int m_iMainIndex = 0;
     int m_iMainCount = 0;
-    
-    
+        
     void nextFrame();
     void preFrame();
     

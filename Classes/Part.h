@@ -23,6 +23,8 @@ class Part : public CCObject{
 public:
     //static Part * create(const char *pFileName, CCPoint &location, ImageView *parent);
     Part(const char *pFileName, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent);
+    void setStartFrameIndex(int iStart);
+    void setMain();
     
     vector<FramesName> m_vFrameName;
     vector<string> m_vFrameNameOrdered;
@@ -51,8 +53,11 @@ public:
     string  sPartName;
     
     int getCurFrameIndex();
+    void checkIfNeedToStart(int iFrameIndex);
 
     ~Part();
+    
+    bool m_bRunning = false;        //动画是否在播放中
 private:
     CCPoint getOffset();
     void actionDone();    
@@ -72,8 +77,12 @@ private:
     
     int m_iOldFrameIndex;
     
-    bool m_bRunning = false;
 
+    bool m_bOnWait = false;         //是否在等待主体播放到开始的那一帧.
+    bool m_bMain = false;           //是否是主体
+    
+    int iStartFrameIndex = 0;
+    
 };
 
 

@@ -46,6 +46,7 @@ void PartManager::importPart(const char *pFileName)
         setCurOperationIndex(0);
         
         m_mainPart = new Part(pFileName, location, location, m_preview, m_iFrameBG);
+        m_mainPart->setMain();
         m_vParts.push_back(m_mainPart);
     }
     else
@@ -54,6 +55,7 @@ void PartManager::importPart(const char *pFileName)
         point = ccpAdd(location, point);
         
         Part* part = new Part(pFileName, point, location, m_preview, m_iFrameBG);
+        part->setStartFrameIndex(m_iMainIndex);
         m_vParts.push_back(part);
         
         setCurOperationIndex(getPartsCount() - 1);
@@ -155,7 +157,17 @@ void PartManager::clear()
 void PartManager::update(float delta)
 {
     if (m_bInPreview) {
-        CCLOG("######## %d", m_mainPart->getCurFrameIndex());
+        int iCurIndex = m_mainPart->getCurFrameIndex();
+        
+        for (int i = 1; i < m_vParts.size(); i++) {
+            m_vParts.at(i)->checkIfNeedToStart(iCurIndex);
+        }
+        
+        //如果主体没有运行了, 就不必再启动其它的Part(但其它的Part(已经运行了的)可以继续运行下去)
+        if(m_mainPart->m_bRunning == false)
+        {
+            m_bInPreview = false;
+        }
     }
 }
 

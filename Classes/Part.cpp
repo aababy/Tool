@@ -183,14 +183,23 @@ void Part::setDragAndDropOffset(CCPoint &point)
 
 void Part::preview()
 {
-    m_iOldFrameIndex = -1;
-    m_preview->stopAllActions();
-    m_preview->setVisible(true);
-    m_preview->setPosition(ccpAdd(m_showForPreview, getOffset()));
-    
-    m_pAction = CCAnimate::create(getAnimation());
-    m_preview->runAction(CCSequence::create(m_pAction, CCCallFunc::create(this, callfunc_selector(Part::actionDone)), NULL));
-    m_bRunning = true;
+    m_bOnWait = true;
+    checkIfNeedToStart(0);
+}
+
+void Part::checkIfNeedToStart(int iFrameIndex)
+{
+    if (m_bOnWait && iFrameIndex >= iStartFrameIndex) {
+        m_bOnWait = false;
+        m_iOldFrameIndex = -1;
+        m_preview->stopAllActions();
+        m_preview->setVisible(true);
+        m_preview->setPosition(ccpAdd(m_showForPreview, getOffset()));
+        
+        m_pAction = CCAnimate::create(getAnimation());
+        m_preview->runAction(CCSequence::create(m_pAction, CCCallFunc::create(this, callfunc_selector(Part::actionDone)), NULL));
+        m_bRunning = true;
+    }
 }
 
 CCPoint Part::getOffset()
@@ -226,6 +235,22 @@ int Part::getCurFrameIndex()
 void Part::actionDone()
 {
     m_bRunning = false;
+    m_bOnWait = false;
+    
+    //非主体在运行完后自动消失
+    if (!m_bMain) {
+        m_preview->setVisible(false);
+    }
+}
+
+void Part::setStartFrameIndex(int iStart)
+{
+    iStartFrameIndex = iStart;
+}
+
+void Part::setMain()
+{
+    m_bMain = true;
 }
 
 
