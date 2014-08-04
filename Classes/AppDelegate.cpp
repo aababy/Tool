@@ -23,6 +23,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     // set FPS. the default value is 1.0/60 if you don't call this
     pDirector->setAnimationInterval(1.0 / 60);
+    
+    CCSize designSize = CCSizeMake(1920, 864);
+    CCEGLView::sharedOpenGLView()->setDesignResolutionSize(designSize.width, designSize.height, kResolutionShowAll);
 
     // create a scene. it's an autorelease object
     CCScene *pScene = MainScene::scene();
