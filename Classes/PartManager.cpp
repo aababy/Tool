@@ -43,11 +43,11 @@ void PartManager::init(CCPoint loc, CCPoint preview, CCNode *iFrameBG)
 void PartManager::importPart(const char *pFileName)
 {
     if (m_vParts.empty()) {
-        setCurOperationIndex(0);
-        
         m_mainPart = new Part(pFileName, location, location, m_preview, m_iFrameBG);
         m_mainPart->setMain();
         m_vParts.push_back(m_mainPart);
+        
+        setCurOperationIndex(0);
     }
     else
     {
@@ -92,12 +92,27 @@ void PartManager::preFrame()
     m_iMainCount = m_mainPart->m_iFrameCount;
 }
 
+int PartManager::getCurOperationIndex()
+{
+    return m_iCurOperationIndex;
+}
+
 void PartManager::setCurOperationIndex(int idx)
 {
     if (m_iCurOperationIndex != idx) {
         m_iCurOperationIndex = idx;
         xNotify->postNotification(UPDATE_PROPERTY);
     }
+}
+
+CCPoint PartManager::getCurPosition()
+{
+    return m_vParts.at(m_iCurOperationIndex)->getPosition();
+}
+
+void PartManager::setCurPosition(CCPoint &point)
+{
+    m_vParts.at(m_iCurOperationIndex)->setPosition(point);
 }
 
 float PartManager::getCurRotate()

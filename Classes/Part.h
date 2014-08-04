@@ -22,6 +22,7 @@ class Part : public CCObject{
     
 public:
     //static Part * create(const char *pFileName, CCPoint &location, ImageView *parent);
+    //origin 是主体所在的位置, 非主体就以这个位置来作为偏移坐标
     Part(const char *pFileName, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent);
     void setStartFrameIndex(int iStart);
     void setMain();
@@ -33,6 +34,9 @@ public:
     const char * getNextFrameName();
     const char * getPreFrameName();
     const char * getFrameCountStr();
+    
+    void setPosition(CCPoint &point);
+    CCPoint getPosition();
     float getRotate();
     const CCPoint& getAnchorPoint();
     float getScale();

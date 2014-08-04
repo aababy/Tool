@@ -56,6 +56,7 @@ public:
     virtual void ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent);
     void registerWithTouchDispatcher();
     void switchToMain();
+    void makeAFocusOfList();
     
 protected:
     void setFrameCount();

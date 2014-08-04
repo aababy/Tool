@@ -37,10 +37,14 @@ public:
     void setCurOperationIndex(int idx);
     float getCurRotate();
     const CCPoint& getCurAnchorPoint();
+    
+    CCPoint getCurPosition();
+    void setCurPosition(CCPoint &point);
     float getCurScale();
     void setCurRotate(float r);
     void setCurAnchorPoint(const CCPoint& point);
     void setCurScale(float s);
+    int getCurOperationIndex();
     
     void setDragAndDropOffset(CCPoint &point);
     void preview();

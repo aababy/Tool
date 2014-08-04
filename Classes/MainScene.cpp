@@ -157,8 +157,8 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
         default:
         {
             if (iTag >= LIST_BG) {
-                CCLOG("touch index %d", iTag - LIST_BG);
                 xPM->setCurOperationIndex(iTag - LIST_BG);
+                makeAFocusOfList();
             }
         }
             break;
@@ -195,6 +195,8 @@ void MainScene::updateList()
         Label *label = (Label*)UIHelper::seekWidgetByTag(bg, 22);
         label->setText(xPM->getPartNameByIndex(i));
     }
+    
+    makeAFocusOfList();
 }
 
 void MainScene::updateProperty(CCObject *sender)
@@ -204,6 +206,11 @@ void MainScene::updateProperty(CCObject *sender)
     }
     
     char buffer[20];
+    const CCPoint po = xPM->getCurPosition();
+    sprintf(buffer, "%.1f", po.x);
+    m_ebPosition[0]->setText(string(buffer));
+    sprintf(buffer, "%.1f", po.y);
+    m_ebPosition[1]->setText(string(buffer));
     
     const CCPoint point = xPM->getCurAnchorPoint();    
     sprintf(buffer, "%.1f", point.x);
@@ -236,10 +243,18 @@ void MainScene::editBoxTextChanged(CCEditBox* editBox, const std::string& text)
         point.x = atof(m_ebAnchor[0]->getText());
         point.y = atof(m_ebAnchor[1]->getText());
         
+        CCPoint po;
+        po.x = atof(m_ebPosition[0]->getText());
+        po.y = atof(m_ebPosition[1]->getText());
+        
         if (editBox == m_ebAnchor[0]->m_edit) {
             xPM->setCurAnchorPoint(point);
         } else if(editBox == m_ebAnchor[1]->m_edit) {
             xPM->setCurAnchorPoint(point);
+        } else if(editBox == m_ebPosition[0]->m_edit) {
+            xPM->setCurPosition(po);
+        } else if(editBox == m_ebPosition[1]->m_edit) {
+            xPM->setCurPosition(po);
         } else if(editBox == m_ebRotate->m_edit) {
             temp = atof(text.c_str());
             xPM->setCurRotate(temp);
@@ -290,6 +305,7 @@ void MainScene::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)
     if (m_bDragAndDrop) {
         CCPoint point = ccpSub(m_oldPoint, pTouch->getLocation());
         xPM->setDragAndDropOffset(point);
+        updateProperty(NULL);
     }
     
     m_bDragAndDrop = false;
@@ -344,7 +360,22 @@ void MainScene::switchToMain()
     m_ebScale->setVisible(true);
 }
 
-
+void MainScene::makeAFocusOfList()
+{
+    CCArray* items = listView->getItems();
+    for (int i = 0; i < items->count(); i++) {
+        Layout * bg = (Layout*)items->objectAtIndex(i);
+        
+        if (i == xPM->getCurOperationIndex()) {
+            bg->setBackGroundColorType(LAYOUT_COLOR_SOLID);
+            bg->setBackGroundColor(ccBLACK);
+        }
+        else
+        {
+            bg->setBackGroundColorType(LAYOUT_COLOR_NONE);
+        }
+    }
+}
 
 
 

@@ -253,4 +253,16 @@ void Part::setMain()
     m_bMain = true;
 }
 
+CCPoint Part::getPosition()
+{
+    return ccpSub(m_sprite->getPosition(), m_origin);
+}
+
+void Part::setPosition(CCPoint &point)
+{
+    m_sprite->setPosition(ccpAdd(m_origin, point));
+}
+
+
+
 
