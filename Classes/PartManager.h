@@ -51,6 +51,9 @@ public:
     void clear();
     
     void update(float delta);
+    void save();
+    
+    int getMainPartMotionCount();
     
 private:
     vector<Part*> m_vParts;
@@ -63,7 +66,6 @@ private:
     Part*       m_mainPart;
     
     int         m_iCurOperationIndex = -1;
-    char        stringBuffer[20];
     
     bool        m_bInPreview = false;
 };

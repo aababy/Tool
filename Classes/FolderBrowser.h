@@ -34,11 +34,15 @@ public:
     void checkOldSearchPath();
     
 private:
+    bool m_bShowSaveAddress = false;
+    
     bool checkIfPlist(string &str);
     
     CCNode *m_rootNode;
     InputBox*   m_ebAddress;
+    InputBox*   m_ebModifySave;         //修改保存路径
     UIListView * listView;
+    Button*     m_btnModify;
     
     char    address[200];
     char    fullPathName[200];
@@ -46,6 +50,7 @@ private:
     vector<string> m_vFileName;
     MainScene *m_mainlayer;
     string  searchPath;
+    string  savePath;
 };
 
 

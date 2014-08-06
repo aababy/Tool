@@ -256,6 +256,7 @@
 		8C583FAD169DB6D500F63A10 /* CCEditBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C583FA8169DB6D500F63A10 /* CCEditBox.cpp */; };
 		8C583FAE169DB6D500F63A10 /* CCEditBoxImplMac.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8C583FAC169DB6D500F63A10 /* CCEditBoxImplMac.mm */; };
 		CA0D1EC8198F231B00EEA422 /* FolderBrowser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA0D1EC6198F231B00EEA422 /* FolderBrowser.cpp */; };
+		CA1589C5199217B300E85524 /* Motion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA1589C3199217B300E85524 /* Motion.cpp */; };
 		CA3B1BB41988C1380000299D /* MainScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA3B1BB21988C1380000299D /* MainScene.cpp */; };
 		CA3B1BB61988C53C0000299D /* R in Resources */ = {isa = PBXBuildFile; fileRef = CA3B1BB51988C53C0000299D /* R */; };
 		CA47514B198B638200D8C21E /* InputBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA475149198B638200D8C21E /* InputBox.cpp */; };
@@ -791,6 +792,8 @@
 		8C583FAC169DB6D500F63A10 /* CCEditBoxImplMac.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CCEditBoxImplMac.mm; path = CCEditBox/CCEditBoxImplMac.mm; sourceTree = "<group>"; };
 		CA0D1EC6198F231B00EEA422 /* FolderBrowser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FolderBrowser.cpp; path = ../Classes/FolderBrowser.cpp; sourceTree = "<group>"; };
 		CA0D1EC7198F231B00EEA422 /* FolderBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FolderBrowser.h; path = ../Classes/FolderBrowser.h; sourceTree = "<group>"; };
+		CA1589C3199217B300E85524 /* Motion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Motion.cpp; path = ../Classes/Motion.cpp; sourceTree = "<group>"; };
+		CA1589C4199217B300E85524 /* Motion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Motion.h; path = ../Classes/Motion.h; sourceTree = "<group>"; };
 		CA3B1BB21988C1380000299D /* MainScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MainScene.cpp; path = ../Classes/MainScene.cpp; sourceTree = "<group>"; };
 		CA3B1BB31988C1380000299D /* MainScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainScene.h; path = ../Classes/MainScene.h; sourceTree = "<group>"; };
 		CA3B1BB51988C53C0000299D /* R */ = {isa = PBXFileReference; lastKnownFileType = folder; path = R; sourceTree = "<group>"; };
@@ -848,6 +851,8 @@
 				CA47514A198B638200D8C21E /* InputBox.h */,
 				CA0D1EC6198F231B00EEA422 /* FolderBrowser.cpp */,
 				CA0D1EC7198F231B00EEA422 /* FolderBrowser.h */,
+				CA1589C3199217B300E85524 /* Motion.cpp */,
+				CA1589C4199217B300E85524 /* Motion.h */,
 			);
 			name = Classes;
 			path = ../classes;
@@ -2161,6 +2166,7 @@
 				37C62D0D18E157C300D16FC4 /* SliderReader.cpp in Sources */,
 				15C15921168315E500D239F2 /* CCControlButtonLoader.cpp in Sources */,
 				15C15922168315E500D239F2 /* CCControlLoader.cpp in Sources */,
+				CA1589C5199217B300E85524 /* Motion.cpp in Sources */,
 				15C15923168315E500D239F2 /* CCData.cpp in Sources */,
 				15C15924168315E500D239F2 /* CCLabelBMFontLoader.cpp in Sources */,
 				15C15925168315E500D239F2 /* CCLabelTTFLoader.cpp in Sources */,

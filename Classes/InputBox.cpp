@@ -12,6 +12,7 @@
 InputBox* InputBox::create(TextField *text, CCEditBoxDelegate* delegate, CCNode *parent)
 {
     InputBox *input = new InputBox();
+    input->originText = text;
     
     CCPoint absolute = text->convertToWorldSpaceAR(CCPointZero);
     input->m_edit = CCEditBox::create(text->getSize(), CCScale9Sprite::create("R/input_bg.png"));
@@ -53,4 +54,5 @@ const char * InputBox::getText()
 void InputBox::setVisible(bool visible)
 {
     m_edit->setVisible(visible);
+    originText->setVisible(visible);
 }

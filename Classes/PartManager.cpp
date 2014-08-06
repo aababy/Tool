@@ -188,3 +188,36 @@ void PartManager::update(float delta)
     }
 }
 
+
+void PartManager::save()
+{
+    if(getPartsCount() == 0)
+    {
+        return;
+    }
+    
+    CCDictionary *dictionary = m_mainPart->getDictionary();
+    
+    string str = xData->getStringForKey(SAVE_PATH);
+    
+    if (!str.empty() && str.compare("") != 0) {
+        if (str.rfind('/') == str.length() - 1) {
+            str = str.substr(0, str.length() - 1);
+        }
+        
+        char stringBuffer[250];
+        sprintf(stringBuffer, "%s/%s.plist", str.c_str(), "abc");
+        dictionary->writeToFile(stringBuffer);
+    }
+}
+
+
+int PartManager::getMainPartMotionCount()
+{
+    if (m_mainPart != NULL) {
+        return m_mainPart->getMotionCount();
+    }
+    
+    return 0;
+}
+

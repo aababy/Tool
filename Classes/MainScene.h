@@ -39,6 +39,7 @@ public:
     
     void touchEvent(CCObject *pSender, TouchEventType type);
     void updateList();
+    void updateMotionList();
     void updateProperty(CCObject *sender);
     void dragAndDrop(CCObject *pSender, TouchEventType type);
     void importFinish(string &str);
@@ -75,6 +76,7 @@ protected:
     CCSprite * m_pHolder;
     
     UIListView * listView;
+    UIListView * motionlist;
     Layout *listroot;
        
     InputBox*   m_ebAnchor[2];

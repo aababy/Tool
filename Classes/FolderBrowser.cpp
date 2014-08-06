@@ -15,6 +15,8 @@ enum UITag
     BUTTON_FORWARD = 60,
     FILE_LIST = 61,
     BUTTON_BACK = 62,
+    SAVE_ADDRESS = 83,
+    BUTTON_MODIFY_SAVE = 84,
     
     LIST_FILE = 1000,
 };
@@ -53,9 +55,12 @@ bool FolderBrowser::init()
         
         initButton(BUTTON_FORWARD, root, this, toucheventselector(FolderBrowser::touchEvent));
         initButton(BUTTON_BACK, root, this, toucheventselector(FolderBrowser::touchEvent));
+        m_btnModify = initButton(BUTTON_MODIFY_SAVE, root, this, toucheventselector(FolderBrowser::touchEvent));
         
         //输入区
         m_ebAddress = InputBox::create(ADDRESS, root, this, m_rootNode);
+        m_ebModifySave = InputBox::create(SAVE_ADDRESS, root, this, m_rootNode);
+        m_ebModifySave->setVisible(false);
         
         //列表
         listView = (UIListView*)UIHelper::seekWidgetByTag(root, FILE_LIST);
@@ -96,6 +101,33 @@ void FolderBrowser::touchEvent(CCObject *pSender, TouchEventType type)
             CCNode* parent = this->getParent();
             parent->removeChild(this);
             m_mainlayer->switchToMain();
+        }
+            break;
+        case BUTTON_MODIFY_SAVE:
+        {
+            if (m_bShowSaveAddress) {
+                savePath = m_ebModifySave->getText();
+                CCUserDefault::sharedUserDefault()->setStringForKey(SAVE_PATH, savePath);
+                
+                m_bShowSaveAddress = false;
+                m_ebModifySave->setVisible(m_bShowSaveAddress);
+                
+                string str = "修改保存路径";
+                m_btnModify->setTitleText(str);
+            }
+            else
+            {
+                savePath = CCUserDefault::sharedUserDefault()->getStringForKey(SAVE_PATH);
+                                
+                CCUserDefault::sharedUserDefault()->setStringForKey(SAVE_PATH, savePath);
+                
+                m_bShowSaveAddress = true;
+                m_ebModifySave->setVisible(m_bShowSaveAddress);
+                m_ebModifySave->setText(savePath);
+                
+                string str = "确认";
+                m_btnModify->setTitleText(str);
+            }
         }
             break;
         default:
@@ -266,7 +298,7 @@ void FolderBrowser::editBoxReturn(CCEditBox* editBox)
 
 void FolderBrowser::checkOldSearchPath()
 {
-    string str = CCUserDefault::sharedUserDefault()->getStringForKey(SEARCH_PATH);
+    string str = CCUserDefault::sharedUserDefault()->getStringForKey(SEARCH_PATH);            
     if (!str.empty()) {
         m_ebAddress->setText(str);
         forward();

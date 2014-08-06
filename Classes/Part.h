@@ -49,10 +49,13 @@ public:
     void preFrame();
     void preview();
     
+    int getMotionCount();
+    
     int m_iCurIndex = 0;
     int m_iFrameCount = 0;
     
     CCAnimation* getAnimation();            //这个函数是否分离出去?
+    CCDictionary* getDictionary();
     
     string  sPartName;
     
@@ -87,6 +90,7 @@ private:
     
     int iStartFrameIndex = 0;
     
+    CCDictionary *m_dictionary = NULL;
 };
 
 

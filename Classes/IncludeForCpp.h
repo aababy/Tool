@@ -25,8 +25,10 @@
 using namespace cocostudio::timeline;
 
 #define xNotify                         (CCNotificationCenter::sharedNotificationCenter())
+#define xData                           (CCUserDefault::sharedUserDefault())
 
 #define UPDATE_PROPERTY                 "UPDATE_PROPERTY"
 #define SEARCH_PATH                     "SEARCH_PATH"
+#define SAVE_PATH                       "SAVE_PATH"
 
 #endif

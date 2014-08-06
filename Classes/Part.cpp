@@ -71,6 +71,8 @@ Part::~Part()
     
     parent = m_sprite->getParent();
     parent->removeChild(m_sprite);
+    
+    CC_SAFE_RELEASE(m_dictionary);
 }
 
 int Part::getNumber(string &str)
@@ -251,6 +253,10 @@ void Part::setStartFrameIndex(int iStart)
 void Part::setMain()
 {
     m_bMain = true;
+    
+    //如果是主体, 需要保留CCDictionary
+    m_dictionary = CCDictionary::createWithContentsOfFile(sPartName.c_str());
+    m_dictionary->retain();
 }
 
 CCPoint Part::getPosition()
@@ -264,5 +270,13 @@ void Part::setPosition(CCPoint &point)
 }
 
 
+CCDictionary * Part::getDictionary()
+{
+    return m_dictionary;
+}
 
+int Part::getMotionCount()
+{
+    return 0;
+}
 

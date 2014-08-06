@@ -21,6 +21,8 @@ enum UITag
     SPRITE_HOLDER = 43,
     ANCHOR_X = 65,
     ANCHOR_Y = 67,
+    BUTTON_SAVE = 82,
+    MOTION_LIST = 99,
     
     LIST_BG = 1000,
 };
@@ -63,6 +65,7 @@ bool MainScene::init(CCScene* pScene)
         initButton(BUTTON_PREVIEW, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_STOP, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_CLEAN, root, this, toucheventselector(MainScene::touchEvent));
+        initButton(BUTTON_SAVE, root, this, toucheventselector(MainScene::touchEvent));
         
         //输入区
         m_ebAnchor[0] = InputBox::create(ANCHOR_X, root, this, m_rootNode);
@@ -89,6 +92,10 @@ bool MainScene::init(CCScene* pScene)
         listroot = static_cast<Layout*>(node->getChildren()->objectAtIndex(0));
         Layout* defaultItem = (Layout*)UIHelper::seekWidgetByTag(listroot, 32);         //还有转一层, 一来至少加2个Panel
         listView->setItemModel(defaultItem);
+        
+        
+        motionlist = (UIListView*)UIHelper::seekWidgetByTag(root, MOTION_LIST);
+        motionlist->setItemModel(defaultItem);
         
         
         xNotify->addObserver(this, callfuncO_selector(MainScene::updateProperty), UPDATE_PROPERTY, NULL);
@@ -154,6 +161,11 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
             m_preview->stopAllActions();
         }
             break;
+        case BUTTON_SAVE:
+        {
+            xPM->save();
+        }
+            break;
         default:
         {
             if (iTag >= LIST_BG) {
@@ -198,6 +210,29 @@ void MainScene::updateList()
     
     makeAFocusOfList();
 }
+
+void MainScene::updateMotionList()
+{
+    motionlist->removeAllItems();
+    
+    for (int i = 0; i < xPM->getPartsCount(); ++i)
+    {
+        motionlist->pushBackDefaultItem();
+    }
+    
+    CCArray* items = motionlist->getItems();
+    for (int i = 0; i < items->count(); i++) {
+        Layout * bg = (Layout*)items->objectAtIndex(i);
+        bg->addTouchEventListener(this, toucheventselector(MainScene::touchEvent));
+        bg->setTag(LIST_BG + i);
+        Label *label = (Label*)UIHelper::seekWidgetByTag(bg, 22);
+        label->setText(xPM->getPartNameByIndex(i));
+    }
+    
+    makeAFocusOfList();
+}
+
+
 
 void MainScene::updateProperty(CCObject *sender)
 {

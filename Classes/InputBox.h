@@ -22,6 +22,8 @@ public:
     void setText(string str);
     const char * getText();
     void setVisible(bool visible);
+    
+    TextField *originText;
 };
 
 
