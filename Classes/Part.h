@@ -43,6 +43,7 @@ public:
     void nextFrame(int iCount);
     void preFrame(int iCount);
     void preview();
+    void setEnabled(bool bEnabled);
     
     //Main part 特有函数
     int getMotionCount();
@@ -72,8 +73,8 @@ private:
     
     CCSprite * m_preview = NULL;           //用于预览
     
-    CCSprite  *m_sprite;            //用于显示帧
-    ImageView *m_iFrame;
+    CCSprite  *m_sprite = NULL;            //用于显示帧
+    ImageView *m_iFrame = NULL;
     CCPoint  m_origin;
     CCPoint  m_showForPreview;
     CCNode  *m_parent;
@@ -94,6 +95,8 @@ private:
     vector<Motion *> m_vMotion;     //只有主体有这个字段.
     int         m_iLastIndex = 0;
     int         m_iCurAtk = 0;
+    
+    bool        m_bEnabled;
 };
 
 

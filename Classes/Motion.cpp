@@ -92,4 +92,11 @@ int Motion::getCurOperationIndex()
     return m_iCurOperationIndex;
 }
 
-
+void Motion::setEnabled(bool bEnabled)
+{
+    m_bEnabled = bEnabled;
+    
+    for (int i = 0; i < getPartsCount(); i++) {
+        m_vParts.at(i)->setEnabled(bEnabled);
+    }
+}

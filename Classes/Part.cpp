@@ -51,8 +51,10 @@ Part::Part(const char *pFileName, CCPoint &show, CCPoint &origin, CCPoint &showF
     //显示帧
     m_sprite = CCSprite::createWithSpriteFrameName(getCurFrameName());
     m_sprite->setPosition(show);
+    m_sprite->retain(); //retain 备用
     
     parent->addChild(m_sprite);
+    
     
     m_parent = parent;
     m_origin = origin;
@@ -60,6 +62,8 @@ Part::Part(const char *pFileName, CCPoint &show, CCPoint &origin, CCPoint &showF
     
     m_preview = CCSprite::create();
     m_preview->setVisible(false);
+    m_preview->retain();    //retain 备用
+    
     m_parent->addChild(m_preview);
 }
 
@@ -73,6 +77,8 @@ Part::~Part()
     parent->removeChild(m_sprite);
     
     CC_SAFE_RELEASE(m_dictionary);
+    CC_SAFE_RELEASE(m_sprite);
+    CC_SAFE_RELEASE(m_preview);
 }
 
 const char * Part::getCurFrameName()
@@ -278,3 +284,10 @@ float Part::getAtkDelay()
     return m_vMotion.at(m_iCurIndex)->getDelay();
 }
 
+void Part::setEnabled(bool bEnabled)
+{
+    m_bEnabled = bEnabled;
+    
+    m_sprite->setVisible(m_bEnabled);
+    m_preview->setVisible(m_bEnabled);
+}

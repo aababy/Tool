@@ -23,6 +23,7 @@ public:
     void setCurAtkIndex(int i);
     string& getPartNameByIndex(int idx);
     int getCurOperationIndex();
+    void setEnabled(bool bEnabled);
     
     string sMotionName;
     
@@ -48,6 +49,8 @@ private:
     
     int         m_iMainIndex;
     int         m_iCurOperationIndex = 0;
+    
+    bool        m_bEnabled;
 };
 
 

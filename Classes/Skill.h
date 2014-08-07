@@ -38,7 +38,7 @@ public:
     
     Motion *m_curMotion = NULL;
     
-    int         m_iCurIndex = 0;           //当前帧数, 只有在当前帧数大于最后1个Motion的帧数的时候, 才能进行AddIndex. 删除也只能删除最后一个Motion
+    int         m_iCurIndex = -1;           //当前帧数, 只有在当前帧数大于最后1个Motion的帧数的时候, 才能进行AddIndex. 删除也只能删除最后一个Motion
     
 private:
     vector<Motion *>    m_vMotion;          //只有主体有这个字段.

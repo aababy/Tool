@@ -77,12 +77,12 @@ void Skill::addMotion()
         char buffer[10];
         sprintf(buffer, "atk%d", getMotionCount() + 1);
         
-        m_curMotion = new Motion(buffer, sPartName.c_str(), vFrameName, m_iLastIndex, m_iCurIndex, m_parent);
+        m_curMotion = new Motion(buffer, sPartName.c_str(), vFrameName, m_iLastIndex, m_iCurIndex, m_origin, m_showForPreview, m_parent);
         m_vMotion.push_back(m_curMotion);
         
         m_iLastIndex = m_iCurIndex + 1;
         
-        m_iCurAtk = getMotionCount() - 1;
+        setCurAtkIndex(getMotionCount() - 1);
     }
 }
 
@@ -103,6 +103,16 @@ void Skill::setCurAtkIndex(int i)
     
     xNotify->postNotification(UPDATE_MOTION_LIST);
     xNotify->postNotification(UPDATE_EFFECT_LIST);
+    
+    //转换当前的Motion是个非常重要的函数, 需要将所有非当前Motion设置为不可见, 将当前Motion设置为可见.
+    
+    for (int i = 0; i < getMotionCount(); i++) {
+        if (i != m_iCurAtk) {
+            m_vMotion.at(i)->setEnabled(false);
+        }
+    }
+    
+    m_curMotion->setEnabled(true);
 }
 
 void Skill::setAtkDelay(float var)
