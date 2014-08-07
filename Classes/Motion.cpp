@@ -9,7 +9,7 @@
 #include "Motion.h"
 
 
-Motion::Motion(string sName, const char *pFileName, vector<string> vFrameNameOrdered, int iStart, int iEnd, CCNode *parent)
+Motion::Motion(string sName, const char *pFileName, vector<string> vFrameNameOrdered, int iStart, int iEnd, CCPoint &origin, CCPoint &showForPreview, CCNode *parent)
 {
     m_vFrameNameOrdered = vFrameNameOrdered;
     this->iStart = iStart;
@@ -18,6 +18,13 @@ Motion::Motion(string sName, const char *pFileName, vector<string> vFrameNameOrd
     sResName = pFileName;
     sMotionName = sName;
     m_iFrameBG = parent;
+    location = origin;
+    m_preview = showForPreview;
+    
+    //MotionName 加入Start和End
+    char buffer[100];
+    sprintf(buffer, "%d-%d", iStart + 1, iEnd + 1);
+    sMotionName = buffer;
     
     //加入atk时, 便加入1个Motion
     importPart(pFileName);
