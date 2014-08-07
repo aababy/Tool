@@ -32,6 +32,7 @@ public:
     void setAtkDelay(float var);
     float getAtkDelay();
     int getFrameCount();
+    void checkFrameForAtkIndex();
     
     void nextFrame(int iCount);
     void preFrame(int iCount);
@@ -46,7 +47,7 @@ private:
     int         m_iFrameCount = 0;          //这个来判断是否导入了主体
     
     int         m_iLastIndex = 0;
-    int         m_iCurAtk = 0;
+    int         m_iCurAtk = -1;
     int         m_iCurMotion;
 
     

@@ -99,20 +99,22 @@ int Skill::getCurAtkIndex()
 void Skill::setCurAtkIndex(int i)
 {
     m_iCurAtk = i;
-    m_curMotion = m_vMotion.at(m_iCurAtk);
-    
-    xNotify->postNotification(UPDATE_MOTION_LIST);
-    xNotify->postNotification(UPDATE_EFFECT_LIST);
     
     //转换当前的Motion是个非常重要的函数, 需要将所有非当前Motion设置为不可见, 将当前Motion设置为可见.
-    
     for (int i = 0; i < getMotionCount(); i++) {
         if (i != m_iCurAtk) {
             m_vMotion.at(i)->setEnabled(false);
         }
     }
     
-    m_curMotion->setEnabled(true);
+    if (m_iCurAtk != -1) {
+        m_curMotion = m_vMotion.at(m_iCurAtk);
+        m_curMotion->setEnabled(true);
+    }
+    
+    //这个post几乎是同步的, 不是异步的, 所以写最后
+    xNotify->postNotification(UPDATE_MOTION_LIST);
+    xNotify->postNotification(UPDATE_EFFECT_LIST);
 }
 
 void Skill::setAtkDelay(float var)
@@ -135,6 +137,8 @@ void Skill::nextFrame(int iCount)
     for (int i = 0; i < iCount; i++) {
         cycleNum(true, m_iFrameCount, &m_iCurIndex);
     }
+    
+    checkFrameForAtkIndex();
 }
 
 void Skill::preFrame(int iCount)
@@ -142,4 +146,25 @@ void Skill::preFrame(int iCount)
     for (int i = 0; i < iCount; i++) {
         cycleNum(false, m_iFrameCount, &m_iCurIndex);
     }
+    
+    checkFrameForAtkIndex();
 }
+
+void Skill::checkFrameForAtkIndex()
+{
+    int i;
+    for (i = 0; i < getMotionCount(); i++) {
+        if (m_vMotion.at(i)->isInMotion(m_iCurIndex)) {
+            break;
+        }
+    }
+    
+    if (i != getMotionCount()) {
+        setCurAtkIndex(i);
+    }
+    else
+    {
+        setCurAtkIndex(-1);
+    }
+}
+

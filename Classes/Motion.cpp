@@ -100,3 +100,14 @@ void Motion::setEnabled(bool bEnabled)
         m_vParts.at(i)->setEnabled(bEnabled);
     }
 }
+
+bool Motion::isInMotion(int idx)
+{
+    if (idx >= iStart && idx <= iEnd) {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}

@@ -24,6 +24,7 @@ public:
     string& getPartNameByIndex(int idx);
     int getCurOperationIndex();
     void setEnabled(bool bEnabled);
+    bool isInMotion(int idx);
     
     string sMotionName;
     
