@@ -74,20 +74,20 @@ string &PartManager::getPartNameByIndex(int idx)
     return m_vParts.at(idx)->sPartName;
 }
 
-void PartManager::nextFrame()
+void PartManager::nextFrame(int iCount)
 {
     for (int i = 0; i < m_vParts.size(); i++) {
-        m_vParts.at(i)->nextFrame();
+        m_vParts.at(i)->nextFrame(iCount);
     }
     
     m_iMainIndex = m_mainPart->m_iCurIndex;
     m_iMainCount = m_mainPart->m_iFrameCount;
 }
 
-void PartManager::preFrame()
+void PartManager::preFrame(int iCount)
 {
     for (int i = 0; i < m_vParts.size(); i++) {
-        m_vParts.at(i)->preFrame();
+        m_vParts.at(i)->preFrame(iCount);
     }
     
     m_iMainIndex = m_mainPart->m_iCurIndex;
@@ -104,6 +104,7 @@ void PartManager::setCurOperationIndex(int idx)
     if (m_iCurOperationIndex != idx) {
         m_iCurOperationIndex = idx;
         xNotify->postNotification(UPDATE_PROPERTY);
+        xNotify->postNotification(UPDATE_MOTION);
     }
 }
 
@@ -221,3 +222,16 @@ int PartManager::getMainPartMotionCount()
     return 0;
 }
 
+void PartManager::setAtkDelay(float var)
+{
+    m_mainPart->setAtkDelay(var);
+}
+
+float PartManager::getAtkDelay()
+{
+    if (m_mainPart == NULL) {
+        return 0.f;
+    }
+    
+    return m_mainPart->getAtkDelay();
+}

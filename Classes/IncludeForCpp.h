@@ -21,6 +21,8 @@
 #include "PartManager.h"
 #include "InputBox.h"
 #include "FolderBrowser.h"
+#include "Motion.h"
+#include "Skill.h"
 
 using namespace cocostudio::timeline;
 
@@ -30,5 +32,8 @@ using namespace cocostudio::timeline;
 #define UPDATE_PROPERTY                 "UPDATE_PROPERTY"
 #define SEARCH_PATH                     "SEARCH_PATH"
 #define SAVE_PATH                       "SAVE_PATH"
+#define UPDATE_MOTION                   "UPDATE_MOTION"
+#define UPDATE_EFFECT_LIST              "UPDATE_EFFECT_LIST"
+#define UPDATE_MOTION_LIST              "UPDATE_MOTION_LIST"
 
 #endif

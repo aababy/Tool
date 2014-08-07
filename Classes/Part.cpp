@@ -46,7 +46,7 @@ Part::Part(const char *pFileName, CCPoint &show, CCPoint &origin, CCPoint &showF
     
     m_iFrameCount = m_vFrameName.size();
     
-    bubble_sort();
+    bubble_sort(m_vFrameName);
     
     //显示帧
     m_sprite = CCSprite::createWithSpriteFrameName(getCurFrameName());
@@ -73,34 +73,6 @@ Part::~Part()
     parent->removeChild(m_sprite);
     
     CC_SAFE_RELEASE(m_dictionary);
-}
-
-int Part::getNumber(string &str)
-{
-    int iDot = str.rfind('.');
-    
-    int iNumber = str.find_last_not_of("0123456789", iDot - 1) + 1;
-    
-    string sNumber = str.substr(iNumber, iDot - iNumber);
-    
-    return atoi(sNumber.c_str());
-}
-
-void Part::bubble_sort()
-{
-    int size = m_vFrameName.size();
-    int i, j;
-    
-    for(j = 0; j < size-1; j++)
-    {
-        for(i = 0; i < size-1-j; i++)
-        {
-            if(m_vFrameName.at(i).iNumber > m_vFrameName.at(i+1).iNumber)//数组元素大小按升序排列
-            {
-                swap(m_vFrameName.at(i), m_vFrameName.at(i+1));
-            }
-        }
-    }
 }
 
 const char * Part::getCurFrameName()
@@ -134,13 +106,13 @@ CCAnimation* Part::getAnimation()
     return animation;
 }
 
-void Part::nextFrame()
+void Part::nextFrame(int iCount)
 {
     m_sprite->initWithSpriteFrameName(getNextFrameName());
 }
 
 
-void Part::preFrame()
+void Part::preFrame(int iCount)
 {
     m_sprite->initWithSpriteFrameName(getPreFrameName());
 }
@@ -277,6 +249,32 @@ CCDictionary * Part::getDictionary()
 
 int Part::getMotionCount()
 {
-    return 0;
+    return m_vMotion.size();
+}
+
+
+string &Part::getMotionName(int i)
+{
+    return m_vMotion.at(i)->sMotionName;
+}
+
+int Part::getCurAtkIndex()
+{
+    return m_iCurAtk;
+}
+
+void Part::setCurAtkIndex(int i)
+{
+    m_iCurAtk = i;
+}
+
+void Part::setAtkDelay(float var)
+{
+    m_vMotion.at(m_iCurIndex)->setDelay(var);
+}
+
+float Part::getAtkDelay()
+{
+    return m_vMotion.at(m_iCurIndex)->getDelay();
 }
 

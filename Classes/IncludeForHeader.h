@@ -25,4 +25,11 @@ USING_NS_CC;
 using namespace cocos2d::extension;
 using namespace ui;
 
+
+struct FramesName
+{
+    string  sFrameName;
+    int     iNumber;
+};
+
 #endif

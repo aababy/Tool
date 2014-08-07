@@ -24,6 +24,7 @@ static CCScene* scene() \
 class Part;
 class InputBox;
 class FolderBrowser;
+class Skill;
 
 class MainScene : public CCLayer, public CCEditBoxDelegate
 {
@@ -58,6 +59,9 @@ public:
     void registerWithTouchDispatcher();
     void switchToMain();
     void makeAFocusOfList();
+    void makeAFocusOfListForMotion();
+    
+    void updateButtonForMotion(CCObject *sender);
     
 protected:
     void setFrameCount();
@@ -78,11 +82,17 @@ protected:
     UIListView * listView;
     UIListView * motionlist;
     Layout *listroot;
+    
+    Button *btnPre5;
+    Button *btnNext5;
+    Button *btnAddMotion;
+    Button *btnDelMotion;
        
     InputBox*   m_ebAnchor[2];
     InputBox*   m_ebPosition[2];
     InputBox*   m_ebRotate;
     InputBox*   m_ebScale;
+    InputBox*   m_ebDelay;
     
     //暂时写这里
     Part  *m_curPart = NULL;

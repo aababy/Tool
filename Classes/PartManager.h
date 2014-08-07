@@ -31,8 +31,8 @@ public:
     int m_iMainIndex = 0;
     int m_iMainCount = 0;
         
-    void nextFrame();
-    void preFrame();
+    void nextFrame(int i);
+    void preFrame(int i);
     
     void setCurOperationIndex(int idx);
     float getCurRotate();
@@ -54,6 +54,8 @@ public:
     void save();
     
     int getMainPartMotionCount();
+    void setAtkDelay(float var);
+    float getAtkDelay();
     
 private:
     vector<Part*> m_vParts;

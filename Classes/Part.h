@@ -11,11 +11,7 @@
 
 #include "IncludeForHeader.h"
 
-struct FramesName
-{
-    string  sFrameName;
-    int     iNumber;
-};
+class Motion;
 
 
 class Part : public CCObject{
@@ -28,7 +24,6 @@ public:
     void setMain();
     
     vector<FramesName> m_vFrameName;
-    vector<string> m_vFrameNameOrdered;
     
     const char * getCurFrameName();
     const char * getNextFrameName();
@@ -45,11 +40,17 @@ public:
     void setScale(float s);
     void setDragAndDropOffset(CCPoint &point);
     
-    void nextFrame();
-    void preFrame();
+    void nextFrame(int iCount);
+    void preFrame(int iCount);
     void preview();
     
+    //Main part 特有函数
     int getMotionCount();
+    string & getMotionName(int i);
+    int getCurAtkIndex();
+    void setCurAtkIndex(int i);
+    void setAtkDelay(float var);
+    float getAtkDelay();
     
     int m_iCurIndex = 0;
     int m_iFrameCount = 0;
@@ -68,9 +69,6 @@ public:
 private:
     CCPoint getOffset();
     void actionDone();    
-    
-    int getNumber(string &str);
-    void bubble_sort();
     
     CCSprite * m_preview = NULL;           //用于预览
     
@@ -91,6 +89,11 @@ private:
     int iStartFrameIndex = 0;
     
     CCDictionary *m_dictionary = NULL;
+    
+    //Motion
+    vector<Motion *> m_vMotion;     //只有主体有这个字段.
+    int         m_iLastIndex = 0;
+    int         m_iCurAtk = 0;
 };
 
 

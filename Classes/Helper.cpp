@@ -53,3 +53,31 @@ TextField * initTextField(int iTag, Layout* root)
     
     return text;
 }
+
+int getNumber(string &str)
+{
+    int iDot = str.rfind('.');
+    
+    int iNumber = str.find_last_not_of("0123456789", iDot - 1) + 1;
+    
+    string sNumber = str.substr(iNumber, iDot - iNumber);
+    
+    return atoi(sNumber.c_str());
+}
+
+void bubble_sort(vector<FramesName> &vFrameName)
+{
+    int size = vFrameName.size();
+    int i, j;
+    
+    for(j = 0; j < size-1; j++)
+    {
+        for(i = 0; i < size-1-j; i++)
+        {
+            if(vFrameName.at(i).iNumber > vFrameName.at(i+1).iNumber)//数组元素大小按升序排列
+            {
+                swap(vFrameName.at(i), vFrameName.at(i+1));
+            }
+        }
+    }
+}

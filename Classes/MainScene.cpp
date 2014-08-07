@@ -23,8 +23,15 @@ enum UITag
     ANCHOR_Y = 67,
     BUTTON_SAVE = 82,
     MOTION_LIST = 99,
+    BUTTON_ADD_MOTION = 100,
+    BUTTON_NEXT_5 = 101,
+    BUTTON_PRV_5 = 102,
+    BUTTON_DEL_MOTION = 103,
+    DELAY = 105,
+    
     
     LIST_BG = 1000,
+    LIST_MOTION = 1100,
 };
 
 
@@ -59,13 +66,18 @@ bool MainScene::init(CCScene* pScene)
         
         Layout *root = static_cast<Layout*>(m_rootNode->getChildren()->objectAtIndex(0));
         
-        Button *btnImport = initButton(BUTTON_IMPORT, root, this, toucheventselector(MainScene::touchEvent));
+        initButton(BUTTON_IMPORT, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_PRV, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_NEXT, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_PREVIEW, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_STOP, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_CLEAN, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_SAVE, root, this, toucheventselector(MainScene::touchEvent));
+        btnAddMotion = initButton(BUTTON_ADD_MOTION, root, this, toucheventselector(MainScene::touchEvent));
+        btnDelMotion = initButton(BUTTON_DEL_MOTION, root, this, toucheventselector(MainScene::touchEvent));
+        
+        btnPre5 = initButton(BUTTON_PRV_5, root, this, toucheventselector(MainScene::touchEvent));
+        btnNext5 = initButton(BUTTON_NEXT_5, root, this, toucheventselector(MainScene::touchEvent));
         
         //输入区
         m_ebAnchor[0] = InputBox::create(ANCHOR_X, root, this, m_rootNode);
@@ -74,6 +86,7 @@ bool MainScene::init(CCScene* pScene)
         m_ebPosition[1] = InputBox::create(POSITION_Y, root, this, m_rootNode);
         m_ebRotate = InputBox::create(ROTATE, root, this, m_rootNode);
         m_ebScale = InputBox::create(SCALE, root, this, m_rootNode);
+        m_ebDelay = InputBox::create(DELAY, root, this, m_rootNode);
         
         m_pHolder = static_cast<CCSprite*>(m_rootNode->getChildByTag(SPRITE_HOLDER));
         m_pHolder->initWithFile("R/cross.png");
@@ -84,7 +97,7 @@ bool MainScene::init(CCScene* pScene)
         m_preview = static_cast<CCSprite*>(m_rootNode->getChildByTag(PREVIEW));
         m_preview->initWithFile("R/cross.png");
         
-        xPM->init(m_pHolder->getPosition(), m_preview->getPosition(), m_rootNode);
+        xSkill->init(m_pHolder->getPosition(), m_preview->getPosition(), m_rootNode);
         
         //列表
         listView = (UIListView*)UIHelper::seekWidgetByTag(root, PARTS_LIST);
@@ -99,7 +112,10 @@ bool MainScene::init(CCScene* pScene)
         
         
         xNotify->addObserver(this, callfuncO_selector(MainScene::updateProperty), UPDATE_PROPERTY, NULL);
-        
+        xNotify->addObserver(this, callfuncO_selector(MainScene::updateButtonForMotion), UPDATE_MOTION, NULL);
+        xNotify->addObserver(this, callfuncO_selector(MainScene::updateList), UPDATE_EFFECT_LIST, NULL);
+        xNotify->addObserver(this, callfuncO_selector(MainScene::updateMotionList), UPDATE_MOTION_LIST, NULL);
+        updateButtonForMotion(NULL);
         
         setTouchEnabled(true);
         
@@ -141,13 +157,13 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
             break;
         case BUTTON_NEXT:
         {
-            xPM->nextFrame();
+            xSkill->nextFrame(1);
             setFrameCount();
         }
             break;
         case BUTTON_PRV:
         {
-            xPM->preFrame();
+            xSkill->preFrame(1);
             setFrameCount();
         }
             break;
@@ -166,11 +182,38 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
             xPM->save();
         }
             break;
+        case BUTTON_NEXT_5:
+        {
+            xSkill->nextFrame(5);
+            setFrameCount();
+        }
+            break;
+        case BUTTON_PRV_5:
+        {
+            xSkill->preFrame(5);
+            setFrameCount();            
+        }
+            break;
+        case BUTTON_ADD_MOTION:
+        {
+            xSkill->addMotion();
+            updateList();
+            updateMotionList();
+        }
+            break;
+        case BUTTON_DEL_MOTION:
+        {
+            
+        }
+            break;
         default:
         {
-            if (iTag >= LIST_BG) {
-                xPM->setCurOperationIndex(iTag - LIST_BG);
-                makeAFocusOfList();
+            if (iTag >= LIST_BG && iTag < LIST_MOTION) {                //特效
+                xCurAtk->setCurOperationIndex(iTag - LIST_BG);
+            }
+            else if(iTag >= LIST_MOTION)                                //Motion, 更改Motion会同样更新特效列表
+            {
+                xSkill->setCurAtkIndex(iTag - LIST_MOTION);
             }
         }
             break;
@@ -179,12 +222,12 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
 
 void MainScene::setFrameCount()
 {
-    if (xPM->m_iMainCount == 0) {
+    if (xSkill->getFrameCount() == 0) {
         return;
     }
     
     char szFrameCount[20];
-    sprintf(szFrameCount, "%d/%d", xPM->m_iMainIndex + 1, xPM->m_iMainCount);
+    sprintf(szFrameCount, "%d/%d", xSkill->m_iCurIndex + 1, xSkill->getFrameCount());
     string str = szFrameCount;
     
     m_lFrameCount->setText(str);
@@ -192,9 +235,13 @@ void MainScene::setFrameCount()
 
 void MainScene::updateList()
 {
+    if (xCurAtk == NULL) {
+        return;
+    }
+    
     listView->removeAllItems();
     
-    for (int i = 0; i < xPM->getPartsCount(); ++i)
+    for (int i = 0; i < xCurAtk->getPartsCount(); ++i)
     {
         listView->pushBackDefaultItem();
     }
@@ -205,7 +252,7 @@ void MainScene::updateList()
         bg->addTouchEventListener(this, toucheventselector(MainScene::touchEvent));
         bg->setTag(LIST_BG + i);
         Label *label = (Label*)UIHelper::seekWidgetByTag(bg, 22);
-        label->setText(xPM->getPartNameByIndex(i));
+        label->setText(xCurAtk->getPartNameByIndex(i));
     }
     
     makeAFocusOfList();
@@ -215,7 +262,7 @@ void MainScene::updateMotionList()
 {
     motionlist->removeAllItems();
     
-    for (int i = 0; i < xPM->getPartsCount(); ++i)
+    for (int i = 0; i < xSkill->getMotionCount(); ++i)
     {
         motionlist->pushBackDefaultItem();
     }
@@ -224,15 +271,30 @@ void MainScene::updateMotionList()
     for (int i = 0; i < items->count(); i++) {
         Layout * bg = (Layout*)items->objectAtIndex(i);
         bg->addTouchEventListener(this, toucheventselector(MainScene::touchEvent));
-        bg->setTag(LIST_BG + i);
+        bg->setTag(LIST_MOTION + i);
         Label *label = (Label*)UIHelper::seekWidgetByTag(bg, 22);
-        label->setText(xPM->getPartNameByIndex(i));
+        label->setText(xSkill->getMotionName(i));
     }
     
-    makeAFocusOfList();
+    makeAFocusOfListForMotion();
 }
 
-
+void MainScene::updateButtonForMotion(CCObject *sender)
+{
+    if (xSkill->getFrameCount() != 0) {
+        btnPre5->setEnabled(true);
+        btnNext5->setEnabled(true);
+        btnAddMotion->setEnabled(true);
+        btnDelMotion->setEnabled(true);
+    }
+    else
+    {
+        btnPre5->setEnabled(false);
+        btnNext5->setEnabled(false);
+        btnAddMotion->setEnabled(false);
+        btnDelMotion->setEnabled(false);
+    }
+}
 
 void MainScene::updateProperty(CCObject *sender)
 {
@@ -258,6 +320,9 @@ void MainScene::updateProperty(CCObject *sender)
     
     sprintf(buffer, "%.1f", xPM->getCurScale());
     m_ebScale->setText(string(buffer));
+    
+    sprintf(buffer, "%.2f", xPM->getAtkDelay());
+    m_ebDelay->setText(string(buffer));
 }
 
 void MainScene::editBoxEditingDidBegin(CCEditBox* editBox)
@@ -368,9 +433,10 @@ bool MainScene::checkIfStartToDrag(CCPoint point)
 
 void MainScene::importFinish(string &str)
 {
-    xPM->importPart(str.c_str());
+    xSkill->importPart(str.c_str());
     setFrameCount();
     updateList();
+    updateButtonForMotion(NULL);
 }
 
 void MainScene::switchToBroswer()
@@ -401,7 +467,7 @@ void MainScene::makeAFocusOfList()
     for (int i = 0; i < items->count(); i++) {
         Layout * bg = (Layout*)items->objectAtIndex(i);
         
-        if (i == xPM->getCurOperationIndex()) {
+        if (i == xCurAtk->getCurOperationIndex()) {
             bg->setBackGroundColorType(LAYOUT_COLOR_SOLID);
             bg->setBackGroundColor(ccBLACK);
         }
@@ -412,6 +478,22 @@ void MainScene::makeAFocusOfList()
     }
 }
 
+void MainScene::makeAFocusOfListForMotion()
+{
+    CCArray* items = motionlist->getItems();
+    for (int i = 0; i < items->count(); i++) {
+        Layout * bg = (Layout*)items->objectAtIndex(i);
+        
+        if (i == xSkill->getCurAtkIndex()) {
+            bg->setBackGroundColorType(LAYOUT_COLOR_SOLID);
+            bg->setBackGroundColor(ccBLACK);
+        }
+        else
+        {
+            bg->setBackGroundColorType(LAYOUT_COLOR_NONE);
+        }
+    }
+}
 
 
 
