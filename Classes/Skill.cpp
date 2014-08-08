@@ -53,7 +53,7 @@ void Skill::importPart(const char *pFileName)
         
         sPartName = pFileName;
         
-        m_iCurIndex = 0;
+        setCurIndex(0);
         m_sprite = CCSprite::createWithSpriteFrameName(getCurFrameName());
         m_sprite->setPosition(m_origin);
         m_parent->addChild(m_sprite);
@@ -81,7 +81,7 @@ int Skill::getMotionCount()
 
 void Skill::addMotion()
 {
-    if (m_iCurIndex != 0) {
+    if (checkCanAddMotion()) {
         vector<string> vFrameName;
         
         for (int i = m_iLastIndex; i < m_iCurIndex + 1; i++) {
@@ -102,6 +102,8 @@ void Skill::addMotion()
         
         //增加atk后, 会回到新的atk的第一帧, (现在不这样做了)
         //setCurIndex(m_curMotion->getLastFrameIndex());
+        
+        xNotify->postNotification(UPDATE_ALL_INDEX);
     }
 }
 
@@ -142,6 +144,10 @@ void Skill::setCurAtkIndex(int i, setOperateType type)
         //这个post几乎是同步的, 不是异步的, 所以写最后
         xNotify->postNotification(UPDATE_MOTION_LIST);
         xNotify->postNotification(UPDATE_EFFECT_LIST);
+    }
+    
+    if (type == OT_SELECT) {
+        xNotify->postNotification(UPDATE_PROPERTY);
     }
     
     if (type == OT_BROWSE || type == OT_NEW) {
@@ -275,7 +281,7 @@ void Skill::clear()
     }
     
     m_vMotion.clear();
-    m_iCurIndex = -1;
+    setCurIndex(-1);
     m_curMotion = NULL;
     m_iFrameCount = 0;
     m_iCurAtk = 0;
@@ -364,5 +370,25 @@ void Skill::saveAtksAndEffect(CCDictionary *dic)
     dic->setObject(effects, "effects");
 }
 
-
+bool Skill::checkCanAddMotion()
+{
+    if (getMotionCount() != 0) {
+        if (m_iCurIndex > m_vMotion.at(getMotionCount() - 1)->iEnd) {
+            return true;
+        }
+        
+        return false;
+    }
+    else
+    {
+        return true;
+//        if (m_iCurIndex != 0) {
+//            return true;
+//        }
+//        else
+//        {
+//            return false;
+//        }
+    }
+}
 

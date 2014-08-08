@@ -74,6 +74,7 @@ bool MainScene::init(CCScene* pScene)
         initButton(BUTTON_CLEAN, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_SAVE, root, this, toucheventselector(MainScene::touchEvent));
         btnAddMotion = initButton(BUTTON_ADD_MOTION, root, this, toucheventselector(MainScene::touchEvent));
+        btnAddMotion->setEnabled(false);
         btnDelMotion = initButton(BUTTON_DEL_MOTION, root, this, toucheventselector(MainScene::touchEvent));
         
         btnPre5 = initButton(BUTTON_PRV_5, root, this, toucheventselector(MainScene::touchEvent));
@@ -229,6 +230,14 @@ void MainScene::setFrameCount(CCObject *sender)
     string str = szFrameCount;
     
     m_lFrameCount->setText(str);
+    
+    if (xSkill->checkCanAddMotion()) {
+        btnAddMotion->setEnabled(true);
+    }
+    else
+    {
+        btnAddMotion->setEnabled(false);
+    }
 }
 
 void MainScene::updateList()
@@ -279,19 +288,18 @@ void MainScene::updateMotionList()
 
 void MainScene::updateButtonForMotion(CCObject *sender)
 {
-    if (xSkill->getFrameCount() != 0) {
-        btnPre5->setEnabled(true);
-        btnNext5->setEnabled(true);
-        btnAddMotion->setEnabled(true);
-        btnDelMotion->setEnabled(true);
-    }
-    else
-    {
-        btnPre5->setEnabled(false);
-        btnNext5->setEnabled(false);
-        btnAddMotion->setEnabled(false);
-        btnDelMotion->setEnabled(false);
-    }
+//    if (xSkill->getFrameCount() != 0) {
+//        btnPre5->setEnabled(true);
+//        btnNext5->setEnabled(true);
+//        btnDelMotion->setEnabled(true);
+//    }
+//    else
+//    {
+//        btnPre5->setEnabled(false);
+//        btnNext5->setEnabled(false);
+//        btnAddMotion->setEnabled(false);
+//        btnDelMotion->setEnabled(false);
+//    }
 }
 
 void MainScene::updateProperty(CCObject *sender)
@@ -363,6 +371,9 @@ void MainScene::editBoxTextChanged(CCEditBox* editBox, const std::string& text)
         } else if(editBox == m_ebScale->m_edit) {
             temp = atof(text.c_str());
             xCurAtk->setCurScale(temp);
+        } else if(editBox == m_ebDelay->m_edit) {
+            temp = atof(text.c_str());
+            xCurAtk->setDelay(temp);
         }
     }
 }
@@ -450,6 +461,7 @@ void MainScene::switchToBroswer()
     m_ebPosition[1]->setVisible(false);
     m_ebRotate->setVisible(false);
     m_ebScale->setVisible(false);
+    m_ebDelay->setVisible(false);
 }
 
 void MainScene::switchToMain()
@@ -461,6 +473,7 @@ void MainScene::switchToMain()
     m_ebPosition[1]->setVisible(true);
     m_ebRotate->setVisible(true);
     m_ebScale->setVisible(true);
+    m_ebDelay->setVisible(true);
 }
 
 void MainScene::makeAFocusOfList()

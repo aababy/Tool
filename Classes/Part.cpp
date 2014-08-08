@@ -140,7 +140,7 @@ CCAnimation* Part::getAnimation()
         animFrames->addObject(frame);
     }
     
-    CCAnimation* animation = CCAnimation::createWithSpriteFrames(animFrames, 0.1f);
+    CCAnimation* animation = CCAnimation::createWithSpriteFrames(animFrames, m_fDelay);
 
     return animation;
 }
@@ -322,4 +322,19 @@ void Part::saveEffectToDictionary(CCDictionary *effects)
     
     effects->setObject(effect, getEffectName());
 }
+
+void Part::setDelay(float delay)
+{
+    m_fDelay = delay;
+}
+
+float Part::getDelay()
+{
+    return m_fDelay;
+}
+
+
+
+
+
 

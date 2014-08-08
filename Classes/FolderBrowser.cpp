@@ -17,6 +17,8 @@ enum UITag
     BUTTON_BACK = 62,
     SAVE_ADDRESS = 83,
     BUTTON_MODIFY_SAVE = 84,
+    SEARCH_EDIT = 126,
+    BUTTON_SEARCH = 127,
     
     LIST_FILE = 1000,
 };
@@ -62,6 +64,9 @@ bool FolderBrowser::init()
         m_ebModifySave = InputBox::create(SAVE_ADDRESS, root, this, m_rootNode);
         m_ebModifySave->setVisible(false);
         
+        m_ebSearch = InputBox::create(SEARCH_EDIT, root, this, m_rootNode);
+        initButton(BUTTON_SEARCH, root, this, toucheventselector(FolderBrowser::touchEvent));
+        
         //列表
         listView = (UIListView*)UIHelper::seekWidgetByTag(root, FILE_LIST);
         CCNode *node = (NodeReader::getInstance()->createNode("R/ListCell.ExportJson"));
@@ -101,6 +106,12 @@ void FolderBrowser::touchEvent(CCObject *pSender, TouchEventType type)
             CCNode* parent = this->getParent();
             parent->removeChild(this);
             m_mainlayer->switchToMain();
+        }
+            break;
+        case BUTTON_SEARCH:
+        {
+            string search = m_ebSearch->getText();
+            forward(search);
         }
             break;
         case BUTTON_MODIFY_SAVE:
@@ -146,59 +157,63 @@ void FolderBrowser::touchEvent(CCObject *pSender, TouchEventType type)
     }
 }
 
-int countLines(char *filename)
-{
-    ifstream file;
-    int n = 0;
-    string tmp;
-    file.open(filename,ios::in);    //ios::in 表示以只读的方式读取文件
-    if(file.fail())                 //文件打开失败:返回0
-    {
-        return 0;
-    }
-    else//文件存在
-    {
-        while(getline(file, tmp, '\n'))
-        {
-            n++;
-        }
-        file.close();
-        return n;
-    }
-}
-
-
-string readLine(char *filename, int line)
-{
-    int lines,i=0;
-    string temp;
-    fstream file;
-    file.open(filename,ios::in);
-    lines = countLines(filename);
-    
-    if(line<=0)
-    {
-        return "Error 1: 行数错误，不能为0或负数。";
-    }
-    if(file.fail())
-    {
-        return "Error 2: 文件不存在。";
-    }
-    if(line>lines)
-    {
-        return "Error 3: 行数超出文件长度。";
-    }
-    while(getline(file,temp)&&i<line-1)
-    {
-        i++;
-    }
-    file.close();
-    return temp;
-}
-
+//int countLines(char *filename)
+//{
+//    ifstream file;
+//    int n = 0;
+//    string tmp;
+//    file.open(filename,ios::in);    //ios::in 表示以只读的方式读取文件
+//    if(file.fail())                 //文件打开失败:返回0
+//    {
+//        return 0;
+//    }
+//    else//文件存在
+//    {
+//        while(getline(file, tmp, '\n'))
+//        {
+//            n++;
+//        }
+//        file.close();
+//        return n;
+//    }
+//}
+//
+//
+//string readLine(fstream &file, char *filename, int line)
+//{
+//    int lines,i=0;
+//    string temp;
+//    lines = countLines(filename);
+//    
+//    if(line<=0)
+//    {
+//        return "Error 1: 行数错误，不能为0或负数。";
+//    }
+//    if(file.fail())
+//    {
+//        return "Error 2: 文件不存在。";
+//    }
+//    if(line>lines)
+//    {
+//        return "Error 3: 行数超出文件长度。";
+//    }
+//    while(getline(file,temp)&&i<line-1)
+//    {
+//        i++;
+//    }
+//    return temp;
+//}
 
 void FolderBrowser::forward()
 {
+    string str;
+    forward(str);
+}
+
+void FolderBrowser::forward(string &key)
+{
+    m_vFileName.clear();
+    
     //1. 将指定地址下的文件列出来, 存放到临时文件里面.
     const char * szAddress = m_ebAddress->getText();
     searchPath = szAddress;
@@ -214,15 +229,22 @@ void FolderBrowser::forward()
     
     //2. 将文件中的内容读出来, 存放到vector里面.
     sprintf(fullPathName, "%s/temp.txt", szAddress);
-    int lines = countLines(fullPathName);
-    for (int i = 1; i <= lines; i++) {
-        
-        string strLine = readLine(fullPathName, i);
-        
+    //int lines = countLines(fullPathName);
+    
+    ifstream fin(fullPathName);
+    string strLine;
+    while(getline(fin,strLine))
+    {
         if (checkIfPlist(strLine)) {
-            m_vFileName.push_back(strLine);
+            
+            //关键字搜索
+            if (key.empty() || key.compare("") == 0 || strLine.find(key) != string::npos) {
+                m_vFileName.push_back(strLine);
+            }
         }
     }
+   
+    fin.close();
     
     //3. 将vector的内容用列表显示出来.
     updateList();

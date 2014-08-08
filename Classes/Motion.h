@@ -45,22 +45,19 @@ public:
     void update(float delta);
     bool isInPreview();
     int getFramesCount();
+    void setDelay(float delay);
+    float getDelay();
     
     void getEffectsName(CCDictionary *dic, CCDictionary *effects);
 
     vector<string> m_vFrameNameOrdered;
-    
+
+    int iEnd = 0;
 private:
     int iStart = 0;
-    int iEnd = 0;
-    
-    
-    
+
     CCSprite * m_spPreview = NULL;            //用于预览
     CCSprite  *m_sprite;                    //用于显示帧
-    
-
-    CC_SYNTHESIZE(float, m_fDelay, Delay);
     
     vector<Part*> m_vParts;
     

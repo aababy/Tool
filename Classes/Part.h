@@ -58,6 +58,8 @@ public:
     int getCurFrameIndex();
     void checkIfNeedToStart(int iFrameIndex);
     void saveEffectToDictionary(CCDictionary *effects);
+    void setDelay(float delay);
+    float getDelay();
 
     ~Part();
     
@@ -85,6 +87,8 @@ private:
     int     iStartFrameIndex = 0;   //这个也是相对的.
     bool        m_bEnabled;
     int     m_iAccIndex = 0;
+    
+    float   m_fDelay = 0.1f;        //帧间隔
 };
 
 

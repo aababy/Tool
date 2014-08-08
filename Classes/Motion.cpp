@@ -238,7 +238,15 @@ void Motion::getEffectsName(CCDictionary *dic, CCDictionary *effects)
     }
 }
 
+void Motion::setDelay(float delay)
+{
+    m_vParts.at(m_iCurOperationIndex)->setDelay(delay);
+}
 
+float Motion::getDelay()
+{
+    return m_vParts.at(m_iCurOperationIndex)->getDelay();
+}
 
 
 

@@ -52,6 +52,8 @@ public:
     void saveAtksAndEffect(CCDictionary *dic);
     void saveOfEffects(CCDictionary *dic);
     
+    bool checkCanAddMotion();
+    
 private:
     void setCurIndex(int idx);
     

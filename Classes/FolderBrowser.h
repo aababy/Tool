@@ -22,6 +22,7 @@ public:
     void touchEvent(CCObject *pSender, TouchEventType type);
     void updateList();
     void forward();
+    void forward(string &key);
     
     //editbox
     virtual void editBoxEditingDidBegin(CCEditBox* editBox);
@@ -40,6 +41,7 @@ private:
     
     CCNode *m_rootNode;
     InputBox*   m_ebAddress;
+    InputBox*   m_ebSearch;
     InputBox*   m_ebModifySave;         //修改保存路径
     UIListView * listView;
     Button*     m_btnModify;
