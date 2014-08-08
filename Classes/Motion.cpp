@@ -69,7 +69,7 @@ void Motion::setCurOperationIndex(int idx)
 
 string& Motion::getMotionName(int i)
 {
-    return m_mainPart->getMotionName(i);
+    return sMotionName;
 }
 
 int Motion::getCurAtkIndex()
@@ -128,7 +128,63 @@ int Motion::getLastFrameIndex()
     return iStart + m_iMainIndex;
 }
 
+void Motion::setDragAndDropOffset(CCPoint &point)
+{
+    m_vParts.at(m_iCurOperationIndex)->setDragAndDropOffset(point);
+}
 
+CCPoint Motion::getCurPosition()
+{
+    return m_vParts.at(m_iCurOperationIndex)->getPosition();
+}
 
+void Motion::setCurPosition(CCPoint &point)
+{
+    m_vParts.at(m_iCurOperationIndex)->setPosition(point);
+}
+
+float Motion::getCurRotate()
+{
+    return m_vParts.at(m_iCurOperationIndex)->getRotate();
+}
+
+const CCPoint& Motion::getCurAnchorPoint()
+{
+    return m_vParts.at(m_iCurOperationIndex)->getAnchorPoint();
+}
+
+float Motion::getCurScale()
+{
+    return m_vParts.at(m_iCurOperationIndex)->getScale();
+}
+
+void Motion::setCurRotate(float r)
+{
+    m_vParts.at(m_iCurOperationIndex)->setRotate(r);
+}
+
+void Motion::setCurAnchorPoint(const CCPoint& point)
+{
+    m_vParts.at(m_iCurOperationIndex)->setAnchorPoint(point);
+}
+
+void Motion::setCurScale(float s)
+{
+    m_vParts.at(m_iCurOperationIndex)->setScale(s);
+}
+
+void Motion::setAtkDelay(float var)
+{
+    m_mainPart->setAtkDelay(var);
+}
+
+float Motion::getAtkDelay()
+{
+    if (m_mainPart == NULL) {
+        return 0.f;
+    }
+    
+    return m_mainPart->getAtkDelay();
+}
 
 

@@ -214,3 +214,8 @@ void Skill::checkAllIndex()
     }
 }
 
+void Skill::setDragAndDropOffset(CCPoint &point)
+{
+    m_curMotion->setDragAndDropOffset(point);
+}
+

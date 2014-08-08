@@ -29,6 +29,19 @@ public:
     int getLastFrameIndex();
     
     string sMotionName;
+    void setDragAndDropOffset(CCPoint &point);
+    
+    CCPoint getCurPosition();
+    void setCurPosition(CCPoint &point);
+    float getCurRotate();
+    const CCPoint& getCurAnchorPoint();
+    float getCurScale();
+    void setCurRotate(float r);
+    void setCurAnchorPoint(const CCPoint& point);
+    void setCurScale(float s);
+    
+    void setAtkDelay(float var);
+    float getAtkDelay();
     
 private:
     int iStart = 0;

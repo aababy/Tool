@@ -48,8 +48,6 @@ public:
     void setEnabled(bool bEnabled);
     
     //Main part 特有函数
-    int getMotionCount();
-    string & getMotionName(int i);
     int getCurAtkIndex();
     void setCurAtkIndex(int i);
     void setAtkDelay(float var);
@@ -94,7 +92,7 @@ private:
     CCDictionary *m_dictionary = NULL;
     
     //Motion
-    vector<Motion *> m_vMotion;     //只有主体有这个字段.
+    CC_SYNTHESIZE(float, m_fDelay, Delay);
     int         m_iLastIndex = 0;
     int         m_iCurAtk = 0;
     

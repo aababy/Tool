@@ -25,6 +25,8 @@
 //}
 Part::Part(const char *pFileName, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, vector<string> vFrameName)
 {
+    sPartName = pFileName;
+    
     for (int i = 0; i < vFrameName.size(); i++) {
         FramesName frames;
         frames.iNumber = i;
@@ -52,7 +54,6 @@ Part::Part(const char *pFileName, CCPoint &show, CCPoint &origin, CCPoint &showF
     m_preview->retain();    //retain 备用
     
     m_parent->addChild(m_preview);
-
 }
 
 
@@ -299,17 +300,6 @@ CCDictionary * Part::getDictionary()
     return m_dictionary;
 }
 
-int Part::getMotionCount()
-{
-    return m_vMotion.size();
-}
-
-
-string &Part::getMotionName(int i)
-{
-    return m_vMotion.at(i)->sMotionName;
-}
-
 int Part::getCurAtkIndex()
 {
     return m_iCurAtk;
@@ -322,12 +312,12 @@ void Part::setCurAtkIndex(int i)
 
 void Part::setAtkDelay(float var)
 {
-    m_vMotion.at(m_iCurIndex)->setDelay(var);
+    setDelay(var);
 }
 
 float Part::getAtkDelay()
 {
-    return m_vMotion.at(m_iCurIndex)->getDelay();
+    return getDelay();
 }
 
 void Part::setEnabled(bool bEnabled)

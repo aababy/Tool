@@ -31,68 +31,68 @@ PartManager::~PartManager()
     CCDirector::sharedDirector()->getScheduler()->unscheduleUpdateForTarget(this);
 }
 
-void PartManager::init(CCPoint loc, CCPoint preview, CCNode *iFrameBG)
-{
-    location = loc;
-    m_iFrameBG = iFrameBG;
-    m_preview = preview;
-    
-    CCDirector::sharedDirector()->getScheduler()->scheduleUpdateForTarget(this, 0, false);
-}
+//void PartManager::init(CCPoint loc, CCPoint preview, CCNode *iFrameBG)
+//{
+//    location = loc;
+//    m_iFrameBG = iFrameBG;
+//    m_preview = preview;
+//    
+//    CCDirector::sharedDirector()->getScheduler()->scheduleUpdateForTarget(this, 0, false);
+//}
 
-void PartManager::importPart(const char *pFileName)
-{
-    if (m_vParts.empty()) {
-        m_mainPart = new Part(pFileName, location, location, m_preview, m_iFrameBG);
-        m_mainPart->setMain();
-        m_vParts.push_back(m_mainPart);
-        
-        setCurOperationIndex(0);
-        m_iMainIndex = m_mainPart->m_iCurIndex;
-        m_iMainCount = m_mainPart->m_iFrameCount;
-    }
-    else
-    {
-        CCPoint point = ccp(100, 0);
-        point = ccpAdd(location, point);
-        
-        Part* part = new Part(pFileName, point, location, m_preview, m_iFrameBG);
-        part->setStartFrameIndex(m_iMainIndex);
-        m_vParts.push_back(part);
-        
-        setCurOperationIndex(getPartsCount() - 1);
-    }
-}
+//void PartManager::importPart(const char *pFileName)
+//{
+//    if (m_vParts.empty()) {
+//        m_mainPart = new Part(pFileName, location, location, m_preview, m_iFrameBG);
+//        m_mainPart->setMain();
+//        m_vParts.push_back(m_mainPart);
+//        
+//        setCurOperationIndex(0);
+//        m_iMainIndex = m_mainPart->m_iCurIndex;
+//        m_iMainCount = m_mainPart->m_iFrameCount;
+//    }
+//    else
+//    {
+//        CCPoint point = ccp(100, 0);
+//        point = ccpAdd(location, point);
+//        
+//        Part* part = new Part(pFileName, point, location, m_preview, m_iFrameBG);
+//        part->setStartFrameIndex(m_iMainIndex);
+//        m_vParts.push_back(part);
+//        
+//        setCurOperationIndex(getPartsCount() - 1);
+//    }
+//}
 
-int PartManager::getPartsCount()
-{
-    return m_vParts.size();
-}
+//int PartManager::getPartsCount()
+//{
+//    return m_vParts.size();
+//}
 
 string &PartManager::getPartNameByIndex(int idx)
 {
     return m_vParts.at(idx)->sPartName;
 }
 
-void PartManager::nextFrame(int iCount)
-{
-    for (int i = 0; i < m_vParts.size(); i++) {
-        m_vParts.at(i)->nextFrame(iCount);
-    }
-    
-    m_iMainIndex = m_mainPart->m_iCurIndex;
-    m_iMainCount = m_mainPart->m_iFrameCount;
-}
-
-void PartManager::preFrame(int iCount)
-{
-    for (int i = 0; i < m_vParts.size(); i++) {
-        m_vParts.at(i)->preFrame(iCount);
-    }
-    
-    m_iMainIndex = m_mainPart->m_iCurIndex;
-    m_iMainCount = m_mainPart->m_iFrameCount;
-}
+//void PartManager::nextFrame(int iCount)
+//{
+//    for (int i = 0; i < m_vParts.size(); i++) {
+//        m_vParts.at(i)->nextFrame(iCount);
+//    }
+//    
+//    m_iMainIndex = m_mainPart->m_iCurIndex;
+//    m_iMainCount = m_mainPart->m_iFrameCount;
+//}
+//
+//void PartManager::preFrame(int iCount)
+//{
+//    for (int i = 0; i < m_vParts.size(); i++) {
+//        m_vParts.at(i)->preFrame(iCount);
+//    }
+//    
+//    m_iMainIndex = m_mainPart->m_iCurIndex;
+//    m_iMainCount = m_mainPart->m_iFrameCount;
+//}
 
 int PartManager::getCurOperationIndex()
 {
@@ -107,51 +107,51 @@ void PartManager::setCurOperationIndex(int idx)
         xNotify->postNotification(UPDATE_MOTION);
     }
 }
-
-CCPoint PartManager::getCurPosition()
-{
-    return m_vParts.at(m_iCurOperationIndex)->getPosition();
-}
-
-void PartManager::setCurPosition(CCPoint &point)
-{
-    m_vParts.at(m_iCurOperationIndex)->setPosition(point);
-}
-
-float PartManager::getCurRotate()
-{
-    return m_vParts.at(m_iCurOperationIndex)->getRotate();
-}
-
-const CCPoint& PartManager::getCurAnchorPoint()
-{
-    return m_vParts.at(m_iCurOperationIndex)->getAnchorPoint();
-}
-
-float PartManager::getCurScale()
-{
-    return m_vParts.at(m_iCurOperationIndex)->getScale();
-}
-
-void PartManager::setCurRotate(float r)
-{
-    m_vParts.at(m_iCurOperationIndex)->setRotate(r);
-}
-
-void PartManager::setCurAnchorPoint(const CCPoint& point)
-{
-    m_vParts.at(m_iCurOperationIndex)->setAnchorPoint(point);
-}
-
-void PartManager::setCurScale(float s)
-{
-    m_vParts.at(m_iCurOperationIndex)->setScale(s);
-}
-
-void PartManager::setDragAndDropOffset(CCPoint &point)
-{
-    m_vParts.at(m_iCurOperationIndex)->setDragAndDropOffset(point);
-}
+//
+//CCPoint PartManager::getCurPosition()
+//{
+//    return m_vParts.at(m_iCurOperationIndex)->getPosition();
+//}
+//
+//void PartManager::setCurPosition(CCPoint &point)
+//{
+//    m_vParts.at(m_iCurOperationIndex)->setPosition(point);
+//}
+//
+//float PartManager::getCurRotate()
+//{
+//    return m_vParts.at(m_iCurOperationIndex)->getRotate();
+//}
+//
+//const CCPoint& PartManager::getCurAnchorPoint()
+//{
+//    return m_vParts.at(m_iCurOperationIndex)->getAnchorPoint();
+//}
+//
+//float PartManager::getCurScale()
+//{
+//    return m_vParts.at(m_iCurOperationIndex)->getScale();
+//}
+//
+//void PartManager::setCurRotate(float r)
+//{
+//    m_vParts.at(m_iCurOperationIndex)->setRotate(r);
+//}
+//
+//void PartManager::setCurAnchorPoint(const CCPoint& point)
+//{
+//    m_vParts.at(m_iCurOperationIndex)->setAnchorPoint(point);
+//}
+//
+//void PartManager::setCurScale(float s)
+//{
+//    m_vParts.at(m_iCurOperationIndex)->setScale(s);
+//}
+//
+//void PartManager::setDragAndDropOffset(CCPoint &point)
+//{
+//    m_vParts.at(m_iCurOperationIndex)->setDragAndDropOffset(point);
+//}
 
 void PartManager::preview()
 {
@@ -192,7 +192,7 @@ void PartManager::update(float delta)
 
 void PartManager::save()
 {
-    if(getPartsCount() == 0)
+    //if(getPartsCount() == 0)
     {
         return;
     }
@@ -213,25 +213,28 @@ void PartManager::save()
 }
 
 
-int PartManager::getMainPartMotionCount()
-{
-    if (m_mainPart != NULL) {
-        return m_mainPart->getMotionCount();
-    }
-    
-    return 0;
-}
+//int PartManager::getMainPartMotionCount()
+//{
+//    if (m_mainPart != NULL) {
+//        return m_mainPart->getMotionCount();
+//    }
+//    
+//    return 0;
+//}
 
-void PartManager::setAtkDelay(float var)
-{
-    m_mainPart->setAtkDelay(var);
-}
+//void PartManager::setAtkDelay(float var)
+//{
+//    m_mainPart->setAtkDelay(var);
+//}
 
-float PartManager::getAtkDelay()
-{
-    if (m_mainPart == NULL) {
-        return 0.f;
-    }
-    
-    return m_mainPart->getAtkDelay();
-}
+//float PartManager::getAtkDelay()
+//{
+//    if (m_mainPart == NULL) {
+//        return 0.f;
+//    }
+//
+//    return m_mainPart->getAtkDelay();
+//}
+
+
+

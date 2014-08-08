@@ -37,6 +37,8 @@ public:
     void nextFrame(int iCount);
     void preFrame(int iCount);
     
+    void setDragAndDropOffset(CCPoint &point);
+    
     Motion *m_curMotion = NULL;
     
     int         m_iCurIndex = -1;           //当前帧数, 只有在当前帧数大于最后1个Motion的帧数的时候, 才能进行AddIndex. 删除也只能删除最后一个Motion

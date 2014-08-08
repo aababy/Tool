@@ -296,30 +296,30 @@ void MainScene::updateButtonForMotion(CCObject *sender)
 
 void MainScene::updateProperty(CCObject *sender)
 {
-    if (xPM->getPartsCount() == 0) {
+    if (xCurAtk == NULL || xCurAtk->getPartsCount() == 0) {
         return;
     }
     
     char buffer[20];
-    const CCPoint po = xPM->getCurPosition();
+    const CCPoint po = xCurAtk->getCurPosition();
     sprintf(buffer, "%.1f", po.x);
     m_ebPosition[0]->setText(string(buffer));
     sprintf(buffer, "%.1f", po.y);
     m_ebPosition[1]->setText(string(buffer));
     
-    const CCPoint point = xPM->getCurAnchorPoint();    
+    const CCPoint point = xCurAtk->getCurAnchorPoint();
     sprintf(buffer, "%.1f", point.x);
     m_ebAnchor[0]->setText(string(buffer));
     sprintf(buffer, "%.1f", point.y);
     m_ebAnchor[1]->setText(string(buffer));
     
-    sprintf(buffer, "%.1f", xPM->getCurRotate());
+    sprintf(buffer, "%.1f", xCurAtk->getCurRotate());
     m_ebRotate->setText(string(buffer));
     
-    sprintf(buffer, "%.1f", xPM->getCurScale());
+    sprintf(buffer, "%.1f", xCurAtk->getCurScale());
     m_ebScale->setText(string(buffer));
     
-    sprintf(buffer, "%.2f", xPM->getAtkDelay());
+    sprintf(buffer, "%.2f", xCurAtk->getAtkDelay());
     m_ebDelay->setText(string(buffer));
 }
 
@@ -333,6 +333,10 @@ void MainScene::editBoxEditingDidEnd(CCEditBox* editBox)
 
 void MainScene::editBoxTextChanged(CCEditBox* editBox, const std::string& text)
 {
+    if (xCurAtk == NULL) {
+        return;
+    }
+    
     //只有changed有用
     if (text.length() > 2) {
         double temp = 0;
@@ -346,19 +350,19 @@ void MainScene::editBoxTextChanged(CCEditBox* editBox, const std::string& text)
         po.y = atof(m_ebPosition[1]->getText());
         
         if (editBox == m_ebAnchor[0]->m_edit) {
-            xPM->setCurAnchorPoint(point);
+            xCurAtk->setCurAnchorPoint(point);
         } else if(editBox == m_ebAnchor[1]->m_edit) {
-            xPM->setCurAnchorPoint(point);
+            xCurAtk->setCurAnchorPoint(point);
         } else if(editBox == m_ebPosition[0]->m_edit) {
-            xPM->setCurPosition(po);
+            xCurAtk->setCurPosition(po);
         } else if(editBox == m_ebPosition[1]->m_edit) {
-            xPM->setCurPosition(po);
+            xCurAtk->setCurPosition(po);
         } else if(editBox == m_ebRotate->m_edit) {
             temp = atof(text.c_str());
-            xPM->setCurRotate(temp);
+            xCurAtk->setCurRotate(temp);
         } else if(editBox == m_ebScale->m_edit) {
             temp = atof(text.c_str());
-            xPM->setCurScale(temp);
+            xCurAtk->setCurScale(temp);
         }
     }
 }
@@ -393,7 +397,7 @@ void MainScene::ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent)
 {
     if (m_bDragAndDrop) {
         CCPoint point = ccpSub(pTouch->getLocation(), m_oldPoint);
-        xPM->setDragAndDropOffset(point);
+        xSkill->setDragAndDropOffset(point);
         m_oldPoint = pTouch->getLocation();
     }
 }
@@ -402,7 +406,7 @@ void MainScene::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)
 {
     if (m_bDragAndDrop) {
         CCPoint point = ccpSub(m_oldPoint, pTouch->getLocation());
-        xPM->setDragAndDropOffset(point);
+        xSkill->setDragAndDropOffset(point);
         updateProperty(NULL);
     }
     
@@ -412,7 +416,7 @@ void MainScene::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)
 
 bool MainScene::checkIfStartToDrag(CCPoint point)
 {
-    if (xPM->getPartsCount() == 0 || m_bInOtherLayer) {
+    if (xCurAtk == NULL || xCurAtk->getPartsCount() == 0 || m_bInOtherLayer) {
         return false;
     }
     
