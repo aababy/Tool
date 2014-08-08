@@ -16,10 +16,11 @@
 
 class Motion;
 
-class Skill {
+class Skill : public CCNode{
     
 public:
     static Skill* getInstance(void);
+    ~Skill();
     
     void init(CCPoint location, CCPoint preview, CCNode *parent);
     void importPart(const char *pFileName);
@@ -28,7 +29,7 @@ public:
     void addMotion();
     string & getMotionName(int i);
     int getCurAtkIndex();
-    void setCurAtkIndex(int i, bool bChangeAllIndex);
+    void setCurAtkIndex(int i, setOperateType type);
     void setAtkDelay(float var);
     float getAtkDelay();
     int getFrameCount();
@@ -42,6 +43,9 @@ public:
     Motion *m_curMotion = NULL;
     
     int         m_iCurIndex = -1;           //当前帧数, 只有在当前帧数大于最后1个Motion的帧数的时候, 才能进行AddIndex. 删除也只能删除最后一个Motion
+    
+    void preview();
+    void update(float delta);
     
 private:
     void setCurIndex(int idx);
@@ -59,6 +63,8 @@ private:
     string      sPartName;
     
     CCSprite    *m_sprite;                  //占位sprite
+    bool        m_bInPreview = false;
+    int         m_iPreviewIndex = 0;
 };
 
 

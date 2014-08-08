@@ -32,4 +32,11 @@ struct FramesName
     int     iNumber;
 };
 
+enum setOperateType
+{
+    OT_NEW,
+    OT_SELECT,
+    OT_BROWSE,
+};
+
 #endif

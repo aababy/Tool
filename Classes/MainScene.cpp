@@ -169,7 +169,7 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
             break;
         case BUTTON_PREVIEW:
         {
-            xPM->preview();
+            xSkill->preview();
         }
             break;
         case BUTTON_STOP:
@@ -211,7 +211,7 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
             }
             else if(iTag >= LIST_MOTION)                                //Motion, 更改Motion会同样更新特效列表
             {
-                xSkill->setCurAtkIndex(iTag - LIST_MOTION, true);
+                xSkill->setCurAtkIndex(iTag - LIST_MOTION, OT_SELECT);
             }
         }
             break;

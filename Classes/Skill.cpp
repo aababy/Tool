@@ -20,6 +20,11 @@ Skill* Skill::getInstance(void)
 	return pInstance;
 }
 
+Skill::~Skill()
+{
+    CCDirector::sharedDirector()->getScheduler()->unscheduleUpdateForTarget(this);
+}
+
 void Skill::importPart(const char *pFileName)
 {
     //先判断, 是否是第一次导入Part, Part作为主体
@@ -61,7 +66,9 @@ void Skill::init(CCPoint location, CCPoint preview, CCNode *parent)
 {
     m_origin = location;
     m_showForPreview = preview;
-    m_parent = parent;    
+    m_parent = parent;
+    
+    CCDirector::sharedDirector()->getScheduler()->scheduleUpdateForTarget(this, 0, false);
 }
 
 int Skill::getMotionCount()
@@ -87,10 +94,10 @@ void Skill::addMotion()
         
         m_iLastIndex = m_iCurIndex + 1;
         
-        setCurAtkIndex(getMotionCount() - 1, true);
+        setCurAtkIndex(getMotionCount() - 1, OT_NEW);
         
-        //增加atk后, 会回到新的atk的第一帧,
-        setCurIndex(m_curMotion->getLastFrameIndex());
+        //增加atk后, 会回到新的atk的第一帧, (现在不这样做了)
+        //setCurIndex(m_curMotion->getLastFrameIndex());
     }
 }
 
@@ -106,7 +113,7 @@ int Skill::getCurAtkIndex()
 
 //改变当前的Atk有两种情况, 1是用户选择或者新建atk, 需要改变当前全局帧, 2是用户浏览(上一帧,下一帧), 不改变当前全局帧 (已经改变了)
 //bChangeAllIndex
-void Skill::setCurAtkIndex(int i, bool bChangeAllIndex)
+void Skill::setCurAtkIndex(int i, setOperateType type)
 {
     if (m_iCurAtk != i) {
         m_iCurAtk = i;
@@ -122,7 +129,8 @@ void Skill::setCurAtkIndex(int i, bool bChangeAllIndex)
             m_curMotion = m_vMotion.at(m_iCurAtk);
             m_curMotion->setEnabled(true);
             
-            if (bChangeAllIndex == true) {
+            //true 需要改变
+            if (type == OT_SELECT) {
                 setCurIndex(m_curMotion->getLastFrameIndex());
             }
         }
@@ -132,12 +140,15 @@ void Skill::setCurAtkIndex(int i, bool bChangeAllIndex)
         xNotify->postNotification(UPDATE_EFFECT_LIST);
     }
     
-    if (bChangeAllIndex == false) {
+    if (type == OT_BROWSE || type == OT_NEW) {
         //通知相应地Motion, 改Frame
         
         if (m_curMotion != NULL) {
             m_curMotion->setFrame(m_iCurIndex);
-            m_sprite->setVisible(false);
+            
+            if (type == OT_BROWSE) {
+                m_sprite->setVisible(false);
+            }
         }
         else
         {
@@ -205,17 +216,51 @@ void Skill::checkAllIndex()
     }
     
     if (i != getMotionCount()) {
-        setCurAtkIndex(i, false);
+        setCurAtkIndex(i, OT_BROWSE);
     }
     else
     {
         m_curMotion = NULL;
-        setCurAtkIndex(-1, false);
+        setCurAtkIndex(-1, OT_BROWSE);
     }
 }
 
 void Skill::setDragAndDropOffset(CCPoint &point)
 {
     m_curMotion->setDragAndDropOffset(point);
+}
+
+void Skill::preview()
+{
+    //通知第1个Motion进行Preview, 仅仅是第1个.
+    if (! m_vMotion.empty()) {
+        m_bInPreview = true;
+        m_iPreviewIndex = 0;
+        m_vMotion.at(0)->preview();
+    }
+}
+
+void Skill::update(float delta)
+{
+    if (m_bInPreview) {
+        //update all
+        for (int i = 0; i < getMotionCount(); i++) {
+            m_vMotion.at(i)->update(delta);
+        }
+        
+        //检查是否上一个Motion preview 完成, 通知下一个.
+        if (m_vMotion.at(m_iPreviewIndex)->isInPreview() == false) {
+            m_iPreviewIndex++;
+            
+            if (m_iPreviewIndex < getMotionCount()) {
+                m_vMotion.at(m_iPreviewIndex)->preview();
+            }
+            else
+            {
+                //全部结束了.
+                m_bInPreview = false;
+            }
+        }
+    }
 }
 

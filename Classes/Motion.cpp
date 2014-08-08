@@ -187,4 +187,48 @@ float Motion::getAtkDelay()
     return m_mainPart->getAtkDelay();
 }
 
+void Motion::preview()
+{
+    m_bInPreview = true;
+    
+    for (int i = 0; i < m_vParts.size(); i++) {
+        m_vParts.at(i)->preview();
+    }
+}
+
+void Motion::clear()
+{
+    for (int i = 0; i < m_vParts.size(); i++) {
+        delete m_vParts.at(i);
+    }
+    
+    m_vParts.clear();
+    setCurOperationIndex(-1);
+}
+
+void Motion::update(float delta)
+{
+    if (m_bInPreview) {
+        int iCurIndex = m_mainPart->getCurFrameIndex();
+        
+        for (int i = 1; i < m_vParts.size(); i++) {
+            m_vParts.at(i)->checkIfNeedToStart(iCurIndex);
+        }
+        
+        //如果主体没有运行了, 就不必再启动其它的Part(但其它的Part(已经运行了的)可以继续运行下去)
+        if(m_mainPart->m_bRunning == false)
+        {
+            m_bInPreview = false;
+        }
+    }
+}
+
+bool Motion::isInPreview()
+{
+    return m_bInPreview;
+}
+
+
+
+
 

@@ -265,9 +265,12 @@ void Part::actionDone()
     m_bOnWait = false;
     
     //非主体在运行完后自动消失
-    if (!m_bMain) {
-        m_preview->setVisible(false);
-    }
+//    if (!m_bMain) {
+//        m_preview->setVisible(false);
+//    }
+    
+    //主体也消失, 仅仅在对于是单独预览时.
+    m_preview->setVisible(false);
 }
 
 void Part::setStartFrameIndex(int iStart)

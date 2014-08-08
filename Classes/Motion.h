@@ -43,6 +43,11 @@ public:
     void setAtkDelay(float var);
     float getAtkDelay();
     
+    void preview();
+    void clear();
+    void update(float delta);
+    bool isInPreview();
+    
 private:
     int iStart = 0;
     int iEnd = 0;
@@ -63,10 +68,11 @@ private:
     
     Part*       m_mainPart;
     
-    int         m_iMainIndex = 0;
+    int         m_iMainIndex = 0;           //这个是相对的?
     int         m_iCurOperationIndex = 0;
     
     bool        m_bEnabled;
+    bool        m_bInPreview = false;
 };
 
 
