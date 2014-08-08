@@ -36,8 +36,8 @@ public:
     static CCScene* scene();
     
     void touchEvent(CCObject *pSender, TouchEventType type);
-    void updateList();
-    void updateMotionList();
+	void updateList(CCObject *sender);
+	void updateMotionList(CCObject *sender);
     void updateProperty(CCObject *sender);
     void dragAndDrop(CCObject *pSender, TouchEventType type);
     void importFinish(string &str);

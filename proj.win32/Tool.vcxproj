@@ -132,12 +132,27 @@ xcopy /Y /Q "$(ProjectDir)..\..\..\external\libwebsockets\win32\lib\*.*" "$(OutD
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
-    <ClCompile Include="..\Classes\HelloWorldScene.cpp" />
+    <ClCompile Include="..\Classes\FolderBrowser.cpp" />
+    <ClCompile Include="..\Classes\Helper.cpp" />
+    <ClCompile Include="..\Classes\InputBox.cpp" />
+    <ClCompile Include="..\Classes\MainScene.cpp" />
+    <ClCompile Include="..\Classes\Motion.cpp" />
+    <ClCompile Include="..\Classes\Part.cpp" />
+    <ClCompile Include="..\Classes\Skill.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
-    <ClInclude Include="..\Classes\HelloWorldScene.h" />
+    <ClInclude Include="..\Classes\AppMacros.h" />
+    <ClInclude Include="..\Classes\FolderBrowser.h" />
+    <ClInclude Include="..\Classes\Helper.h" />
+    <ClInclude Include="..\Classes\IncludeForCpp.h" />
+    <ClInclude Include="..\Classes\IncludeForHeader.h" />
+    <ClInclude Include="..\Classes\InputBox.h" />
+    <ClInclude Include="..\Classes\MainScene.h" />
+    <ClInclude Include="..\Classes\Motion.h" />
+    <ClInclude Include="..\Classes\Part.h" />
+    <ClInclude Include="..\Classes\Skill.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>
