@@ -25,12 +25,14 @@ public:
     int getCurOperationIndex();
     void setEnabled(bool bEnabled);
     bool isInMotion(int idx);
+    void setFrame(int iFrame);
+    int getLastFrameIndex();
     
     string sMotionName;
     
 private:
-    int iStart;
-    int iEnd;
+    int iStart = 0;
+    int iEnd = 0;
     
     string sResName;
     
@@ -48,7 +50,7 @@ private:
     
     Part*       m_mainPart;
     
-    int         m_iMainIndex;
+    int         m_iMainIndex = 0;
     int         m_iCurOperationIndex = 0;
     
     bool        m_bEnabled;

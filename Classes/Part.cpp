@@ -23,6 +23,38 @@
 //    }
 //	return pRet;
 //}
+Part::Part(const char *pFileName, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, vector<string> vFrameName)
+{
+    for (int i = 0; i < vFrameName.size(); i++) {
+        FramesName frames;
+        frames.iNumber = i;
+        frames.sFrameName = vFrameName.at(i);
+        
+        m_vFrameName.push_back(frames);
+    }
+    
+    m_iFrameCount = m_vFrameName.size();
+    
+    //显示帧
+    m_sprite = CCSprite::createWithSpriteFrameName(getCurFrameName());
+    m_sprite->setPosition(show);
+    m_sprite->retain(); //retain 备用
+    
+    parent->addChild(m_sprite);
+    
+    
+    m_parent = parent;
+    m_origin = origin;
+    m_showForPreview = showForPreview;
+    
+    m_preview = CCSprite::create();
+    m_preview->setVisible(false);
+    m_preview->retain();    //retain 备用
+    
+    m_parent->addChild(m_preview);
+
+}
+
 
 
 Part::Part(const char *pFileName, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent)
@@ -121,6 +153,20 @@ void Part::nextFrame(int iCount)
 void Part::preFrame(int iCount)
 {
     m_sprite->initWithSpriteFrameName(getPreFrameName());
+}
+
+void Part::setFrame(int iIndexStartFromMain)
+{
+    if (iStartFrameIndex <= iIndexStartFromMain) {
+        m_iCurIndex = iIndexStartFromMain - iStartFrameIndex;
+        
+        m_sprite->initWithSpriteFrameName(getCurFrameName());
+        m_sprite->setVisible(true);
+    }
+    else
+    {
+        m_sprite->setVisible(false);
+    }
 }
 
 float Part::getRotate()

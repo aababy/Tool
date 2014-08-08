@@ -28,11 +28,11 @@ public:
     void addMotion();
     string & getMotionName(int i);
     int getCurAtkIndex();
-    void setCurAtkIndex(int i);
+    void setCurAtkIndex(int i, bool bChangeAllIndex);
     void setAtkDelay(float var);
     float getAtkDelay();
     int getFrameCount();
-    void checkFrameForAtkIndex();
+    void checkAllIndex();
     
     void nextFrame(int iCount);
     void preFrame(int iCount);
@@ -42,20 +42,21 @@ public:
     int         m_iCurIndex = -1;           //当前帧数, 只有在当前帧数大于最后1个Motion的帧数的时候, 才能进行AddIndex. 删除也只能删除最后一个Motion
     
 private:
+    void setCurIndex(int idx);
+    
     vector<Motion *>    m_vMotion;          //只有主体有这个字段.
     vector<FramesName>  m_vFrameName;
     int         m_iFrameCount = 0;          //这个来判断是否导入了主体
-    
     int         m_iLastIndex = 0;
     int         m_iCurAtk = -1;
-    int         m_iCurMotion;
-
     
     CCPoint     m_origin;
     CCPoint     m_showForPreview;
     CCNode      *m_parent;
     
     string      sPartName;
+    
+    CCSprite    *m_sprite;                  //占位sprite
 };
 
 

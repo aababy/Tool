@@ -115,6 +115,8 @@ bool MainScene::init(CCScene* pScene)
         xNotify->addObserver(this, callfuncO_selector(MainScene::updateButtonForMotion), UPDATE_MOTION, NULL);
         xNotify->addObserver(this, callfuncO_selector(MainScene::updateList), UPDATE_EFFECT_LIST, NULL);
         xNotify->addObserver(this, callfuncO_selector(MainScene::updateMotionList), UPDATE_MOTION_LIST, NULL);
+        xNotify->addObserver(this, callfuncO_selector(MainScene::setFrameCount), UPDATE_ALL_INDEX, NULL);
+
         updateButtonForMotion(NULL);
         
         setTouchEnabled(true);
@@ -158,13 +160,11 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
         case BUTTON_NEXT:
         {
             xSkill->nextFrame(1);
-            setFrameCount();
         }
             break;
         case BUTTON_PRV:
         {
             xSkill->preFrame(1);
-            setFrameCount();
         }
             break;
         case BUTTON_PREVIEW:
@@ -185,13 +185,11 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
         case BUTTON_NEXT_5:
         {
             xSkill->nextFrame(5);
-            setFrameCount();
         }
             break;
         case BUTTON_PRV_5:
         {
             xSkill->preFrame(5);
-            setFrameCount();            
         }
             break;
         case BUTTON_ADD_MOTION:
@@ -213,14 +211,14 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
             }
             else if(iTag >= LIST_MOTION)                                //Motion, 更改Motion会同样更新特效列表
             {
-                xSkill->setCurAtkIndex(iTag - LIST_MOTION);
+                xSkill->setCurAtkIndex(iTag - LIST_MOTION, true);
             }
         }
             break;
     }
 }
 
-void MainScene::setFrameCount()
+void MainScene::setFrameCount(CCObject *sender)
 {
     if (xSkill->getFrameCount() == 0) {
         return;
@@ -434,7 +432,7 @@ bool MainScene::checkIfStartToDrag(CCPoint point)
 void MainScene::importFinish(string &str)
 {
     xSkill->importPart(str.c_str());
-    setFrameCount();
+    setFrameCount(NULL);
     updateList();
     updateButtonForMotion(NULL);
 }

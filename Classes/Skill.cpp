@@ -44,6 +44,11 @@ void Skill::importPart(const char *pFileName)
         m_iFrameCount = m_vFrameName.size();
         
         sPartName = pFileName;
+        
+        m_iCurIndex = 0;
+        m_sprite = CCSprite::createWithSpriteFrameName(getCurFrameName());
+        m_sprite->setPosition(m_origin);
+        m_parent->addChild(m_sprite);
     }
     else
     {
@@ -82,7 +87,10 @@ void Skill::addMotion()
         
         m_iLastIndex = m_iCurIndex + 1;
         
-        setCurAtkIndex(getMotionCount() - 1);
+        setCurAtkIndex(getMotionCount() - 1, true);
+        
+        //增加atk后, 会回到新的atk的第一帧,
+        setCurIndex(m_curMotion->getLastFrameIndex());
     }
 }
 
@@ -96,35 +104,66 @@ int Skill::getCurAtkIndex()
     return m_iCurAtk;
 }
 
-void Skill::setCurAtkIndex(int i)
+//改变当前的Atk有两种情况, 1是用户选择或者新建atk, 需要改变当前全局帧, 2是用户浏览(上一帧,下一帧), 不改变当前全局帧 (已经改变了)
+//bChangeAllIndex
+void Skill::setCurAtkIndex(int i, bool bChangeAllIndex)
 {
-    m_iCurAtk = i;
+    if (m_iCurAtk != i) {
+        m_iCurAtk = i;
+        
+        //转换当前的Motion是个非常重要的函数, 需要将所有非当前Motion设置为不可见, 将当前Motion设置为可见.
+        for (int i = 0; i < getMotionCount(); i++) {
+            if (i != m_iCurAtk) {
+                m_vMotion.at(i)->setEnabled(false);
+            }
+        }
+        
+        if (m_iCurAtk != -1) {
+            m_curMotion = m_vMotion.at(m_iCurAtk);
+            m_curMotion->setEnabled(true);
+            
+            if (bChangeAllIndex == true) {
+                setCurIndex(m_curMotion->getLastFrameIndex());
+            }
+        }
+        
+        //这个post几乎是同步的, 不是异步的, 所以写最后
+        xNotify->postNotification(UPDATE_MOTION_LIST);
+        xNotify->postNotification(UPDATE_EFFECT_LIST);
+    }
     
-    //转换当前的Motion是个非常重要的函数, 需要将所有非当前Motion设置为不可见, 将当前Motion设置为可见.
-    for (int i = 0; i < getMotionCount(); i++) {
-        if (i != m_iCurAtk) {
-            m_vMotion.at(i)->setEnabled(false);
+    if (bChangeAllIndex == false) {
+        //通知相应地Motion, 改Frame
+        
+        if (m_curMotion != NULL) {
+            m_curMotion->setFrame(m_iCurIndex);
+            m_sprite->setVisible(false);
+        }
+        else
+        {
+            m_sprite->initWithSpriteFrameName(getCurFrameName());
+            m_sprite->setVisible(true);
         }
     }
-    
-    if (m_iCurAtk != -1) {
-        m_curMotion = m_vMotion.at(m_iCurAtk);
-        m_curMotion->setEnabled(true);
+    else
+    {
+        m_sprite->setVisible(false);
     }
-    
-    //这个post几乎是同步的, 不是异步的, 所以写最后
-    xNotify->postNotification(UPDATE_MOTION_LIST);
-    xNotify->postNotification(UPDATE_EFFECT_LIST);
+}
+
+const char * Skill::getCurFrameName()
+{
+    return m_vFrameName.at(m_iCurIndex).sFrameName.c_str();
 }
 
 void Skill::setAtkDelay(float var)
 {
-    m_vMotion.at(m_iCurMotion)->setDelay(var);
+    m_vMotion.at(m_iCurAtk)->setDelay(var);
 }
 
 float Skill::getAtkDelay()
 {
-    return m_vMotion.at(m_iCurMotion)->getDelay();
+    return m_vMotion.at(m_iCurAtk)->getDelay();
 }
 
 int Skill::getFrameCount()
@@ -137,8 +176,8 @@ void Skill::nextFrame(int iCount)
     for (int i = 0; i < iCount; i++) {
         cycleNum(true, m_iFrameCount, &m_iCurIndex);
     }
-    
-    checkFrameForAtkIndex();
+    setCurIndex(m_iCurIndex);       //仅仅方便更新UI
+    checkAllIndex();
 }
 
 void Skill::preFrame(int iCount)
@@ -146,11 +185,17 @@ void Skill::preFrame(int iCount)
     for (int i = 0; i < iCount; i++) {
         cycleNum(false, m_iFrameCount, &m_iCurIndex);
     }
-    
-    checkFrameForAtkIndex();
+    setCurIndex(m_iCurIndex);       //仅仅方便更新UI
+    checkAllIndex();
 }
 
-void Skill::checkFrameForAtkIndex()
+void Skill::setCurIndex(int idx)
+{
+    m_iCurIndex = idx;
+    xNotify->postNotification(UPDATE_ALL_INDEX);
+}
+
+void Skill::checkAllIndex()
 {
     int i;
     for (i = 0; i < getMotionCount(); i++) {
@@ -160,11 +205,12 @@ void Skill::checkFrameForAtkIndex()
     }
     
     if (i != getMotionCount()) {
-        setCurAtkIndex(i);
+        setCurAtkIndex(i, false);
     }
     else
     {
-        setCurAtkIndex(-1);
+        m_curMotion = NULL;
+        setCurAtkIndex(-1, false);
     }
 }
 

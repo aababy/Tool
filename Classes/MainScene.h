@@ -59,12 +59,11 @@ public:
     void registerWithTouchDispatcher();
     void switchToMain();
     void makeAFocusOfList();
-    void makeAFocusOfListForMotion();
-    
+    void makeAFocusOfListForMotion();    
     void updateButtonForMotion(CCObject *sender);
     
 protected:
-    void setFrameCount();
+    void setFrameCount(CCObject *sender);
     ~MainScene();
     void switchToBroswer();
 

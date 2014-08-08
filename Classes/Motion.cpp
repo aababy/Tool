@@ -33,7 +33,7 @@ Motion::Motion(string sName, const char *pFileName, vector<string> vFrameNameOrd
 void Motion::importPart(const char *pFileName)
 {
     if (m_vParts.empty()) {
-        m_mainPart = new Part(pFileName, location, location, m_preview, m_iFrameBG);
+        m_mainPart = new Part(pFileName, location, location, m_preview, m_iFrameBG, m_vFrameNameOrdered);
         m_mainPart->setMain();
         m_vParts.push_back(m_mainPart);
         
@@ -111,3 +111,24 @@ bool Motion::isInMotion(int idx)
         return false;
     }
 }
+
+void Motion::setFrame(int iFrame)
+{
+    for (int i = 0; i < m_vParts.size(); i++) {
+        //这个index时个相对于主part的index
+        m_vParts.at(i)->setFrame(iFrame - iStart);
+    }
+    
+    m_iMainIndex = m_mainPart->m_iCurIndex;
+}
+
+//获取离开这个Motion前, 最后停留在Motion内的Index
+int Motion::getLastFrameIndex()
+{
+    return iStart + m_iMainIndex;
+}
+
+
+
+
+

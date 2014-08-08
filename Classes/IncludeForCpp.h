@@ -35,5 +35,6 @@ using namespace cocostudio::timeline;
 #define UPDATE_MOTION                   "UPDATE_MOTION"
 #define UPDATE_EFFECT_LIST              "UPDATE_EFFECT_LIST"
 #define UPDATE_MOTION_LIST              "UPDATE_MOTION_LIST"
+#define UPDATE_ALL_INDEX                "UPDATE_ALL_INDEX"
 
 #endif
