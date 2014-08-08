@@ -14,7 +14,7 @@
 class Motion {
     
 public:
-    Motion(string sName, const char *pFileName, vector<string> vFrameNameOrdered, int iStart, int iEnd, CCPoint &origin, CCPoint &showForPreview, CCNode *parent);
+    Motion(string sName, const char *pFileName, vector<string> vFrameNameOrdered, int iStart, int iEnd, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, int iMotionAccIndex);
     void importPart(const char *pFileName);
     int getPartsCount();
     void setCurOperationIndex(int idx);

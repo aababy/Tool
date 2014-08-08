@@ -72,6 +72,8 @@ private:
     int         m_iPreviewIndex = 0;
     
     CCDictionary *m_dictionary = NULL;
+    
+    int         m_iMotionAccIndex = 1;            //删除的时候需要减少这个值
 };
 
 

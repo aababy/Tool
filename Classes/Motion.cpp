@@ -9,7 +9,7 @@
 #include "Motion.h"
 
 
-Motion::Motion(string sName, const char *pFileName, vector<string> vFrameNameOrdered, int iStart, int iEnd, CCPoint &origin, CCPoint &showForPreview, CCNode *parent)
+Motion::Motion(string sName, const char *pFileName, vector<string> vFrameNameOrdered, int iStart, int iEnd, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, int iMotionAccIndex)
 {
     m_vFrameNameOrdered = vFrameNameOrdered;
     this->iStart = iStart;
@@ -20,6 +20,7 @@ Motion::Motion(string sName, const char *pFileName, vector<string> vFrameNameOrd
     m_iFrameBG = parent;
     location = origin;
     m_preview = showForPreview;
+    m_iAccIndex = iMotionAccIndex * 100 + 1;
     
     //MotionName 加入Start和End
     char buffer[100];
