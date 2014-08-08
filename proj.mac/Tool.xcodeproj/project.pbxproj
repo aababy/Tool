@@ -263,7 +263,6 @@
 		CA47514B198B638200D8C21E /* InputBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA475149198B638200D8C21E /* InputBox.cpp */; };
 		CA7B668F1988E07400E0F419 /* Part.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA7B668D1988E07400E0F419 /* Part.cpp */; };
 		CA9F9265198A194E002D51E4 /* Helper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA9F9263198A194E002D51E4 /* Helper.cpp */; };
-		CA9F926D198A28A2002D51E4 /* PartManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA9F926B198A28A2002D51E4 /* PartManager.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -808,8 +807,6 @@
 		CA7B66901988E0C200E0F419 /* IncludeForHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IncludeForHeader.h; path = ../Classes/IncludeForHeader.h; sourceTree = "<group>"; };
 		CA9F9263198A194E002D51E4 /* Helper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Helper.cpp; path = ../Classes/Helper.cpp; sourceTree = "<group>"; };
 		CA9F9264198A194E002D51E4 /* Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Helper.h; path = ../Classes/Helper.h; sourceTree = "<group>"; };
-		CA9F926B198A28A2002D51E4 /* PartManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PartManager.cpp; sourceTree = "<group>"; };
-		CA9F926C198A28A2002D51E4 /* PartManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PartManager.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -848,8 +845,6 @@
 				CA7B668D1988E07400E0F419 /* Part.cpp */,
 				CA7B668E1988E07400E0F419 /* Part.h */,
 				CA7B66901988E0C200E0F419 /* IncludeForHeader.h */,
-				CA9F926B198A28A2002D51E4 /* PartManager.cpp */,
-				CA9F926C198A28A2002D51E4 /* PartManager.h */,
 				CA475149198B638200D8C21E /* InputBox.cpp */,
 				CA47514A198B638200D8C21E /* InputBox.h */,
 				CA0D1EC6198F231B00EEA422 /* FolderBrowser.cpp */,
@@ -2100,7 +2095,6 @@
 				15C157681683159E00D239F2 /* b2MouseJoint.cpp in Sources */,
 				15C157691683159E00D239F2 /* b2PrismaticJoint.cpp in Sources */,
 				37C62CDE18E157C300D16FC4 /* CCColliderDetector.cpp in Sources */,
-				CA9F926D198A28A2002D51E4 /* PartManager.cpp in Sources */,
 				37C62CE118E157C300D16FC4 /* CCDataReaderHelper.cpp in Sources */,
 				37C62CF318E157C300D16FC4 /* UIPageView.cpp in Sources */,
 				37C62CE018E157C300D16FC4 /* CCArmatureDefine.cpp in Sources */,

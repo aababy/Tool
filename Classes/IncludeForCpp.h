@@ -18,7 +18,6 @@
 #include "MainScene.h"
 #include "Part.h"
 #include "Helper.h"
-#include "PartManager.h"
 #include "InputBox.h"
 #include "FolderBrowser.h"
 #include "Motion.h"

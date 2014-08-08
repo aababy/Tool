@@ -46,6 +46,8 @@ public:
     
     void preview();
     void update(float delta);
+    void clear();
+    void save();
     
 private:
     void setCurIndex(int idx);

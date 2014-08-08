@@ -22,6 +22,7 @@ Skill* Skill::getInstance(void)
 
 Skill::~Skill()
 {
+    clear();
     CCDirector::sharedDirector()->getScheduler()->unscheduleUpdateForTarget(this);
 }
 
@@ -264,3 +265,37 @@ void Skill::update(float delta)
     }
 }
 
+void Skill::clear()
+{
+    for (int i = 0; i < getMotionCount(); i++) {
+        m_vMotion.at(i)->clear();
+    }
+    
+    m_vMotion.clear();
+    m_iCurIndex = -1;
+    m_curMotion = NULL;
+    m_iFrameCount = 0;
+    m_iCurAtk = 0;
+}
+
+void Skill::save()
+{
+    if(getMotionCount() == 0)
+    {
+        return;
+    }
+    
+    CCDictionary *dictionary;// = m_mainPart->getDictionary();
+    
+    string str = xData->getStringForKey(SAVE_PATH);
+    
+    if (!str.empty() && str.compare("") != 0) {
+        if (str.rfind('/') == str.length() - 1) {
+            str = str.substr(0, str.length() - 1);
+        }
+        
+        char stringBuffer[250];
+        sprintf(stringBuffer, "%s/%s.plist", str.c_str(), "abc");
+        dictionary->writeToFile(stringBuffer);
+    }
+}

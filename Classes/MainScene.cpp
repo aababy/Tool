@@ -153,7 +153,7 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
             break;
         case BUTTON_CLEAN:
         {
-            xPM->clear();
+            xSkill->clear();
             updateList();
         }
             break;
@@ -179,7 +179,7 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
             break;
         case BUTTON_SAVE:
         {
-            xPM->save();
+            xSkill->save();
         }
             break;
         case BUTTON_NEXT_5:
