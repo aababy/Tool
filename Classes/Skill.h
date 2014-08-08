@@ -48,6 +48,9 @@ public:
     void update(float delta);
     void clear();
     void save();
+    void saveOfActions(CCDictionary *dic);
+    void saveAtksAndEffect(CCDictionary *dic);
+    void saveOfEffects(CCDictionary *dic);
     
 private:
     void setCurIndex(int idx);
@@ -67,6 +70,8 @@ private:
     CCSprite    *m_sprite;                  //占位sprite
     bool        m_bInPreview = false;
     int         m_iPreviewIndex = 0;
+    
+    CCDictionary *m_dictionary = NULL;
 };
 
 

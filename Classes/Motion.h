@@ -19,8 +19,6 @@ public:
     int getPartsCount();
     void setCurOperationIndex(int idx);
     string& getMotionName(int i);
-    int getCurAtkIndex();
-    void setCurAtkIndex(int i);
     string& getPartNameByIndex(int idx);
     int getCurOperationIndex();
     void setEnabled(bool bEnabled);
@@ -28,7 +26,9 @@ public:
     void setFrame(int iFrame);
     int getLastFrameIndex();
     
-    string sMotionName;
+    string sMotionName;         //e.g. "0-5" or "6-11"
+    string sSaveName;           //e.g. "atk1"
+    string sResName;            //e.g. "xxx.plist"
     void setDragAndDropOffset(CCPoint &point);
     
     CCPoint getCurPosition();
@@ -40,24 +40,26 @@ public:
     void setCurAnchorPoint(const CCPoint& point);
     void setCurScale(float s);
     
-    void setAtkDelay(float var);
-    float getAtkDelay();
-    
     void preview();
     void clear();
     void update(float delta);
     bool isInPreview();
+    int getFramesCount();
+    
+    void getEffectsName(CCDictionary *dic, CCDictionary *effects);
+
+    vector<string> m_vFrameNameOrdered;
     
 private:
     int iStart = 0;
     int iEnd = 0;
     
-    string sResName;
+    
     
     CCSprite * m_spPreview = NULL;            //用于预览
     CCSprite  *m_sprite;                    //用于显示帧
     
-    vector<string> m_vFrameNameOrdered;
+
     CC_SYNTHESIZE(float, m_fDelay, Delay);
     
     vector<Part*> m_vParts;
@@ -73,6 +75,8 @@ private:
     
     bool        m_bEnabled;
     bool        m_bInPreview = false;
+    
+    int         m_iAccIndex = 1;
 };
 
 

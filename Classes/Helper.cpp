@@ -81,3 +81,36 @@ void bubble_sort(vector<FramesName> &vFrameName)
         }
     }
 }
+
+void insertFloat(CCDictionary *dic, const string& key, float value)
+{
+    CCFloat *delay = CCFloat::create(value);
+    dic->setObject(delay, key);
+}
+
+void insertString(CCDictionary *dic, const string& key, const string& value)
+{
+    CCString *str = CCString::create(value);
+    dic->setObject(str, key);
+}
+
+void insertInteger(CCDictionary *dic, const string& key, int value)
+{
+    CCInteger *integer = CCInteger::create(value);
+    dic->setObject(integer, key);
+}
+
+void insertArray(CCDictionary *dic, const string& key, CCArray* value)
+{
+    dic->setObject(value, key);
+}
+
+string itostring(int i)
+{
+    char buffer[10];
+    sprintf(buffer, "%d", i);
+    return string(buffer);
+}
+
+
+

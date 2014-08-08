@@ -319,7 +319,7 @@ void MainScene::updateProperty(CCObject *sender)
     sprintf(buffer, "%.1f", xCurAtk->getCurScale());
     m_ebScale->setText(string(buffer));
     
-    sprintf(buffer, "%.2f", xCurAtk->getAtkDelay());
+    sprintf(buffer, "%.2f", xCurAtk->getDelay());
     m_ebDelay->setText(string(buffer));
 }
 

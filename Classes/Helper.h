@@ -20,5 +20,9 @@ TextField * initTextField(int iTag, Layout* root);
 int getNumber(string &str);
 
 void bubble_sort(vector<FramesName> &vFrameName);
-
+void insertFloat(CCDictionary *dic, const string& key, float value);
+void insertString(CCDictionary *dic, const string& key, const string& value);
+void insertInteger(CCDictionary *dic, const string& key, int value);
+void insertArray(CCDictionary *dic, const string& key, CCArray* value);
+string itostring(int i);
 #endif /* defined(__Tool__Helper__) */

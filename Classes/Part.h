@@ -11,8 +11,6 @@
 
 #include "IncludeForHeader.h"
 
-class Motion;
-
 
 class Part : public CCObject{
     
@@ -20,8 +18,9 @@ public:
     //static Part * create(const char *pFileName, CCPoint &location, ImageView *parent);
     //origin 是主体所在的位置, 非主体就以这个位置来作为偏移坐标
     Part(const char *pFileName, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, vector<string> vFrameName);
-    Part(const char *pFileName, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent);
+    Part(const char *pFileName, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, int iAcc);
     void setStartFrameIndex(int iStart);
+    int getStartFrameIndex();
     void setMain();
     
     vector<FramesName> m_vFrameName;
@@ -47,22 +46,18 @@ public:
     void preview();
     void setEnabled(bool bEnabled);
     
-    //Main part 特有函数
-    int getCurAtkIndex();
-    void setCurAtkIndex(int i);
-    void setAtkDelay(float var);
-    float getAtkDelay();
+    string getEffectName();
     
     int m_iCurIndex = 0;
     int m_iFrameCount = 0;
     
     CCAnimation* getAnimation();            //这个函数是否分离出去?
-    CCDictionary* getDictionary();
     
     string  sPartName;
     
     int getCurFrameIndex();
     void checkIfNeedToStart(int iFrameIndex);
+    void saveEffectToDictionary(CCDictionary *effects);
 
     ~Part();
     
@@ -87,16 +82,9 @@ private:
     bool m_bOnWait = false;         //是否在等待主体播放到开始的那一帧.
     bool m_bMain = false;           //是否是主体
     
-    int iStartFrameIndex = 0;
-    
-    CCDictionary *m_dictionary = NULL;
-    
-    //Motion
-    CC_SYNTHESIZE(float, m_fDelay, Delay);
-    int         m_iLastIndex = 0;
-    int         m_iCurAtk = 0;
-    
+    int     iStartFrameIndex = 0;   //这个也是相对的.
     bool        m_bEnabled;
+    int     m_iAccIndex = 0;
 };
 
 

@@ -16,7 +16,7 @@ Motion::Motion(string sName, const char *pFileName, vector<string> vFrameNameOrd
     this->iEnd = iEnd;
     
     sResName = pFileName;
-    sMotionName = sName;
+    sSaveName = sName;
     m_iFrameBG = parent;
     location = origin;
     m_preview = showForPreview;
@@ -44,7 +44,8 @@ void Motion::importPart(const char *pFileName)
         CCPoint point = ccp(100, 0);
         point = ccpAdd(location, point);
         
-        Part* part = new Part(pFileName, point, location, m_preview, m_iFrameBG);
+        Part* part = new Part(pFileName, point, location, m_preview, m_iFrameBG, m_iAccIndex);
+        m_iAccIndex++;
         part->setStartFrameIndex(m_iMainIndex);
         m_vParts.push_back(part);
         
@@ -70,16 +71,6 @@ void Motion::setCurOperationIndex(int idx)
 string& Motion::getMotionName(int i)
 {
     return sMotionName;
-}
-
-int Motion::getCurAtkIndex()
-{
-    return m_mainPart->getCurAtkIndex();
-}
-
-void Motion::setCurAtkIndex(int i)
-{
-    m_mainPart->setCurAtkIndex(i);
 }
 
 string &Motion::getPartNameByIndex(int idx)
@@ -173,20 +164,6 @@ void Motion::setCurScale(float s)
     m_vParts.at(m_iCurOperationIndex)->setScale(s);
 }
 
-void Motion::setAtkDelay(float var)
-{
-    m_mainPart->setAtkDelay(var);
-}
-
-float Motion::getAtkDelay()
-{
-    if (m_mainPart == NULL) {
-        return 0.f;
-    }
-    
-    return m_mainPart->getAtkDelay();
-}
-
 void Motion::preview()
 {
     m_bInPreview = true;
@@ -227,6 +204,43 @@ bool Motion::isInPreview()
 {
     return m_bInPreview;
 }
+
+int Motion::getFramesCount()
+{
+    return iEnd - iStart + 1;
+}
+
+void Motion::getEffectsName(CCDictionary *dic, CCDictionary *effects)
+{
+    //从第1帧开始
+    for (int iFrameIndex = 0; iFrameIndex < getFramesCount(); iFrameIndex++)
+    {
+        string str;
+        for (int i = 1; i < getPartsCount(); i++)
+        {
+            if (m_vParts.at(i)->getStartFrameIndex() == iFrameIndex) {
+                if (! str.empty()) {
+                    str += ",";
+                }
+                //如果起始帧相同, 就加上它的名字
+                str += m_vParts.at(i)->getEffectName();
+                
+                //插入1个effect
+                m_vParts.at(i)->saveEffectToDictionary(effects);
+            }
+        }
+        
+        //插入Dictionary
+        if (!str.empty()) {
+            insertString(dic, itostring(iFrameIndex), str);
+        }
+    }
+}
+
+
+
+
+
 
 
 

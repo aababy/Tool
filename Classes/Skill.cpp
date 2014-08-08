@@ -23,6 +23,7 @@ Skill* Skill::getInstance(void)
 Skill::~Skill()
 {
     clear();
+    CC_SAFE_RELEASE(m_dictionary);
     CCDirector::sharedDirector()->getScheduler()->unscheduleUpdateForTarget(this);
 }
 
@@ -33,8 +34,9 @@ void Skill::importPart(const char *pFileName)
         //加入Cache
         CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(pFileName);
         
-        CCDictionary *dictionary = CCDictionary::createWithContentsOfFile(pFileName);
-        CCDictionary *framesDict = (CCDictionary*)dictionary->objectForKey("frames");
+        m_dictionary = CCDictionary::createWithContentsOfFile(pFileName);
+        m_dictionary->retain();
+        CCDictionary *framesDict = (CCDictionary*)m_dictionary->objectForKey("frames");
         
         CCDictElement* pElement = NULL;
         CCDICT_FOREACH(framesDict, pElement)
@@ -280,22 +282,86 @@ void Skill::clear()
 
 void Skill::save()
 {
-    if(getMotionCount() == 0)
+    if(getMotionCount() != 0)
     {
-        return;
-    }
-    
-    CCDictionary *dictionary;// = m_mainPart->getDictionary();
-    
-    string str = xData->getStringForKey(SAVE_PATH);
-    
-    if (!str.empty() && str.compare("") != 0) {
-        if (str.rfind('/') == str.length() - 1) {
-            str = str.substr(0, str.length() - 1);
-        }
+        CCDictionary *dic = (CCDictionary*)m_dictionary->copy();
+        dic->removeObjectForKey("frames");
         
-        char stringBuffer[250];
-        sprintf(stringBuffer, "%s/%s.plist", str.c_str(), "abc");
-        dictionary->writeToFile(stringBuffer);
+        ////////////////////////////////////////////////////////////////////////////////////////////////    修改内容
+        
+        saveOfActions(dic);
+        saveAtksAndEffect(dic);
+        
+        ////////////////////////////////////////////////////////////////////////////////////////////////    写文件
+        
+        string str = xData->getStringForKey(SAVE_PATH);
+        
+        if (!str.empty() && str.compare("") != 0) {
+            if (str.rfind('/') == str.length() - 1) {
+                str = str.substr(0, str.length() - 1);
+            }
+            
+            char stringBuffer[250];
+            //sprintf(stringBuffer, "%s/%s.plist", str.c_str(), "abc");
+            sprintf(stringBuffer, "/Users/luoxp/%s.plist", "abc");
+            dic->writeToFile(stringBuffer);
+        }
     }
 }
+
+//保存 act1
+void Skill::saveOfActions(CCDictionary *dic)
+{
+    //获取内容
+    string str;
+    for (int i = 0; i < getMotionCount(); i++) {
+        if (i != 0) {   //间隔符
+            str += ",";
+        }
+        str += m_vMotion.at(i)->sSaveName;
+    }
+    
+    CCDictionary *dictionary = new CCDictionary();
+    insertString(dictionary, "act1", str);
+    
+    dic->setObject(dictionary, "atctions");
+}
+
+//保存 atks 和 effects, 最好同时保存, 节省效率
+void Skill::saveAtksAndEffect(CCDictionary *dic)
+{
+    CCDictionary *atks = new CCDictionary();
+    CCDictionary *effects = new CCDictionary();
+    
+    for (int i = 0; i < getMotionCount(); i++) {
+        Motion *motion = m_vMotion.at(i);
+        
+        CCDictionary *dictionary = new CCDictionary();
+        
+        //insertInteger(dictionary, "attackFrame", motion->getFramesCount());
+        insertFloat(dictionary, "delay", motion->getDelay());
+        
+        CCDictionary *eff = new CCDictionary();
+        motion->getEffectsName(eff, effects);
+        dictionary->setObject(eff, "effects");
+        
+        insertString(dictionary, "fileName", motion->sResName);
+        
+        //插入frames
+        CCArray *frames = CCArray::createWithCapacity(motion->getFramesCount());
+        for (int j = 0; j < motion->getFramesCount(); j++) {
+            CCString *str = CCString::create(motion->m_vFrameNameOrdered.at(j));
+            frames->addObject(str);
+        }
+        insertArray(dictionary, "frames", frames);
+        
+        //插入整个atk
+        atks->setObject(dictionary, motion->sSaveName);
+    }
+    
+    dic->setObject(atks, "atks");
+    dic->setObject(effects, "effects");
+}
+
+
+

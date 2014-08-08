@@ -58,9 +58,10 @@ Part::Part(const char *pFileName, CCPoint &show, CCPoint &origin, CCPoint &showF
 
 
 
-Part::Part(const char *pFileName, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent)
+Part::Part(const char *pFileName, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, int iAcc)
 {
     sPartName = pFileName;
+    m_iAccIndex = iAcc;
     
     //加入Cache
     CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(pFileName);
@@ -108,8 +109,7 @@ Part::~Part()
     
     parent = m_sprite->getParent();
     parent->removeChild(m_sprite);
-    
-    CC_SAFE_RELEASE(m_dictionary);
+        
     CC_SAFE_RELEASE(m_sprite);
     CC_SAFE_RELEASE(m_preview);
 }
@@ -278,13 +278,15 @@ void Part::setStartFrameIndex(int iStart)
     iStartFrameIndex = iStart;
 }
 
+int Part::getStartFrameIndex()
+{
+    return iStartFrameIndex;
+}
+
+
 void Part::setMain()
 {
-    m_bMain = true;
-    
-    //如果是主体, 需要保留CCDictionary
-    m_dictionary = CCDictionary::createWithContentsOfFile(sPartName.c_str());
-    m_dictionary->retain();
+    m_bMain = true;    
 }
 
 CCPoint Part::getPosition()
@@ -297,32 +299,6 @@ void Part::setPosition(CCPoint &point)
     m_sprite->setPosition(ccpAdd(m_origin, point));
 }
 
-
-CCDictionary * Part::getDictionary()
-{
-    return m_dictionary;
-}
-
-int Part::getCurAtkIndex()
-{
-    return m_iCurAtk;
-}
-
-void Part::setCurAtkIndex(int i)
-{
-    m_iCurAtk = i;
-}
-
-void Part::setAtkDelay(float var)
-{
-    setDelay(var);
-}
-
-float Part::getAtkDelay()
-{
-    return getDelay();
-}
-
 void Part::setEnabled(bool bEnabled)
 {
     m_bEnabled = bEnabled;
@@ -330,3 +306,20 @@ void Part::setEnabled(bool bEnabled)
     m_sprite->setVisible(m_bEnabled);
     m_preview->setVisible(m_bEnabled);
 }
+
+string Part::getEffectName()
+{
+    char temp[10];
+    sprintf(temp, "effect%d", m_iAccIndex);
+    return string(temp);
+}
+
+void Part::saveEffectToDictionary(CCDictionary *effects)
+{
+    CCDictionary *effect = new CCDictionary();
+    
+    insertString(effect, "fileName", sPartName);
+    
+    effects->setObject(effect, getEffectName());
+}
+

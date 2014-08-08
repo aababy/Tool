@@ -21,10 +21,7 @@ static CCScene* scene() \
     return pScene; \
 }
 
-class Part;
 class InputBox;
-class FolderBrowser;
-class Skill;
 
 class MainScene : public CCLayer, public CCEditBoxDelegate
 {
@@ -92,9 +89,6 @@ protected:
     InputBox*   m_ebRotate;
     InputBox*   m_ebScale;
     InputBox*   m_ebDelay;
-    
-    //暂时写这里
-    Part  *m_curPart = NULL;
     
     CCPoint     m_oldPoint;
     bool        m_bDragAndDrop = false;
