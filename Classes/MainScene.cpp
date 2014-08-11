@@ -155,7 +155,7 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
         case BUTTON_CLEAN:
         {
             xSkill->clear();
-            updateList();
+            updateList(NULL);
         }
             break;
         case BUTTON_NEXT:
@@ -196,8 +196,8 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
         case BUTTON_ADD_MOTION:
         {
             xSkill->addMotion();
-            updateList();
-            updateMotionList();
+            updateList(NULL);
+            updateMotionList(NULL);
         }
             break;
         case BUTTON_DEL_MOTION:
@@ -240,7 +240,7 @@ void MainScene::setFrameCount(CCObject *sender)
     }
 }
 
-void MainScene::updateList()
+void MainScene::updateList(CCObject *sender)
 {
     if (xCurAtk == NULL) {
         return;
@@ -265,7 +265,7 @@ void MainScene::updateList()
     makeAFocusOfList();
 }
 
-void MainScene::updateMotionList()
+void MainScene::updateMotionList(CCObject *sender)
 {
     motionlist->removeAllItems();
     
@@ -448,7 +448,7 @@ void MainScene::importFinish(string &str)
 {
     xSkill->importPart(str.c_str());
     setFrameCount(NULL);
-    updateList();
+    updateList(NULL);
     updateButtonForMotion(NULL);
 }
 

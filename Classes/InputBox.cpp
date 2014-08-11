@@ -14,6 +14,7 @@ InputBox* InputBox::create(TextField *text, CCEditBoxDelegate* delegate, CCNode 
     InputBox *input = new InputBox();
     input->originText = text;
     
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
     CCPoint absolute = text->convertToWorldSpaceAR(CCPointZero);
     input->m_edit = CCEditBox::create(text->getSize(), CCScale9Sprite::create("R/input_bg.png"));
     input->m_edit->setPosition(absolute);
@@ -30,6 +31,7 @@ InputBox* InputBox::create(TextField *text, CCEditBoxDelegate* delegate, CCNode 
     input->m_edit->setInputMode(kEditBoxInputModeSingleLine);
     input->m_edit->setDelegate(delegate);
     parent->addChild(input->m_edit);
+#endif
     
     return input;
 }
@@ -42,17 +44,27 @@ InputBox* InputBox::create(int iTag, Layout *root, CCEditBoxDelegate* delegate, 
 
 void InputBox::setText(string str)
 {
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
     m_edit->setText(str.c_str());
+#else
+	originText->setText(str);
+#endif
 }
 
 const char * InputBox::getText()
 {
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
     return m_edit->getText();
+#else
+	return originText->getStringValue();
+#endif
 }
 
 
 void InputBox::setVisible(bool visible)
 {
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
     m_edit->setVisible(visible);
+#endif
     originText->setVisible(visible);
 }
