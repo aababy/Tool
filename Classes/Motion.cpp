@@ -227,7 +227,7 @@ void Motion::getEffectsName(CCDictionary *dic, CCDictionary *effects)
                 str += m_vParts.at(i)->getEffectName();
                 
                 //插入1个effect
-                m_vParts.at(i)->saveEffectToDictionary(effects);
+                m_vParts.at(i)->saveEffectToDictionary(effects);        //这个函数加入effects
             }
         }
         

@@ -94,6 +94,15 @@ void insertString(CCDictionary *dic, const string& key, const string& value)
     dic->setObject(str, key);
 }
 
+void insertCCPoint(CCDictionary *dic, const string& key, CCPoint& value)
+{
+    char buf[20];
+    sprintf(buf, "{%.2f,%.2f}", value.x, value.y);
+    string str(buf);
+    
+    insertString(dic, key, str);
+}
+
 void insertInteger(CCDictionary *dic, const string& key, int value)
 {
     CCInteger *integer = CCInteger::create(value);

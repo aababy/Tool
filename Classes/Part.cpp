@@ -320,6 +320,20 @@ void Part::saveEffectToDictionary(CCDictionary *effects)
     
     insertString(effect, "fileName", sPartName);
     
+    //anchorPoint
+    CCPoint point = m_sprite->getAnchorPoint();
+    insertCCPoint(effect, "anchorPoint", point);
+    
+    //delay
+    insertFloat(effect, "delay", m_fDelay);
+    
+    //position
+    point = getPosition();
+    insertCCPoint(effect, "position", point);
+    
+    //rotation
+    insertFloat(effect, "rotation", m_sprite->getRotation());
+    
     effects->setObject(effect, getEffectName());
 }
 

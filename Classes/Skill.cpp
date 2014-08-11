@@ -349,10 +349,11 @@ void Skill::saveAtksAndEffect(CCDictionary *dic)
         insertFloat(dictionary, "delay", motion->getDelay());
         
         CCDictionary *eff = new CCDictionary();
-        motion->getEffectsName(eff, effects);
+        motion->getEffectsName(eff, effects);               //effect 是这个函数加入的.
         dictionary->setObject(eff, "effects");
-        
+
         insertString(dictionary, "fileName", motion->sResName);
+        dictionary->setObject(CCInteger::create(100), "attackFrame");        
         
         //插入frames
         CCArray *frames = CCArray::createWithCapacity(motion->getFramesCount());
@@ -361,6 +362,7 @@ void Skill::saveAtksAndEffect(CCDictionary *dic)
             frames->addObject(str);
         }
         insertArray(dictionary, "frames", frames);
+        insertString(dictionary, "soundFileName", "");
         
         //插入整个atk
         atks->setObject(dictionary, motion->sSaveName);
