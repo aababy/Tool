@@ -61,6 +61,7 @@ public:
     
 protected:
     void setFrameCount(CCObject *sender);
+    void cleanAllText();
     ~MainScene();
     void switchToBroswer();
 

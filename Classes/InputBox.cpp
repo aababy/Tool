@@ -31,6 +31,12 @@ InputBox* InputBox::create(TextField *text, CCEditBoxDelegate* delegate, CCNode 
     input->m_edit->setInputMode(kEditBoxInputModeSingleLine);
     input->m_edit->setDelegate(delegate);
     parent->addChild(input->m_edit);
+#else
+    ImageView *image = ImageView::create();
+    image->loadTexture("R/input_bg.png");
+    image->setScale9Enabled(true);
+    image->setSize(input->originText->getSize());
+    input->originText->addChild(image, -2);
 #endif
     
     return input;
