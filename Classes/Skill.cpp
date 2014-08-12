@@ -344,7 +344,6 @@ void Skill::saveAtksAndEffect(CCDictionary *dic)
         
         CCDictionary *dictionary = new CCDictionary();
         
-        //insertInteger(dictionary, "attackFrame", motion->getFramesCount());
         insertFloat(dictionary, "delay", motion->getDelay());
         
         CCDictionary *eff = new CCDictionary();
@@ -383,13 +382,6 @@ bool Skill::checkCanAddMotion()
     else
     {
         return true;
-//        if (m_iCurIndex != 0) {
-//            return true;
-//        }
-//        else
-//        {
-//            return false;
-//        }
     }
 }
 

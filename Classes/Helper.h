@@ -26,4 +26,11 @@ void insertInteger(CCDictionary *dic, const string& key, int value);
 void insertArray(CCDictionary *dic, const string& key, CCArray* value);
 void insertCCPoint(CCDictionary *dic, const string& key, CCPoint& value);
 string itostring(int i);
+
+template <class T> string any2string(T tmp)
+{
+    std::stringstream ss;
+    ss << tmp;
+    return ss.str();
+};
 #endif /* defined(__Tool__Helper__) */

@@ -82,10 +82,15 @@ void bubble_sort(vector<FramesName> &vFrameName)
     }
 }
 
+//写文件时只能保存成string, 不然不能写
+void insertInteger(CCDictionary *dic, const string& key, int value)
+{
+    insertString(dic, key, any2string(value));
+}
+
 void insertFloat(CCDictionary *dic, const string& key, float value)
 {
-    CCFloat *delay = CCFloat::create(value);
-    dic->setObject(delay, key);
+    insertString(dic, key, any2string(value));
 }
 
 void insertString(CCDictionary *dic, const string& key, const string& value)
@@ -103,12 +108,6 @@ void insertCCPoint(CCDictionary *dic, const string& key, CCPoint& value)
     insertString(dic, key, str);
 }
 
-void insertInteger(CCDictionary *dic, const string& key, int value)
-{
-    CCInteger *integer = CCInteger::create(value);
-    dic->setObject(integer, key);
-}
-
 void insertArray(CCDictionary *dic, const string& key, CCArray* value)
 {
     dic->setObject(value, key);
@@ -120,6 +119,7 @@ string itostring(int i)
     sprintf(buffer, "%d", i);
     return string(buffer);
 }
+
 
 
 
