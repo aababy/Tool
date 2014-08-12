@@ -57,7 +57,7 @@ public:
 private:
     void setCurIndex(int idx);
     
-    vector<Motion *>    m_vMotion;          //只有主体有这个字段.
+    vector<Motion *>    m_vMotion;
     vector<FramesName>  m_vFrameName;
     int         m_iFrameCount = 0;          //这个来判断是否导入了主体
     int         m_iLastIndex = 0;
@@ -67,7 +67,7 @@ private:
     CCPoint     m_showForPreview;
     CCNode      *m_parent;
     
-    string      sPartName;
+    string      sSkillName;
     
     CCSprite    *m_sprite;                  //占位sprite
     bool        m_bInPreview = false;

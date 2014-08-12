@@ -14,7 +14,7 @@
 class InputBox
 {
 public:
-    static InputBox* create(TextField *text, CCEditBoxDelegate* delegate, CCNode *parent);
+    static InputBox* create(Layout *text, CCEditBoxDelegate* delegate, CCNode *parent);
     static InputBox* create(int iTag, Layout *root, CCEditBoxDelegate* delegate, CCNode *parent);
     
     CCEditBox *m_edit;
@@ -23,7 +23,7 @@ public:
     const char * getText();
     void setVisible(bool visible);
     
-    TextField *originText;
+    Layout *originLayout;
 };
 
 

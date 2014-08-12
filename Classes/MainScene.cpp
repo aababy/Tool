@@ -122,8 +122,6 @@ bool MainScene::init(CCScene* pScene)
         
         setTouchEnabled(true);
         
-        cleanAllText();
-        
         return true;
     }
     
@@ -512,19 +510,4 @@ void MainScene::makeAFocusOfListForMotion()
     }
 }
 
-//这个函数专门为Windows准备的.
-void MainScene::cleanAllText()
-{
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-    string str;
-    
-    m_ebAnchor[0]->setText(str);
-    m_ebAnchor[1]->setText(str);
-    m_ebPosition[0]->setText(str);
-    m_ebPosition[1]->setText(str);
-    m_ebRotate->setText(str);
-    m_ebScale->setText(str);
-    m_ebDelay->setText(str);
-#endif
-}
 

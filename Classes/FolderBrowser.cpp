@@ -251,6 +251,14 @@ void FolderBrowser::forward(string &key)
     
     //保存searchPath
     CCUserDefault::sharedUserDefault()->setStringForKey(SEARCH_PATH, searchPath);
+    
+    
+    savePath = CCUserDefault::sharedUserDefault()->getStringForKey(SAVE_PATH);
+    if(savePath.empty())
+    {
+        sprintf(address, "%s/save", searchPath.c_str());
+        CCUserDefault::sharedUserDefault()->setStringForKey(SAVE_PATH, searchPath);
+    }    
 }
 
 

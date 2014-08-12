@@ -51,7 +51,7 @@ void Skill::importPart(const char *pFileName)
         
         m_iFrameCount = m_vFrameName.size();
         
-        sPartName = pFileName;
+        sSkillName = pFileName;
         
         setCurIndex(0);
         m_sprite = CCSprite::createWithSpriteFrameName(getCurFrameName());
@@ -92,7 +92,7 @@ void Skill::addMotion()
         char buffer[10];
         sprintf(buffer, "atk%d", getMotionCount() + 1);
         
-        m_curMotion = new Motion(buffer, sPartName.c_str(), vFrameName, m_iLastIndex, m_iCurIndex, m_origin, m_showForPreview, m_parent, m_iMotionAccIndex);
+        m_curMotion = new Motion(buffer, sSkillName.c_str(), vFrameName, m_iLastIndex, m_iCurIndex, m_origin, m_showForPreview, m_parent, m_iMotionAccIndex);
         m_vMotion.push_back(m_curMotion);
         m_iMotionAccIndex++;
         
@@ -309,8 +309,7 @@ void Skill::save()
             }
             
             char stringBuffer[250];
-            //sprintf(stringBuffer, "%s/%s.plist", str.c_str(), "abc");
-            sprintf(stringBuffer, "/Users/luoxp/%s.plist", "abc");
+            sprintf(stringBuffer, "%s/%s", str.c_str(), sSkillName.c_str());
             dic->writeToFile(stringBuffer);
         }
     }
