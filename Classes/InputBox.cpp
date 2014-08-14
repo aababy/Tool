@@ -11,9 +11,11 @@
 
 InputBox* InputBox::create(Layout *layout, CCEditBoxDelegate* delegate, CCNode *parent)
 {
+	layout->setVisible(false);
+
     InputBox *input = new InputBox();
-    input->originLayout = layout;
-   
+	input->originLayout = layout;
+	   
     CCPoint absolute = layout->convertToWorldSpaceAR(CCPointZero);
     absolute.x += layout->getSize().width/2;
     absolute.y += layout->getSize().height/2;
