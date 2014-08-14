@@ -15,6 +15,7 @@ InputBox* InputBox::create(Layout *layout, CCEditBoxDelegate* delegate, CCNode *
 
     InputBox *input = new InputBox();
 	input->originLayout = layout;
+	layout->setTouchEnabled(true);
 	   
     CCPoint absolute = layout->convertToWorldSpaceAR(CCPointZero);
     absolute.x += layout->getSize().width/2;

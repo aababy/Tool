@@ -89,7 +89,7 @@ void Skill::addMotion()
             vFrameName.push_back(str);
         }
         
-        char buffer[10];
+        char buffer[20];
         sprintf(buffer, "skillpart_%d", getMotionCount() + 1);
         
         m_curMotion = new Motion(buffer, sSkillName.c_str(), vFrameName, m_iLastIndex, m_iCurIndex, m_origin, m_showForPreview, m_parent, m_iMotionAccIndex);
