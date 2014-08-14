@@ -11,7 +11,7 @@
 
 #include "IncludeForHeader.h"
 
-class InputBox
+class InputBox : public CCObject
 {
 public:
     static InputBox* create(Layout *text, CCEditBoxDelegate* delegate, CCNode *parent);
@@ -24,6 +24,7 @@ public:
     void setVisible(bool visible);
     
     Layout *originLayout;
+	void touchEvent(CCObject *pSender, TouchEventType type);
 };
 
 

@@ -13,8 +13,7 @@ InputBox* InputBox::create(Layout *layout, CCEditBoxDelegate* delegate, CCNode *
 {
     InputBox *input = new InputBox();
     input->originLayout = layout;
-    layout->setEnabled(false);
-    
+   
     CCPoint absolute = layout->convertToWorldSpaceAR(CCPointZero);
     absolute.x += layout->getSize().width/2;
     absolute.y += layout->getSize().height/2;
@@ -41,7 +40,13 @@ InputBox* InputBox::create(Layout *layout, CCEditBoxDelegate* delegate, CCNode *
 InputBox* InputBox::create(int iTag, Layout *root, CCEditBoxDelegate* delegate, CCNode *parent)
 {
     Layout *layout = static_cast<Layout*>(UIHelper::seekWidgetByTag(root, iTag));
-    return create(layout, delegate, parent);
+	InputBox *input = create(layout, delegate, parent);
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+	layout->addTouchEventListener(input, toucheventselector(InputBox::touchEvent));
+#endif
+
+	return input;
 }
 
 void InputBox::setText(string str)
@@ -54,8 +59,17 @@ const char * InputBox::getText()
     return m_edit->getText();
 }
 
-
 void InputBox::setVisible(bool visible)
 {
     m_edit->setVisible(visible);
+}
+
+void InputBox::touchEvent(CCObject *pSender, TouchEventType type)
+{
+	if (type != TOUCH_EVENT_ENDED)
+	{
+		return;
+	}
+
+	m_edit->touchDownAction(pSender, 0);
 }

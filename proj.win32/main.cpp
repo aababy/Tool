@@ -16,6 +16,6 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
     AppDelegate app;
     CCEGLView* eglView = CCEGLView::sharedOpenGLView();
     eglView->setViewName("Tool");
-    eglView->setFrameSize(1366, 700);
+    eglView->setFrameSize(1920, 864);
     return CCApplication::sharedApplication()->run();
 }
