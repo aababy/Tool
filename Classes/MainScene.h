@@ -89,6 +89,7 @@ protected:
     InputBox*   m_ebRotate;
     InputBox*   m_ebScale;
     InputBox*   m_ebDelay;
+    InputBox*   m_ebName;
     
     CCPoint     m_oldPoint;
     bool        m_bDragAndDrop = false;

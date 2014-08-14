@@ -28,6 +28,7 @@ enum UITag
     BUTTON_PRV_5 = 102,
     BUTTON_DEL_MOTION = 103,
     DELAY = 105,
+    SKILL_PART_NAME = 173,
     
     
     LIST_BG = 1000,
@@ -88,6 +89,7 @@ bool MainScene::init(CCScene* pScene)
         m_ebRotate = InputBox::create(ROTATE, root, this, m_rootNode);
         m_ebScale = InputBox::create(SCALE, root, this, m_rootNode);
         m_ebDelay = InputBox::create(DELAY, root, this, m_rootNode);
+        m_ebName = InputBox::create(SKILL_PART_NAME, root, this, m_rootNode);
         
         m_pHolder = static_cast<CCSprite*>(m_rootNode->getChildByTag(SPRITE_HOLDER));
         m_pHolder->initWithFile("R/cross.png");
@@ -233,10 +235,13 @@ void MainScene::setFrameCount(CCObject *sender)
     
     if (xSkill->checkCanAddMotion()) {
         btnAddMotion->setEnabled(true);
+        m_ebName->setVisible(false);
     }
     else
     {
         btnAddMotion->setEnabled(false);
+        m_ebName->setVisible(true);
+        m_ebName->setText(xCurAtk->sSaveName);
     }
 }
 
@@ -374,6 +379,8 @@ void MainScene::editBoxTextChanged(CCEditBox* editBox, const std::string& text)
         } else if(editBox == m_ebDelay->m_edit) {
             temp = atof(text.c_str());
             xCurAtk->setDelay(temp);
+        } else if(editBox == m_ebName->m_edit) {
+            xCurAtk->sSaveName = text;
         }
     }
 }
@@ -462,6 +469,7 @@ void MainScene::switchToBroswer()
     m_ebRotate->setVisible(false);
     m_ebScale->setVisible(false);
     m_ebDelay->setVisible(false);
+    m_ebName->setVisible(false);
 }
 
 void MainScene::switchToMain()
@@ -474,6 +482,7 @@ void MainScene::switchToMain()
     m_ebRotate->setVisible(true);
     m_ebScale->setVisible(true);
     m_ebDelay->setVisible(true);
+    m_ebName->setVisible(true);
 }
 
 void MainScene::makeAFocusOfList()
