@@ -282,10 +282,14 @@ void Skill::clear()
     }
     
     m_vMotion.clear();
-    setCurIndex(-1);
+    checkAllIndex();            //任何时候删除Motion都要调用这个函数.
     m_curMotion = NULL;
-    m_iFrameCount = 0;
-    m_iCurAtk = 0;
+    m_iCurAtk = -1;
+    m_iLastIndex = 0;
+    
+    xNotify->postNotification(UPDATE_MOTION);
+    xNotify->postNotification(UPDATE_MOTION_LIST);
+    xNotify->postNotification(UPDATE_ALL_INDEX);
 }
 
 void Skill::save()
