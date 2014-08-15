@@ -17,8 +17,8 @@ class FolderBrowser : public CCLayer, public CCEditBoxDelegate
 {
 public:
     FolderBrowser(MainScene *mainlayer);
-    static FolderBrowser* create(MainScene *mainlayer);
-    bool init();
+    static FolderBrowser* create(MainScene *mainlayer, curState state);
+    bool init(curState state);
     void touchEvent(CCObject *pSender, TouchEventType type);
     void updateList();
     void forward();
@@ -45,6 +45,8 @@ private:
     InputBox*   m_ebModifySave;         //修改保存路径
     UIListView * listView;
     Button*     m_btnModify;
+    Label*      m_tips;
+    curState    m_state;
     
     char    address[200];
     char    fullPathName[200];
@@ -54,6 +56,7 @@ private:
     MainScene *m_mainlayer;
     string  searchPath;
     string  savePath;
+
     
     CheckBox* m_cbMulti;
 };

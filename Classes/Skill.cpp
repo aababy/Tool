@@ -423,4 +423,7 @@ void Skill::deletePart()
     }
 }
 
-
+void Skill::setTotalPlist(string &str)
+{
+    sTotalPlist = str;
+}

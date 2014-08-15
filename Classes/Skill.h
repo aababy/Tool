@@ -54,6 +54,7 @@ public:
     
     bool checkCanAddMotion();
     void deletePart();
+    void setTotalPlist(string &str);
     
 private:
     void setCurIndex(int idx);
@@ -77,6 +78,8 @@ private:
     CCDictionary *m_dictionary = NULL;
     
     int         m_iMotionAccIndex = 1;            //删除的时候需要减少这个值
+    
+    string      sTotalPlist;
 };
 
 

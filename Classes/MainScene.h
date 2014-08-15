@@ -58,6 +58,7 @@ public:
     void makeAFocusOfList();
     void makeAFocusOfListForMotion();    
     void updateButtonForMotion(CCObject *sender);
+    void setTotalPlist(string &str);
     
 protected:
     void setFrameCount(CCObject *sender);
@@ -94,6 +95,8 @@ protected:
     CCPoint     m_oldPoint;
     bool        m_bDragAndDrop = false;
     bool        m_bInOtherLayer = false;
+    
+    curState    m_state = CS_NONE;
 };
 
 #endif // __HELLOWORLD_SCENE_H__

@@ -149,7 +149,7 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
     switch (iTag) {
         case BUTTON_IMPORT:
         {
-            FolderBrowser *browser = FolderBrowser::create(this);
+            FolderBrowser *browser = FolderBrowser::create(this, m_state);
             m_scene->addChild(browser);
             switchToBroswer();
         }
@@ -457,6 +457,7 @@ bool MainScene::checkIfStartToDrag(CCPoint point)
 
 void MainScene::importFinish(vector<string> &vec)
 {
+    m_state = CS_MAIN_PLIST;
     xSkill->importPart(vec);
     setFrameCount(NULL);
     updateList(NULL);
@@ -523,4 +524,8 @@ void MainScene::makeAFocusOfListForMotion()
     }
 }
 
-
+void MainScene::setTotalPlist(string &str)
+{
+    xSkill->setTotalPlist(str);
+    m_state = CS_TOTAL_PLIST;
+}

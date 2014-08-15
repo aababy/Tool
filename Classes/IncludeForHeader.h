@@ -39,4 +39,12 @@ enum setOperateType
     OT_BROWSE,
 };
 
+enum curState
+{
+    CS_NONE,
+    CS_TOTAL_PLIST,
+    CS_MAIN_PLIST,
+};
+
+
 #endif

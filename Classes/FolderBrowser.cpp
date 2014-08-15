@@ -21,16 +21,17 @@ enum UITag
     BUTTON_SEARCH = 127,
     CHECK_MULTI = 172,
     BUTTON_OK = 188,
+    TIPS = 190,
     
     LIST_FILE = 1000,
 };
 
 using namespace std;
 
-FolderBrowser* FolderBrowser::create(MainScene *mainlayer)
+FolderBrowser* FolderBrowser::create(MainScene *mainlayer, curState state)
 {
     FolderBrowser* uiLayer = new FolderBrowser(mainlayer);
-    if (uiLayer && uiLayer->init())
+    if (uiLayer && uiLayer->init(state))
     {
         uiLayer->autorelease();
     }
@@ -48,7 +49,7 @@ FolderBrowser::FolderBrowser(MainScene *mainlayer)
 }
 
 
-bool FolderBrowser::init()
+bool FolderBrowser::init(curState state)
 {
     if (CCLayer::init())
     {
@@ -61,6 +62,31 @@ bool FolderBrowser::init()
         initButton(BUTTON_BACK, root, this, toucheventselector(FolderBrowser::touchEvent));
         initButton(BUTTON_OK, root, this, toucheventselector(FolderBrowser::touchEvent));
         m_btnModify = initButton(BUTTON_MODIFY_SAVE, root, this, toucheventselector(FolderBrowser::touchEvent));
+        
+        m_tips = (Label*)UIHelper::seekWidgetByTag(root, TIPS);
+        
+        m_state = state;
+        
+        switch (state) {
+            case CS_NONE:
+            {
+                m_tips->setText("选择总Plist");
+            }
+                break;
+            case CS_TOTAL_PLIST:
+            {
+                m_tips->setText("选择主体");
+            }
+                break;
+            case CS_MAIN_PLIST:
+            {
+                m_tips->setVisible(false);
+            }
+                break;
+            default:
+                break;
+        }
+        
         
         //输入区
         m_ebAddress = InputBox::create(ADDRESS, root, this, m_rootNode);
@@ -162,23 +188,31 @@ void FolderBrowser::touchEvent(CCObject *pSender, TouchEventType type)
                 string fileName = m_vFileName.at(iTag - LIST_FILE);
                 CCLOG("touch index %d", iTag - LIST_FILE);
                 
-                if (m_cbMulti->getSelectedState() == false)
-                {
-                    m_vMultiName.clear();
-                    m_vMultiName.push_back(fileName);
+                if (m_state == CS_NONE) {
+                    m_state = CS_MAIN_PLIST;
+                    m_mainlayer->setTotalPlist(fileName);
                     
-                    m_mainlayer->importFinish(m_vMultiName);
-                    CCNode* parent = this->getParent();
-                    parent->removeChild(this);
-                    m_mainlayer->switchToMain();
+                    m_tips->setText("选择主体");
                 }
                 else
                 {
-                    handleString(fileName);
-                    updateList();
-                }
+                    if (m_cbMulti->getSelectedState() == false)
+                    {
+                        m_vMultiName.clear();
+                        m_vMultiName.push_back(fileName);
+                        
+                        m_mainlayer->importFinish(m_vMultiName);
+                        CCNode* parent = this->getParent();
+                        parent->removeChild(this);
+                        m_mainlayer->switchToMain();
+                    }
+                    else
+                    {
+                        handleString(fileName);
+                        updateList();
+                    }
                 
-
+                }
             }
         }
             break;
