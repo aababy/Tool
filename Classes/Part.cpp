@@ -23,9 +23,9 @@
 //    }
 //	return pRet;
 //}
-Part::Part(const char *pFileName, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, vector<string> vFrameName)
+Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, vector<string> vFrameName)
 {
-    sPartName = pFileName;
+    sPartName = vNames.at(0);               //PartName 显示只会显示一个
     
     for (int i = 0; i < vFrameName.size(); i++) {
         FramesName frames;
@@ -56,24 +56,26 @@ Part::Part(const char *pFileName, CCPoint &show, CCPoint &origin, CCPoint &showF
 
 
 
-Part::Part(const char *pFileName, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, int iAcc)
+Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, int iAcc)
 {
-    sPartName = pFileName;
+    sPartName = vNames.at(0);
     m_iAccIndex = iAcc;
     
     //加入Cache
-    CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(pFileName);
-    
-    CCDictionary *dictionary = CCDictionary::createWithContentsOfFile(pFileName);
-    CCDictionary *framesDict = (CCDictionary*)dictionary->objectForKey("frames");
-
-    CCDictElement* pElement = NULL;
-    CCDICT_FOREACH(framesDict, pElement)
-    {
-        FramesName frame;
-        frame.sFrameName = pElement->getStrKey();
-        frame.iNumber = getNumber(frame.sFrameName);
-        m_vFrameName.push_back(frame);
+    for (int i = 0; i < vNames.size(); i++) {
+        CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(vNames.at(i).c_str());
+        
+        CCDictionary *dictionary = CCDictionary::createWithContentsOfFile(vNames.at(i).c_str());
+        CCDictionary *framesDict = (CCDictionary*)dictionary->objectForKey("frames");
+        
+        CCDictElement* pElement = NULL;
+        CCDICT_FOREACH(framesDict, pElement)
+        {
+            FramesName frame;
+            frame.sFrameName = pElement->getStrKey();
+            frame.iNumber = getNumber(frame.sFrameName);
+            m_vFrameName.push_back(frame);
+        }
     }
     
     m_iFrameCount = m_vFrameName.size();

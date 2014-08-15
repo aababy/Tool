@@ -23,7 +23,7 @@ public:
     ~Skill();
     
     void init(CCPoint location, CCPoint preview, CCNode *parent);
-    void importPart(const char *pFileName);
+    void importPart(vector<string> &vNames);
     const char * getCurFrameName();
     int getMotionCount();
     void addMotion();
@@ -68,7 +68,7 @@ private:
     CCPoint     m_showForPreview;
     CCNode      *m_parent;
     
-    string      sSkillName;
+    vector<string> sSkillName;
     
     CCSprite    *m_sprite;                  //占位sprite
     bool        m_bInPreview = false;

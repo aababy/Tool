@@ -30,9 +30,9 @@ public:
     virtual void editBoxTextChanged(CCEditBox* editBox, const std::string& text);
     virtual void editBoxReturn(CCEditBox* editBox);
     
-//    void registerWithTouchDispatcher();
-//    bool ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent);
     void checkOldSearchPath();
+    void handleString(string &str);
+    bool isStringInMulti(string &str);
     
 private:
     bool m_bShowSaveAddress = false;
@@ -50,9 +50,12 @@ private:
     char    fullPathName[200];
     
     vector<string> m_vFileName;
+    vector<string> m_vMultiName;
     MainScene *m_mainlayer;
     string  searchPath;
     string  savePath;
+    
+    CheckBox* m_cbMulti;
 };
 
 

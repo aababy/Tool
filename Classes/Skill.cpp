@@ -27,31 +27,34 @@ Skill::~Skill()
     CCDirector::sharedDirector()->getScheduler()->unscheduleUpdateForTarget(this);
 }
 
-void Skill::importPart(const char *pFileName)
+void Skill::importPart(vector<string> &vNames)
 {
     //先判断, 是否是第一次导入Part, Part作为主体
     if (m_iFrameCount == 0) {
         //加入Cache
-        CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(pFileName);
         
-        m_dictionary = CCDictionary::createWithContentsOfFile(pFileName);
-        m_dictionary->retain();
-        CCDictionary *framesDict = (CCDictionary*)m_dictionary->objectForKey("frames");
-        
-        CCDictElement* pElement = NULL;
-        CCDICT_FOREACH(framesDict, pElement)
-        {
-            FramesName frame;
-            frame.sFrameName = pElement->getStrKey();
-            frame.iNumber = getNumber(frame.sFrameName);
-            m_vFrameName.push_back(frame);
+        for (int i = 0; i < vNames.size(); i++) {
+            CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(vNames.at(i).c_str());
+            
+            m_dictionary = CCDictionary::createWithContentsOfFile(vNames.at(i).c_str());
+            m_dictionary->retain();
+            CCDictionary *framesDict = (CCDictionary*)m_dictionary->objectForKey("frames");
+            
+            CCDictElement* pElement = NULL;
+            CCDICT_FOREACH(framesDict, pElement)
+            {
+                FramesName frame;
+                frame.sFrameName = pElement->getStrKey();
+                frame.iNumber = getNumber(frame.sFrameName);
+                m_vFrameName.push_back(frame);
+            }
         }
         
         bubble_sort(m_vFrameName);
         
         m_iFrameCount = m_vFrameName.size();
         
-        sSkillName = pFileName;
+        sSkillName = vNames;
         
         setCurIndex(0);
         m_sprite = CCSprite::createWithSpriteFrameName(getCurFrameName());
@@ -61,7 +64,7 @@ void Skill::importPart(const char *pFileName)
     else
     {
         //判断当前帧所在Atk, 将Part作为Effect插入
-        m_curMotion->importPart(pFileName);
+        m_curMotion->importPart(vNames);
     }
 }
 
@@ -93,7 +96,7 @@ void Skill::addMotion()
         sprintf(buffer, "skillpart_%d", getMotionCount() + 1);
         
         CCAssert(m_iLastIndex <= m_iCurIndex, "error");
-        m_curMotion = new Motion(buffer, sSkillName.c_str(), vFrameName, m_iLastIndex, m_iCurIndex, m_origin, m_showForPreview, m_parent, m_iMotionAccIndex);
+        m_curMotion = new Motion(buffer, sSkillName, vFrameName, m_iLastIndex, m_iCurIndex, m_origin, m_showForPreview, m_parent, m_iMotionAccIndex);
         m_vMotion.push_back(m_curMotion);
         m_iMotionAccIndex++;
         
@@ -314,7 +317,7 @@ void Skill::save()
             }
             
             char stringBuffer[250];
-            sprintf(stringBuffer, "%s/%s", str.c_str(), sSkillName.c_str());
+            sprintf(stringBuffer, "%s/%s", str.c_str(), sSkillName.at(0).c_str());
             dic->writeToFile(stringBuffer);
         }
     }

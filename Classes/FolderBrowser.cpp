@@ -19,6 +19,8 @@ enum UITag
     BUTTON_MODIFY_SAVE = 84,
     SEARCH_EDIT = 126,
     BUTTON_SEARCH = 127,
+    CHECK_MULTI = 172,
+    BUTTON_OK = 188,
     
     LIST_FILE = 1000,
 };
@@ -57,6 +59,7 @@ bool FolderBrowser::init()
         
         initButton(BUTTON_FORWARD, root, this, toucheventselector(FolderBrowser::touchEvent));
         initButton(BUTTON_BACK, root, this, toucheventselector(FolderBrowser::touchEvent));
+        initButton(BUTTON_OK, root, this, toucheventselector(FolderBrowser::touchEvent));
         m_btnModify = initButton(BUTTON_MODIFY_SAVE, root, this, toucheventselector(FolderBrowser::touchEvent));
         
         //输入区
@@ -73,6 +76,9 @@ bool FolderBrowser::init()
         Layout *listroot = static_cast<Layout*>(node->getChildren()->objectAtIndex(0));
         Layout* defaultItem = (Layout*)UIHelper::seekWidgetByTag(listroot, 32);         //还有转一层, 一来至少加2个Panel
         listView->setItemModel(defaultItem);
+        
+        //checkbox
+        m_cbMulti = (CheckBox*)UIHelper::seekWidgetByTag(root, CHECK_MULTI);
         
         setTouchEnabled(true);
         
@@ -114,6 +120,14 @@ void FolderBrowser::touchEvent(CCObject *pSender, TouchEventType type)
             forward(search);
         }
             break;
+        case BUTTON_OK:
+        {
+            m_mainlayer->importFinish(m_vMultiName);
+            CCNode* parent = this->getParent();
+            parent->removeChild(this);
+            m_mainlayer->switchToMain();
+        }
+            break;
         case BUTTON_MODIFY_SAVE:
         {
             if (m_bShowSaveAddress) {
@@ -144,65 +158,32 @@ void FolderBrowser::touchEvent(CCObject *pSender, TouchEventType type)
         default:
         {
             if (iTag >= LIST_FILE) {
-                CCLOG("touch index %d", iTag - LIST_FILE);
-                CCFileUtils::sharedFileUtils()->addSearchPath(searchPath.c_str());
                 
-                m_mainlayer->importFinish(m_vFileName.at(iTag - LIST_FILE));
-                CCNode* parent = this->getParent();
-                parent->removeChild(this);
-                m_mainlayer->switchToMain();
+                string fileName = m_vFileName.at(iTag - LIST_FILE);
+                CCLOG("touch index %d", iTag - LIST_FILE);
+                
+                if (m_cbMulti->getSelectedState() == false)
+                {
+                    m_vMultiName.clear();
+                    m_vMultiName.push_back(fileName);
+                    
+                    m_mainlayer->importFinish(m_vMultiName);
+                    CCNode* parent = this->getParent();
+                    parent->removeChild(this);
+                    m_mainlayer->switchToMain();
+                }
+                else
+                {
+                    handleString(fileName);
+                    updateList();
+                }
+                
+
             }
         }
             break;
     }
 }
-
-//int countLines(char *filename)
-//{
-//    ifstream file;
-//    int n = 0;
-//    string tmp;
-//    file.open(filename,ios::in);    //ios::in 表示以只读的方式读取文件
-//    if(file.fail())                 //文件打开失败:返回0
-//    {
-//        return 0;
-//    }
-//    else//文件存在
-//    {
-//        while(getline(file, tmp, '\n'))
-//        {
-//            n++;
-//        }
-//        file.close();
-//        return n;
-//    }
-//}
-//
-//
-//string readLine(fstream &file, char *filename, int line)
-//{
-//    int lines,i=0;
-//    string temp;
-//    lines = countLines(filename);
-//    
-//    if(line<=0)
-//    {
-//        return "Error 1: 行数错误，不能为0或负数。";
-//    }
-//    if(file.fail())
-//    {
-//        return "Error 2: 文件不存在。";
-//    }
-//    if(line>lines)
-//    {
-//        return "Error 3: 行数超出文件长度。";
-//    }
-//    while(getline(file,temp)&&i<line-1)
-//    {
-//        i++;
-//    }
-//    return temp;
-//}
 
 void FolderBrowser::forward()
 {
@@ -246,6 +227,10 @@ void FolderBrowser::forward(string &key)
    
     fin.close();
     
+    if (m_vFileName.size() != 0) {
+        CCFileUtils::sharedFileUtils()->addSearchPath(searchPath.c_str());
+    }
+    
     //3. 将vector的内容用列表显示出来.
     updateList();
     
@@ -278,6 +263,15 @@ void FolderBrowser::updateList()
         bg->setTag(LIST_FILE + i);
         Label *label = (Label*)UIHelper::seekWidgetByTag(bg, 22);
         label->setText(m_vFileName.at(i));
+        
+        
+        if (m_vMultiName.size() != 0) {
+            if (isStringInMulti(m_vFileName.at(i)))
+            {
+                bg->setBackGroundColorType(LAYOUT_COLOR_SOLID);
+                bg->setBackGroundColor(ccBLACK);
+            }
+        }
     }
 }
 
@@ -295,18 +289,6 @@ bool FolderBrowser::checkIfPlist(string &str)
     
     return false;
 }
-
-//void FolderBrowser::registerWithTouchDispatcher()
-//{
-//    CCDirector* pDirector = CCDirector::sharedDirector();
-//    pDirector->getTouchDispatcher()->addTargetedDelegate(this, kCCMenuHandlerPriority + 1, true);
-//}
-//
-//bool FolderBrowser::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
-//{
-//    return false;
-//}
-
 
 //editbox
 void FolderBrowser::editBoxEditingDidBegin(CCEditBox* editBox)
@@ -334,4 +316,35 @@ void FolderBrowser::checkOldSearchPath()
         forward();
     }
 }
+
+void FolderBrowser::handleString(string &str)
+{
+    for (int i = 0; i < m_vMultiName.size(); i++) {
+        
+        if (m_vMultiName.at(i).compare(str) == 0) {
+            
+            //如果已经存在就删除
+            vector<string>::iterator it = m_vMultiName.begin() + i;
+            m_vMultiName.erase(it);
+            return;
+        }
+    }
+    
+    //不存在, 就加入
+    m_vMultiName.push_back(str);
+}
+
+bool FolderBrowser::isStringInMulti(string &str)
+{
+    for (int i = 0; i < m_vMultiName.size(); i++)
+    {
+        if (m_vMultiName.at(i).compare(str) == 0) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+
 

@@ -241,7 +241,9 @@ void MainScene::setFrameCount(CCObject *sender)
     {
         btnAddMotion->setEnabled(false);
         m_ebName->setVisible(true);
-        m_ebName->setText(xCurAtk->sSaveName);
+        if (xCurAtk) {
+            m_ebName->setText(xCurAtk->sSaveName);
+        }
     }
 }
 
@@ -453,10 +455,9 @@ bool MainScene::checkIfStartToDrag(CCPoint point)
     }
 }
 
-
-void MainScene::importFinish(string &str)
+void MainScene::importFinish(vector<string> &vec)
 {
-    xSkill->importPart(str.c_str());
+    xSkill->importPart(vec);
     setFrameCount(NULL);
     updateList(NULL);
     updateButtonForMotion(NULL);

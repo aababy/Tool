@@ -9,13 +9,19 @@
 #include "Motion.h"
 
 
-Motion::Motion(string sName, const char *pFileName, vector<string> vFrameNameOrdered, int iStart, int iEnd, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, int iMotionAccIndex)
+Motion::Motion(string sName, vector<string> &vNames, vector<string> vFrameNameOrdered, int iStart, int iEnd, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, int iMotionAccIndex)
 {
     m_vFrameNameOrdered = vFrameNameOrdered;
     this->iStart = iStart;
     this->iEnd = iEnd;
     
-    sResName = pFileName;
+    for (int i = 0; i < vNames.size(); i++) {
+        if (i != 0) {   //间隔符
+            sResName += ",";
+        }
+        sResName += vNames.at(i);               //保存ResName
+    }
+    
     sSaveName = sName;
     m_iFrameBG = parent;
     location = origin;
@@ -28,7 +34,7 @@ Motion::Motion(string sName, const char *pFileName, vector<string> vFrameNameOrd
     sMotionName = buffer;
     
     //加入atk时, 便加入1个Motion
-    importPart(pFileName);
+    importPart(vNames);
 }
 
 Motion::~Motion()
@@ -36,10 +42,10 @@ Motion::~Motion()
     clear();
 }
 
-void Motion::importPart(const char *pFileName)
+void Motion::importPart(vector<string> &vNames)
 {
     if (m_vParts.empty()) {
-        m_mainPart = new Part(pFileName, location, location, m_preview, m_iFrameBG, m_vFrameNameOrdered);
+        m_mainPart = new Part(vNames, location, location, m_preview, m_iFrameBG, m_vFrameNameOrdered);
         m_mainPart->setMain();
         m_vParts.push_back(m_mainPart);
         
@@ -50,7 +56,7 @@ void Motion::importPart(const char *pFileName)
         CCPoint point = ccp(100, 0);
         point = ccpAdd(location, point);
         
-        Part* part = new Part(pFileName, point, location, m_preview, m_iFrameBG, m_iAccIndex);
+        Part* part = new Part(vNames, point, location, m_preview, m_iFrameBG, m_iAccIndex);
         m_iAccIndex++;
         part->setStartFrameIndex(m_iMainIndex);
         m_vParts.push_back(part);

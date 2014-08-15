@@ -40,7 +40,7 @@ public:
 	void updateMotionList(CCObject *sender);
     void updateProperty(CCObject *sender);
     void dragAndDrop(CCObject *pSender, TouchEventType type);
-    void importFinish(string &str);
+    void importFinish(vector<string> &vec);
     
     //editbox
     virtual void editBoxEditingDidBegin(CCEditBox* editBox);
