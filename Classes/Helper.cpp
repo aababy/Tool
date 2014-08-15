@@ -54,6 +54,15 @@ TextField * initTextField(int iTag, Layout* root)
     return text;
 }
 
+CheckBox * initCheckBox(int iTag, Layout* root, CCObject *target, SEL_SelectedStateEvent selector)
+{
+    CheckBox *checkBox = (CheckBox*)(UIHelper::seekWidgetByTag(root, iTag));
+    checkBox->addEventListenerCheckBox(target, selector);
+    
+    return checkBox;
+}
+
+
 int getNumber(string &str)
 {
     int iDot = str.rfind('.');

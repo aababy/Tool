@@ -48,6 +48,7 @@ public:
     int getFramesCount();
     void setDelay(float delay);
     float getDelay();
+    void setFlags(flagIndex index, bool bFlag);
     
     void getEffectsName(CCDictionary *dic, CCDictionary *effects);
 

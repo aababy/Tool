@@ -60,6 +60,9 @@ public:
     void updateButtonForMotion(CCObject *sender);
     void setTotalPlist(string &str);
     
+    void selectedStateEvent(CCObject *pSender, CheckBoxEventType type);
+    int tag2Index(int aTag);
+    
 protected:
     void setFrameCount(CCObject *sender);
     ~MainScene();
@@ -97,6 +100,8 @@ protected:
     bool        m_bInOtherLayer = false;
     
     curState    m_state = CS_NONE;
+    
+    CheckBox*   m_cbFlags[FLAG_COUNT];
 };
 
 #endif // __HELLOWORLD_SCENE_H__

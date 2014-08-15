@@ -104,6 +104,13 @@ bool MainScene::init(CCScene* pScene)
         
         xSkill->init(m_pHolder->getPosition(), m_preview->getPosition(), m_rootNode);
         
+        //checkbox
+        m_cbFlags[0] = initCheckBox(177, root, this, checkboxselectedeventselector(MainScene::selectedStateEvent));
+        m_cbFlags[1] = initCheckBox(179, root, this, checkboxselectedeventselector(MainScene::selectedStateEvent));
+        m_cbFlags[2] = initCheckBox(183, root, this, checkboxselectedeventselector(MainScene::selectedStateEvent));
+        m_cbFlags[3] = initCheckBox(185, root, this, checkboxselectedeventselector(MainScene::selectedStateEvent));
+        m_cbFlags[4] = initCheckBox(187, root, this, checkboxselectedeventselector(MainScene::selectedStateEvent));
+        
         //列表
         listView = (UIListView*)UIHelper::seekWidgetByTag(root, PARTS_LIST);
         CCNode *node = (NodeReader::getInstance()->createNode("R/ListCell.ExportJson"));
@@ -137,6 +144,66 @@ MainScene::~MainScene()
     xNotify->removeAllObservers(this);
 }
 
+int MainScene::tag2Index(int aTag)
+{
+    int index = 0;
+    switch (aTag) {
+        case 177:
+        {
+            index = 0;
+        }
+            break;
+        case 179:
+        {
+            index = 1;
+        }
+            break;
+        case 183:
+        {
+            index = 2;
+        }
+            break;
+        case 185:
+        {
+            index = 3;
+        }
+            break;
+        case 187:
+        {
+            index = 4;
+        }
+            break;
+        default:
+            break;
+    }
+    
+    return index;
+}
+
+void MainScene::selectedStateEvent(CCObject *pSender, CheckBoxEventType type)
+{
+    Widget *widget = (Widget*)pSender;
+    int iTag = widget->getTag();
+    int index = tag2Index(iTag);
+    
+    switch (type)
+    {
+        case CHECKBOX_STATE_EVENT_UNSELECTED:
+        {
+            xCurAtk->setFlags((flagIndex)index, false);
+        }
+            break;
+            
+        case CHECKBOX_STATE_EVENT_SELECTED:
+        {
+            xCurAtk->setFlags((flagIndex)index, true);
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
 
 void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
 {

@@ -259,8 +259,9 @@ float Motion::getDelay()
     return m_vParts.at(m_iCurOperationIndex)->getDelay();
 }
 
-
-
-
+void Motion::setFlags(flagIndex index, bool bFlag)
+{
+    m_vParts.at(m_iCurOperationIndex)->setFlags(index, bFlag);
+}
 
 

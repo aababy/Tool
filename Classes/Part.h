@@ -45,6 +45,7 @@ public:
     void preFrame(int iCount);
     void preview();
     void setEnabled(bool bEnabled);
+    void setFlags(flagIndex index, bool bFlag);
     
     string getEffectName();
     
@@ -90,11 +91,7 @@ private:
     
     float   m_fDelay = 0.05f;        //帧间隔
     
-    CC_SYNTHESIZE(bool, m_bMove, Move);
-    CC_SYNTHESIZE(bool, m_bRandomPosition, RandomPosition);
-    CC_SYNTHESIZE(bool, m_bRandomCount, RandomCount);
-    CC_SYNTHESIZE(bool, m_bFollow, Follow);
-    CC_SYNTHESIZE(bool, m_bFixed, Fixed);
+    bool    m_flag[FLAG_COUNT];
 };
 
 

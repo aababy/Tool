@@ -25,6 +25,7 @@ USING_NS_CC;
 using namespace cocos2d::extension;
 using namespace ui;
 
+#define FLAG_COUNT              (5)
 
 struct FramesName
 {
@@ -44,6 +45,15 @@ enum curState
     CS_NONE,
     CS_TOTAL_PLIST,
     CS_MAIN_PLIST,
+};
+
+enum flagIndex
+{
+    FI_MOVE,
+    FI_RANDOMPOSITION,
+    FI_RANDOMCOUNT,
+    FI_FOLLOW,
+    FI_FIXED,
 };
 
 
