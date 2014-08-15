@@ -92,6 +92,7 @@ void Skill::addMotion()
         char buffer[10];
         sprintf(buffer, "skillpart_%d", getMotionCount() + 1);
         
+        CCAssert(m_iLastIndex <= m_iCurIndex, "error");
         m_curMotion = new Motion(buffer, sSkillName.c_str(), vFrameName, m_iLastIndex, m_iCurIndex, m_origin, m_showForPreview, m_parent, m_iMotionAccIndex);
         m_vMotion.push_back(m_curMotion);
         m_iMotionAccIndex++;
@@ -384,4 +385,35 @@ bool Skill::checkCanAddMotion()
         return true;
     }
 }
+
+void Skill::deletePart()
+{
+    //不改变当前帧数, (如果当前帧在Part内, 就不动, 如果不在, 就显示默认sprite)
+    if(getMotionCount() != 0)
+    {
+        //删除最后一个Part, 判断是否需要改变atk
+        Motion *motion = m_vMotion.at(getMotionCount() - 1);
+        delete motion;
+        m_vMotion.pop_back();
+        
+        checkAllIndex();
+        
+        m_iMotionAccIndex--;
+        
+        
+        if (getMotionCount() == 0) {
+            //m_iCurIndex = 0;
+            m_iLastIndex = 0;
+        }
+        else
+        {
+            m_iLastIndex = m_vMotion.at(getMotionCount() - 1)->iEnd + 1;
+        }
+        
+        xNotify->postNotification(UPDATE_MOTION);
+        xNotify->postNotification(UPDATE_MOTION_LIST);
+        xNotify->postNotification(UPDATE_ALL_INDEX);
+    }
+}
+
 

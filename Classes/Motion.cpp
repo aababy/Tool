@@ -31,6 +31,11 @@ Motion::Motion(string sName, const char *pFileName, vector<string> vFrameNameOrd
     importPart(pFileName);
 }
 
+Motion::~Motion()
+{
+    clear();
+}
+
 void Motion::importPart(const char *pFileName)
 {
     if (m_vParts.empty()) {

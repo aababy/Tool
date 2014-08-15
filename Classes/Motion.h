@@ -15,6 +15,7 @@ class Motion {
     
 public:
     Motion(string sName, const char *pFileName, vector<string> vFrameNameOrdered, int iStart, int iEnd, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, int iMotionAccIndex);
+    ~Motion();
     void importPart(const char *pFileName);
     int getPartsCount();
     void setCurOperationIndex(int idx);
@@ -55,10 +56,7 @@ public:
     int iEnd = 0;
 private:
     int iStart = 0;
-
-    CCSprite * m_spPreview = NULL;            //用于预览
-    CCSprite  *m_sprite;                    //用于显示帧
-    
+   
     vector<Part*> m_vParts;
     
     CCPoint     location;

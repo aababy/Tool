@@ -40,7 +40,6 @@ Part::Part(const char *pFileName, CCPoint &show, CCPoint &origin, CCPoint &showF
     //显示帧
     m_sprite = CCSprite::createWithSpriteFrameName(getCurFrameName());
     m_sprite->setPosition(show);
-    m_sprite->retain(); //retain 备用
     
     parent->addChild(m_sprite);
     
@@ -51,7 +50,6 @@ Part::Part(const char *pFileName, CCPoint &show, CCPoint &origin, CCPoint &showF
     
     m_preview = CCSprite::create();
     m_preview->setVisible(false);
-    m_preview->retain();    //retain 备用
     
     m_parent->addChild(m_preview);
 }
@@ -85,7 +83,6 @@ Part::Part(const char *pFileName, CCPoint &show, CCPoint &origin, CCPoint &showF
     //显示帧
     m_sprite = CCSprite::createWithSpriteFrameName(getCurFrameName());
     m_sprite->setPosition(show);
-    m_sprite->retain(); //retain 备用
     
     parent->addChild(m_sprite);
     
@@ -96,7 +93,6 @@ Part::Part(const char *pFileName, CCPoint &show, CCPoint &origin, CCPoint &showF
     
     m_preview = CCSprite::create();
     m_preview->setVisible(false);
-    m_preview->retain();    //retain 备用
     
     m_parent->addChild(m_preview);
 }
@@ -109,9 +105,6 @@ Part::~Part()
     
     parent = m_sprite->getParent();
     parent->removeChild(m_sprite);
-        
-    CC_SAFE_RELEASE(m_sprite);
-    CC_SAFE_RELEASE(m_preview);
 }
 
 const char * Part::getCurFrameName()

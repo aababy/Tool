@@ -204,7 +204,7 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
             break;
         case BUTTON_DEL_MOTION:
         {
-            
+            xSkill->deletePart();
         }
             break;
         default:

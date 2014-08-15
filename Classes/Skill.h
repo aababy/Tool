@@ -53,6 +53,7 @@ public:
     void saveOfEffects(CCDictionary *dic);
     
     bool checkCanAddMotion();
+    void deletePart();
     
 private:
     void setCurIndex(int idx);
