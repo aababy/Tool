@@ -89,7 +89,7 @@ void Skill::addMotion()
             vFrameName.push_back(str);
         }
         
-        char buffer[10];
+        char buffer[20];
         sprintf(buffer, "skillpart_%d", getMotionCount() + 1);
         
         CCAssert(m_iLastIndex <= m_iCurIndex, "error");

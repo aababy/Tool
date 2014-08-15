@@ -351,7 +351,10 @@ void MainScene::editBoxTextChanged(CCEditBox* editBox, const std::string& text)
     }
     
     //只有changed有用
-    if (text.length() > 2) {
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	if (text.length() > 2)
+#endif
+	{
         double temp = 0;
         
         CCPoint point;
