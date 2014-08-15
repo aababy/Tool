@@ -160,6 +160,7 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
         {
             xSkill->clear();
             updateList(NULL);
+            m_state = CS_MAIN_PLIST;
         }
             break;
         case BUTTON_NEXT:

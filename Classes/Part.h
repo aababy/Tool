@@ -88,7 +88,13 @@ private:
     bool        m_bEnabled;
     int     m_iAccIndex = 0;
     
-    float   m_fDelay = 0.1f;        //帧间隔
+    float   m_fDelay = 0.05f;        //帧间隔
+    
+    CC_SYNTHESIZE(bool, m_bMove, Move);
+    CC_SYNTHESIZE(bool, m_bRandomPosition, RandomPosition);
+    CC_SYNTHESIZE(bool, m_bRandomCount, RandomCount);
+    CC_SYNTHESIZE(bool, m_bFollow, Follow);
+    CC_SYNTHESIZE(bool, m_bFixed, Fixed);
 };
 
 

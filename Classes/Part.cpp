@@ -225,8 +225,23 @@ void Part::checkIfNeedToStart(int iFrameIndex)
         m_preview->setPosition(ccpAdd(m_showForPreview, getOffset()));
         
         m_pAction = CCAnimate::create(getAnimation());
-        m_preview->runAction(CCSequence::create(m_pAction, CCCallFunc::create(this, callfunc_selector(Part::actionDone)), NULL));
+        CCSequence * sequence = CCSequence::create(m_pAction, CCCallFunc::create(this, callfunc_selector(Part::actionDone)), NULL);
         
+        //位移
+        if(m_bMove)
+        {
+            //根据帧数确定时间
+            CCPoint dest = ccp(m_iFrameCount * 50, 0);       //水平
+            float duration = m_iFrameCount * m_fDelay;
+            CCSpawn* spawn = CCSpawn::create(sequence, CCMoveBy::create(duration, dest), NULL);
+            
+            m_preview->runAction(spawn);
+        }
+        else
+        {
+            m_preview->runAction(sequence);
+        }
+                
         m_preview->setVisible(true);
         m_bRunning = true;
     }
