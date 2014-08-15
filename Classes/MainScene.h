@@ -62,6 +62,7 @@ public:
     
     void selectedStateEvent(CCObject *pSender, CheckBoxEventType type);
     int tag2Index(int aTag);
+    void updateCheckBox();
     
 protected:
     void setFrameCount(CCObject *sender);

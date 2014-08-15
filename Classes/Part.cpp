@@ -370,8 +370,10 @@ void Part::setFlags(flagIndex index, bool bFlag)
     m_flag[index] = bFlag;
 }
 
-
-
+bool Part::getFlags(flagIndex index)
+{
+    return m_flag[index];
+}
 
 
 

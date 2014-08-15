@@ -345,6 +345,7 @@ void MainScene::updateList(CCObject *sender)
     }
     
     makeAFocusOfList();
+    updateCheckBox();
 }
 
 void MainScene::updateMotionList(CCObject *sender)
@@ -603,4 +604,14 @@ void MainScene::setTotalPlist(string &str)
 {
     xSkill->setTotalPlist(str);
     m_state = CS_TOTAL_PLIST;
+}
+
+void MainScene::updateCheckBox()
+{
+    if (xCurAtk) {
+        
+        for (int i = 0; i < FLAG_COUNT; i++) {
+            m_cbFlags[i]->setSelectedState(xCurAtk->getFlags((flagIndex)i));
+        }
+    }
 }

@@ -46,6 +46,7 @@ public:
     void preview();
     void setEnabled(bool bEnabled);
     void setFlags(flagIndex index, bool bFlag);
+    bool getFlags(flagIndex index);
     
     string getEffectName();
     

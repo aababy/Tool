@@ -49,6 +49,7 @@ public:
     void setDelay(float delay);
     float getDelay();
     void setFlags(flagIndex index, bool bFlag);
+    bool getFlags(flagIndex index);
     
     void getEffectsName(CCDictionary *dic, CCDictionary *effects);
 

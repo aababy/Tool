@@ -264,4 +264,8 @@ void Motion::setFlags(flagIndex index, bool bFlag)
     m_vParts.at(m_iCurOperationIndex)->setFlags(index, bFlag);
 }
 
+bool Motion::getFlags(flagIndex index)
+{
+    return m_vParts.at(m_iCurOperationIndex)->getFlags(index);
+}
 
