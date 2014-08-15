@@ -29,6 +29,7 @@ enum UITag
     BUTTON_DEL_MOTION = 103,
     DELAY = 105,
     SKILL_PART_NAME = 173,
+    BUTTON_PREVIEW_ALL = 191,
     
     
     LIST_BG = 1000,
@@ -74,6 +75,7 @@ bool MainScene::init(CCScene* pScene)
         initButton(BUTTON_STOP, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_CLEAN, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_SAVE, root, this, toucheventselector(MainScene::touchEvent));
+        initButton(BUTTON_PREVIEW_ALL, root, this, toucheventselector(MainScene::touchEvent));
         btnAddMotion = initButton(BUTTON_ADD_MOTION, root, this, toucheventselector(MainScene::touchEvent));
         btnAddMotion->setEnabled(false);
         btnDelMotion = initButton(BUTTON_DEL_MOTION, root, this, toucheventselector(MainScene::touchEvent));
@@ -171,6 +173,11 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
         }
             break;
         case BUTTON_PREVIEW:
+        {
+            xSkill->previewSingle();
+        }
+            break;
+        case BUTTON_PREVIEW_ALL:
         {
             xSkill->preview();
         }

@@ -246,11 +246,25 @@ void Skill::setDragAndDropOffset(CCPoint &point)
 
 void Skill::preview()
 {
+    m_bPreviewAll = true;
+    
     //通知第1个Motion进行Preview, 仅仅是第1个.
     if (! m_vMotion.empty()) {
         m_bInPreview = true;
         m_iPreviewIndex = 0;
         m_vMotion.at(0)->preview();
+    }
+}
+
+void Skill::previewSingle()
+{
+    m_bPreviewAll = false;
+    
+    //通知当前Motion进行Preview, 仅仅是当前.
+    if (m_curMotion != NULL) {
+        m_bInPreview = true;
+        m_iPreviewIndex = m_iCurAtk;
+        m_curMotion->preview();
     }
 }
 
@@ -266,7 +280,7 @@ void Skill::update(float delta)
         if (m_vMotion.at(m_iPreviewIndex)->isInPreview() == false) {
             m_iPreviewIndex++;
             
-            if (m_iPreviewIndex < getMotionCount()) {
+            if (m_iPreviewIndex < getMotionCount() && m_bPreviewAll == true) {
                 m_vMotion.at(m_iPreviewIndex)->preview();
             }
             else

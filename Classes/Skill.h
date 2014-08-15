@@ -45,6 +45,7 @@ public:
     int         m_iCurIndex = -1;           //当前帧数, 只有在当前帧数大于最后1个Motion的帧数的时候, 才能进行AddIndex. 删除也只能删除最后一个Motion
     
     void preview();
+    void previewSingle();
     void update(float delta);
     void clear();
     void save();
@@ -80,6 +81,7 @@ private:
     int         m_iMotionAccIndex = 1;            //删除的时候需要减少这个值
     
     string      sTotalPlist;
+    bool        m_bPreviewAll;
 };
 
 

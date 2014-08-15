@@ -156,8 +156,14 @@ void Part::setFrame(int iIndexStartFromMain)
     if (iStartFrameIndex <= iIndexStartFromMain) {
         m_iCurIndex = iIndexStartFromMain - iStartFrameIndex;
         
-        m_sprite->initWithSpriteFrameName(getCurFrameName());
-        m_sprite->setVisible(true);
+        if (m_iCurIndex < m_vFrameName.size()) {
+            m_sprite->initWithSpriteFrameName(getCurFrameName());
+            m_sprite->setVisible(true);
+        }
+        else
+        {
+            m_sprite->setVisible(false);
+        }
     }
     else
     {
@@ -215,11 +221,13 @@ void Part::checkIfNeedToStart(int iFrameIndex)
         m_bOnWait = false;
         m_iOldFrameIndex = -1;
         m_preview->stopAllActions();
-        m_preview->setVisible(true);
+        m_preview->initWithSpriteFrameName(m_vFrameName.at(0).sFrameName.c_str());
         m_preview->setPosition(ccpAdd(m_showForPreview, getOffset()));
         
         m_pAction = CCAnimate::create(getAnimation());
         m_preview->runAction(CCSequence::create(m_pAction, CCCallFunc::create(this, callfunc_selector(Part::actionDone)), NULL));
+        
+        m_preview->setVisible(true);
         m_bRunning = true;
     }
 }
@@ -299,7 +307,7 @@ void Part::setEnabled(bool bEnabled)
     m_bEnabled = bEnabled;
     
     m_sprite->setVisible(m_bEnabled);
-    m_preview->setVisible(m_bEnabled);
+    m_preview->setVisible(false);
 }
 
 string Part::getEffectName()
