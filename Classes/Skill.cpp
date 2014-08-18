@@ -313,7 +313,7 @@ void Skill::save()
 {
     if(getMotionCount() != 0)
     {
-        CCDictionary *dic = (CCDictionary*)m_dictionary->copy();
+        CCDictionary *dic = CCDictionary::createWithContentsOfFile(sTotalPlist.c_str());
         dic->removeObjectForKey("frames");
         
         ////////////////////////////////////////////////////////////////////////////////////////////////    修改内容
