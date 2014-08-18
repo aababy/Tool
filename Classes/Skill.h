@@ -59,6 +59,7 @@ public:
     
 private:
     void setCurIndex(int idx);
+    void prepareTotalPlist(CCDictionary *dic);
     
     vector<Motion *>    m_vMotion;
     vector<FramesName>  m_vFrameName;

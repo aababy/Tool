@@ -314,11 +314,10 @@ void Skill::save()
     if(getMotionCount() != 0)
     {
         CCDictionary *dic = CCDictionary::createWithContentsOfFile(sTotalPlist.c_str());
-        dic->removeObjectForKey("frames");
+        prepareTotalPlist(dic);
         
         ////////////////////////////////////////////////////////////////////////////////////////////////    修改内容
         
-        saveOfActions(dic);
         saveAtksAndEffect(dic);
         
         ////////////////////////////////////////////////////////////////////////////////////////////////    写文件
@@ -331,7 +330,7 @@ void Skill::save()
             }
             
             char stringBuffer[250];
-            sprintf(stringBuffer, "%s/%s", str.c_str(), sSkillName.at(0).c_str());
+            sprintf(stringBuffer, "%s/%s", str.c_str(), sTotalPlist.c_str());
             dic->writeToFile(stringBuffer);
         }
     }
@@ -352,14 +351,22 @@ void Skill::saveOfActions(CCDictionary *dic)
     CCDictionary *dictionary = new CCDictionary();
     insertString(dictionary, "act1", str);
     
-    dic->setObject(dictionary, "atctions");
+    dic->setObject(dictionary, "acts");
 }
 
 //保存 atks 和 effects, 最好同时保存, 节省效率
 void Skill::saveAtksAndEffect(CCDictionary *dic)
 {
-    CCDictionary *atks = new CCDictionary();
-    CCDictionary *effects = new CCDictionary();
+    //判断是否已经有这些字段
+    CCDictionary *atks = (CCDictionary *)dic->objectForKey("atks");
+    if (atks == NULL) {
+        atks = new CCDictionary();
+    }
+    
+    CCDictionary *effects = (CCDictionary *)dic->objectForKey("effects");
+    if (effects == NULL) {
+        effects = new CCDictionary();
+    }
     
     for (int i = 0; i < getMotionCount(); i++) {
         Motion *motion = m_vMotion.at(i);
@@ -441,3 +448,24 @@ void Skill::setTotalPlist(string &str)
     sTotalPlist = str;
 }
 
+void Skill::prepareTotalPlist(CCDictionary *dic)
+{
+    //去掉无关的项目
+    dic->removeObjectForKey("seqActions");
+    dic->removeObjectForKey("special_effects");
+    
+    //去掉atk开头的actions
+    CCDictionary *actions = (CCDictionary *)dic->objectForKey("actions");
+    
+    CCArray *array = actions->allKeys();
+    for (int i = 0; i < array->count(); i ++)
+    {
+        //获取key的方法
+        CCString *key =  (CCString*)array->objectAtIndex(i);
+        string strKey = key->getCString();
+
+        if (strKey.find("atk") != string::npos) {
+            actions->removeObjectForKey(key->getCString());
+        }
+    }
+}
