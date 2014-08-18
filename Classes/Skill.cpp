@@ -372,7 +372,7 @@ void Skill::saveAtksAndEffect(CCDictionary *dic)
         motion->getEffectsName(eff, effects);               //effect 是这个函数加入的.
         dictionary->setObject(eff, "effects");
 
-        insertString(dictionary, "fileName", motion->sResName);   
+        insertString(dictionary, "fileName", motion->sResName);
         
         //插入frames
         CCArray *frames = CCArray::createWithCapacity(motion->getFramesCount());
