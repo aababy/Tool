@@ -102,6 +102,11 @@ Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &show
     m_preview->setVisible(false);
     
     m_parent->addChild(m_preview);
+    
+    for(int i = 0; i < FLAG_COUNT; i++)
+    {
+        m_flag[i] = false;
+    }
 }
 
 Part::~Part()
