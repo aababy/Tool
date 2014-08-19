@@ -385,6 +385,12 @@ bool Part::getFlags(flagIndex index)
     return m_flag[index];
 }
 
+CCSprite* Part::getSprite()
+{
+    return m_sprite;
+}
 
-
-
+CCSprite* Part::getPreview()
+{
+    return m_preview;
+}

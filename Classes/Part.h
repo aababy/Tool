@@ -47,6 +47,8 @@ public:
     void setEnabled(bool bEnabled);
     void setFlags(flagIndex index, bool bFlag);
     bool getFlags(flagIndex index);
+    CCSprite* getSprite();
+    CCSprite* getPreview();
     
     string getEffectName();
     

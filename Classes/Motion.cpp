@@ -187,7 +187,7 @@ void Motion::preview()
 
 void Motion::clear()
 {
-    for (int i = 0; i < m_vParts.size(); i++) {
+    for (int i = m_vParts.size() - 1; i >= 0; i--) {
         delete m_vParts.at(i);
     }
     
@@ -266,6 +266,11 @@ void Motion::setFlags(flagIndex index, bool bFlag)
 
 bool Motion::getFlags(flagIndex index)
 {
+    if(m_iCurOperationIndex == -1)
+    {
+        return false;
+    }
+    
     return m_vParts.at(m_iCurOperationIndex)->getFlags(index);
 }
 
