@@ -64,6 +64,8 @@ public:
     void saveEffectToDictionary(CCDictionary *effects);
     void setDelay(float delay);
     float getDelay();
+    void setDegree(float degree);
+    float getDegree();
 
     ~Part();
     
@@ -89,14 +91,13 @@ private:
     bool m_bMain = false;           //是否是主体
     
     int     iStartFrameIndex = 0;   //这个也是相对的.
-    bool        m_bEnabled;
+    bool    m_bEnabled;
     int     m_iAccIndex = 0;
     
     float   m_fDelay = 0.05f;        //帧间隔
+    float   m_degree;
     
     bool    m_flag[FLAG_COUNT];
-    
-    CC_SYNTHESIZE(float, m_degree, Degree);
 };
 
 

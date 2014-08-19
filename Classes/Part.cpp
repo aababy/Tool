@@ -258,7 +258,6 @@ void Part::checkIfNeedToStart(int iFrameIndex)
             float duration = m_iFrameCount * m_fDelay;
             CCSpawn* spawn = CCSpawn::create(sequence, CCMoveBy::create(duration, dest), NULL);
             
-            m_preview->setRotation(360 - m_degree);
             m_preview->runAction(spawn);
         }
         else
@@ -433,3 +432,15 @@ CCSprite* Part::getPreview()
 {
     return m_preview;
 }
+
+void Part::setDegree(float degree)
+{
+    m_degree = degree;
+    setRotate(360 - m_degree);
+}
+
+float Part::getDegree()
+{
+    return m_degree;
+}
+
