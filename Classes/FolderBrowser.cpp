@@ -70,12 +70,12 @@ bool FolderBrowser::init(curState state)
         switch (state) {
             case CS_NONE:
             {
-                m_tips->setText("选择总Plist");
+                m_tips->setText("选择保存的Plist");
             }
                 break;
             case CS_TOTAL_PLIST:
             {
-                m_tips->setText("选择主体");
+                m_tips->setText("选择主角Plist");
             }
                 break;
             case CS_MAIN_PLIST:
@@ -192,7 +192,7 @@ void FolderBrowser::touchEvent(CCObject *pSender, TouchEventType type)
                     m_state = CS_MAIN_PLIST;
                     m_mainlayer->setTotalPlist(fileName);
                     
-                    m_tips->setText("选择主体");
+                    m_tips->setText("选择主角Plist");
                 }
                 else
                 {

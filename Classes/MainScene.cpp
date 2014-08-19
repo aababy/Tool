@@ -10,7 +10,7 @@ enum UITag
     IMAGEVIEW_FRAME = 12,
     LABEL_FRAME_COUNT = 15,
     PREVIEW = 16,
-    BUTTON_STOP = 17,
+    BUTTON_REMOVE = 17,
     BUTTON_PREVIEW = 18,
     BUTTON_CLEAN = 19,
     PARTS_LIST = 20,
@@ -73,7 +73,7 @@ bool MainScene::init(CCScene* pScene)
         initButton(BUTTON_PRV, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_NEXT, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_PREVIEW, root, this, toucheventselector(MainScene::touchEvent));
-        initButton(BUTTON_STOP, root, this, toucheventselector(MainScene::touchEvent));
+        initButton(BUTTON_REMOVE, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_CLEAN, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_SAVE, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_PREVIEW_ALL, root, this, toucheventselector(MainScene::touchEvent));
@@ -277,9 +277,10 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
             xSkill->preview();
         }
             break;
-        case BUTTON_STOP:
+        case BUTTON_REMOVE:
         {
-            m_preview->stopAllActions();
+            if(xCurAtk)
+            xCurAtk->removeEffect();
         }
             break;
         case BUTTON_SAVE:

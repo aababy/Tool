@@ -278,3 +278,14 @@ bool Motion::getFlags(flagIndex index)
     return m_vParts.at(m_iCurOperationIndex)->getFlags(index);
 }
 
+void Motion::removeEffect()
+{
+    if (m_vParts.size() >= 2) {
+        Part* part = m_vParts.at(m_vParts.size() - 1);
+        delete part;
+        
+        m_vParts.pop_back();
+        
+        setCurOperationIndex(m_vParts.size() - 1);
+    }
+}

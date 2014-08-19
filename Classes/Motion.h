@@ -26,6 +26,7 @@ public:
     bool isInMotion(int idx);
     void setFrame(int iFrame);
     int getLastFrameIndex();
+    void removeEffect();
     
     string sMotionName;         //e.g. "0-5" or "6-11"
     string sSaveName;           //e.g. "atk1"
