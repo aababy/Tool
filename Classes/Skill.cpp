@@ -141,7 +141,7 @@ void Skill::setCurAtkIndex(int i, setOperateType type)
             
             //true 需要改变
             if (type == OT_SELECT) {
-                setCurIndex(m_curMotion->getLastFrameIndex());
+                setCurIndex(m_curMotion->iStart);
             }
         }
         

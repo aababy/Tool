@@ -59,8 +59,9 @@ public:
     vector<string> m_vFrameNameOrdered;
 
     int iEnd = 0;
-private:
     int iStart = 0;
+    
+private:
    
     vector<Part*> m_vParts;
     

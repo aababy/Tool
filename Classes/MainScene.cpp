@@ -104,6 +104,7 @@ bool MainScene::init(CCScene* pScene)
         m_lFrameCount = (Label*)UIHelper::seekWidgetByTag(root, LABEL_FRAME_COUNT);
         m_preview = static_cast<CCSprite*>(m_rootNode->getChildByTag(PREVIEW));
         m_preview->initWithFile("R/cross.png");
+        m_preview->setVisible(false);
         
         xSkill->init(m_pHolder->getPosition(), m_preview->getPosition(), m_rootNode);
         
