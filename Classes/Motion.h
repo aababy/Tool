@@ -74,6 +74,9 @@ private:
     bool        m_bInPreview = false;
     
     int         m_iAccIndex = 1;
+    
+    CCSprite*   m_show;
+    CCSprite*   m_showPreview;
 };
 
 

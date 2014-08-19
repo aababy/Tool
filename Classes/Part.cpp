@@ -61,7 +61,7 @@ Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &show
 
 
 
-Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, int iAcc)
+Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, CCNode *parentForPreview, int iAcc)
 {
     sPartName = vNames.at(0);
     m_iAccIndex = iAcc;
@@ -89,8 +89,9 @@ Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &show
     
     //显示帧
     m_sprite = CCSprite::createWithSpriteFrameName(getCurFrameName());
-    m_sprite->setPosition(show);
+    CCSize size = m_sprite->getContentSize();
     
+    m_sprite->setPosition(ccp(size.width/2, size.height/2));
     parent->addChild(m_sprite);
     
     
@@ -99,9 +100,10 @@ Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &show
     m_showForPreview = showForPreview;
     
     m_preview = CCSprite::create();
+    m_preview->setPosition(ccp(size.width/2, size.height/2));
     m_preview->setVisible(false);
     
-    m_parent->addChild(m_preview);
+    parentForPreview->addChild(m_preview);
     
     for(int i = 0; i < FLAG_COUNT; i++)
     {
@@ -217,6 +219,7 @@ void Part::setRotate(float r)
 void Part::setDragAndDropOffset(CCPoint &point)
 {
     m_sprite->setPosition(ccpAdd(m_sprite->getPosition(), point));
+    m_preview->setPosition(ccpAdd(m_preview->getPosition(), point));
 }
 
 void Part::preview()
@@ -232,7 +235,15 @@ void Part::checkIfNeedToStart(int iFrameIndex)
         m_iOldFrameIndex = -1;
         m_preview->stopAllActions();
         m_preview->initWithSpriteFrameName(m_vFrameName.at(0).sFrameName.c_str());
-        m_preview->setPosition(ccpAdd(m_showForPreview, getOffset()));
+
+        if (m_bMain) {
+            m_preview->setPosition(ccpAdd(m_showForPreview, getOffset()));
+        }
+        else
+        {
+            m_preview->setPosition(m_sprite->getPosition());
+        }
+        
         
         m_pAction = CCAnimate::create(getAnimation());
         CCSequence * sequence = CCSequence::create(m_pAction, CCCallFunc::create(this, callfunc_selector(Part::actionDone)), NULL);
@@ -319,12 +330,27 @@ void Part::setMain()
 
 CCPoint Part::getPosition()
 {
-    return ccpSub(m_sprite->getPosition(), m_origin);
+    if (m_bMain) {
+        return ccpSub(m_sprite->getPosition(), m_origin);
+    }
+    else
+    {
+        return m_sprite->getPosition();
+    }
 }
 
 void Part::setPosition(CCPoint &point)
 {
-    m_sprite->setPosition(ccpAdd(m_origin, point));
+    if (m_bMain)
+    {
+        m_sprite->setPosition(ccpAdd(m_origin, point));
+        m_preview->setPosition(ccpAdd(m_origin, point));
+    }
+    else
+    {
+        m_sprite->setPosition(point);
+        m_preview->setPosition(point);
+    }
 }
 
 void Part::setEnabled(bool bEnabled)

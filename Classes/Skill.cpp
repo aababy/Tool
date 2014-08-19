@@ -368,7 +368,7 @@ void Skill::saveAtksAndEffect(CCDictionary *dic)
     }
     else
     {
-        atks = (CCDictionary *)dic->objectForKey("normal");
+        atks = (CCDictionary *)dic->objectForKey("normals");
     }
     
     if (atks == NULL) {
@@ -413,7 +413,7 @@ void Skill::saveAtksAndEffect(CCDictionary *dic)
     }
     else
     {
-        dic->setObject(atks, "normal");
+        dic->setObject(atks, "normals");
     }
     
     dic->setObject(effects, "effects");

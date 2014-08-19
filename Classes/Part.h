@@ -18,7 +18,7 @@ public:
     //static Part * create(const char *pFileName, CCPoint &location, ImageView *parent);
     //origin 是主体所在的位置, 非主体就以这个位置来作为偏移坐标
     Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, vector<string> vFrameName);
-    Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, int iAcc);
+    Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, CCNode *parentForPreview, int iAcc);
     void setStartFrameIndex(int iStart);
     int getStartFrameIndex();
     void setMain();

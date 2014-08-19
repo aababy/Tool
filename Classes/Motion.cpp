@@ -50,13 +50,17 @@ void Motion::importPart(vector<string> &vNames)
         m_vParts.push_back(m_mainPart);
         
         setCurOperationIndex(0);
+        
+        m_show = m_mainPart->getSprite();
+        m_showPreview = m_mainPart->getPreview();
     }
     else
     {
-        CCPoint point = ccp(100, 0);
-        point = ccpAdd(location, point);
+        CCPoint point = CCPointZero;
+        //ccp(100, 0);
+        //point = ccpAdd(location, point);
         
-        Part* part = new Part(vNames, point, location, m_preview, m_iFrameBG, m_iAccIndex);
+        Part* part = new Part(vNames, point, location, m_preview, m_show, m_showPreview, m_iAccIndex);
         m_iAccIndex++;
         part->setStartFrameIndex(m_iMainIndex);
         m_vParts.push_back(part);
