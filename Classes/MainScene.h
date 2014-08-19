@@ -96,6 +96,7 @@ protected:
     InputBox*   m_ebScale;
     InputBox*   m_ebDelay;
     InputBox*   m_ebName;
+    InputBox*   m_ebDegree;
     
     CCPoint     m_oldPoint;
     bool        m_bDragAndDrop = false;

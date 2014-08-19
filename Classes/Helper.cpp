@@ -8,6 +8,7 @@
 
 #include "Helper.h"
 #include "IncludeForCpp.h"
+#include <math.h>
 
 
 int cycleNum(bool bAdd, int iCount, int *idx)
@@ -130,5 +131,12 @@ string itostring(int i)
 }
 
 
+CCPoint pointRotateWithAngle(CCPoint& point, float fDegree)
+{
+    //角度转弧度
+    float radian = M_PI * fDegree /180;
+    
+    return ccpRotateByAngle(point, CCPointZero, radian);
+}
 
 

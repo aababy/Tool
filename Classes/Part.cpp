@@ -253,9 +253,12 @@ void Part::checkIfNeedToStart(int iFrameIndex)
         {
             //根据帧数确定时间
             CCPoint dest = ccp(m_iFrameCount * 50, 0);       //水平
+            dest = pointRotateWithAngle(dest, m_degree);
+            
             float duration = m_iFrameCount * m_fDelay;
             CCSpawn* spawn = CCSpawn::create(sequence, CCMoveBy::create(duration, dest), NULL);
             
+            m_preview->setRotation(360 - m_degree);
             m_preview->runAction(spawn);
         }
         else

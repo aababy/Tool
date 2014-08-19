@@ -51,6 +51,8 @@ public:
     float getDelay();
     void setFlags(flagIndex index, bool bFlag);
     bool getFlags(flagIndex index);
+    void setDegree(float degree);
+    float getDegree();
     
     void getEffectsName(CCDictionary *dic, CCDictionary *effects);
 

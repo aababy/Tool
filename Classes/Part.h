@@ -95,6 +95,8 @@ private:
     float   m_fDelay = 0.05f;        //帧间隔
     
     bool    m_flag[FLAG_COUNT];
+    
+    CC_SYNTHESIZE(float, m_degree, Degree);
 };
 
 

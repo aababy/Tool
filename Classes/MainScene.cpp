@@ -29,6 +29,7 @@ enum UITag
     BUTTON_DEL_MOTION = 103,
     DELAY = 105,
     SKILL_PART_NAME = 173,
+    DEGREE = 175,
     BUTTON_PREVIEW_ALL = 191,
     NORMAL_ATTACK = 246,
     
@@ -93,6 +94,7 @@ bool MainScene::init(CCScene* pScene)
         m_ebScale = InputBox::create(SCALE, root, this, m_rootNode);
         m_ebDelay = InputBox::create(DELAY, root, this, m_rootNode);
         m_ebName = InputBox::create(SKILL_PART_NAME, root, this, m_rootNode);
+        m_ebDegree = InputBox::create(DEGREE, root, this, m_rootNode);
         
         m_pHolder = static_cast<CCSprite*>(m_rootNode->getChildByTag(SPRITE_HOLDER));
         m_pHolder->initWithFile("R/cross.png");
@@ -446,6 +448,9 @@ void MainScene::updateProperty(CCObject *sender)
     
     sprintf(buffer, "%.2f", xCurAtk->getDelay());
     m_ebDelay->setText(string(buffer));
+    
+    sprintf(buffer, "%.2f", xCurAtk->getDegree());
+    m_ebDegree->setText(string(buffer));
 }
 
 void MainScene::editBoxEditingDidBegin(CCEditBox* editBox)
@@ -496,6 +501,9 @@ void MainScene::editBoxTextChanged(CCEditBox* editBox, const std::string& text)
             xCurAtk->setDelay(temp);
         } else if(editBox == m_ebName->m_edit) {
             xCurAtk->sSaveName = text;
+        } else if(editBox == m_ebDegree->m_edit) {
+            temp = atof(text.c_str());
+            xCurAtk->setDegree(temp);
         }
     }
 }
