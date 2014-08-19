@@ -337,8 +337,18 @@ void Part::setEnabled(bool bEnabled)
 
 string Part::getEffectName()
 {
+    bool bNormal = CCUserDefault::sharedUserDefault()->getBoolForKey(NORMAL);
+    
     char temp[10];
-    sprintf(temp, "effect%d", m_iAccIndex);
+    
+    if (bNormal) {
+        sprintf(temp, "normal%d", m_iAccIndex);
+    }
+    else
+    {
+        sprintf(temp, "effect%d", m_iAccIndex);
+    }
+    
     return string(temp);
 }
 

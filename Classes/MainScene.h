@@ -63,6 +63,7 @@ public:
     void selectedStateEvent(CCObject *pSender, CheckBoxEventType type);
     int tag2Index(int aTag);
     void updateCheckBox();
+    void selectedNormal(CCObject *pSender, CheckBoxEventType type);
     
 protected:
     void setFrameCount(CCObject *sender);
@@ -103,6 +104,7 @@ protected:
     curState    m_state = CS_NONE;
     
     CheckBox*   m_cbFlags[FLAG_COUNT];
+    CheckBox*   m_cbNormal;
 };
 
 #endif // __HELLOWORLD_SCENE_H__

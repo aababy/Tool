@@ -48,7 +48,7 @@ public:
     void previewSingle();
     void update(float delta);
     void clear();
-    void save();
+    void save(bool bNormal);
     void saveOfActions(CCDictionary *dic);
     void saveAtksAndEffect(CCDictionary *dic);
     void saveOfEffects(CCDictionary *dic);
@@ -83,6 +83,7 @@ private:
     
     string      sTotalPlist;
     bool        m_bPreviewAll;
+    bool        m_bSkill;
 };
 
 

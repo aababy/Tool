@@ -309,10 +309,12 @@ void Skill::clear()
     xNotify->postNotification(UPDATE_ALL_INDEX);
 }
 
-void Skill::save()
+void Skill::save(bool bSkill)
 {
     if(getMotionCount() != 0)
     {
+        m_bSkill = bSkill;
+        
         CCDictionary *dic = CCDictionary::createWithContentsOfFile(sTotalPlist.c_str());
         prepareTotalPlist(dic);
         
@@ -358,7 +360,17 @@ void Skill::saveOfActions(CCDictionary *dic)
 void Skill::saveAtksAndEffect(CCDictionary *dic)
 {
     //判断是否已经有这些字段
-    CCDictionary *atks = (CCDictionary *)dic->objectForKey("atks");
+    CCDictionary *atks = NULL;
+    
+    if (m_bSkill)
+    {
+        atks = (CCDictionary *)dic->objectForKey("atks");
+    }
+    else
+    {
+        atks = (CCDictionary *)dic->objectForKey("normal");
+    }
+    
     if (atks == NULL) {
         atks = new CCDictionary();
     }
@@ -367,6 +379,7 @@ void Skill::saveAtksAndEffect(CCDictionary *dic)
     if (effects == NULL) {
         effects = new CCDictionary();
     }
+
     
     for (int i = 0; i < getMotionCount(); i++) {
         Motion *motion = m_vMotion.at(i);
@@ -394,7 +407,15 @@ void Skill::saveAtksAndEffect(CCDictionary *dic)
         atks->setObject(dictionary, motion->sSaveName);
     }
     
-    dic->setObject(atks, "atks");
+    if (m_bSkill)
+    {
+        dic->setObject(atks, "atks");
+    }
+    else
+    {
+        dic->setObject(atks, "normal");
+    }
+    
     dic->setObject(effects, "effects");
 }
 

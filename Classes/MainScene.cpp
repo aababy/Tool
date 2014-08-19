@@ -30,6 +30,7 @@ enum UITag
     DELAY = 105,
     SKILL_PART_NAME = 173,
     BUTTON_PREVIEW_ALL = 191,
+    NORMAL_ATTACK = 246,
     
     
     LIST_BG = 1000,
@@ -110,6 +111,9 @@ bool MainScene::init(CCScene* pScene)
         m_cbFlags[2] = initCheckBox(183, root, this, checkboxselectedeventselector(MainScene::selectedStateEvent));
         m_cbFlags[3] = initCheckBox(185, root, this, checkboxselectedeventselector(MainScene::selectedStateEvent));
         m_cbFlags[4] = initCheckBox(187, root, this, checkboxselectedeventselector(MainScene::selectedStateEvent));
+        
+        m_cbNormal = initCheckBox(NORMAL_ATTACK, root, this, checkboxselectedeventselector(MainScene::selectedNormal));
+        CCUserDefault::sharedUserDefault()->setBoolForKey(NORMAL, false);
         
         //列表
         listView = (UIListView*)UIHelper::seekWidgetByTag(root, PARTS_LIST);
@@ -205,6 +209,29 @@ void MainScene::selectedStateEvent(CCObject *pSender, CheckBoxEventType type)
     }
 }
 
+
+void MainScene::selectedNormal(CCObject *pSender, CheckBoxEventType type)
+{
+    switch (type)
+    {
+        case CHECKBOX_STATE_EVENT_UNSELECTED:
+        {
+            CCUserDefault::sharedUserDefault()->setBoolForKey(NORMAL, false);
+        }
+            break;
+            
+        case CHECKBOX_STATE_EVENT_SELECTED:
+        {
+            CCUserDefault::sharedUserDefault()->setBoolForKey(NORMAL, true);
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
+
+
 void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
 {
     if(type != TOUCH_EVENT_ENDED)
@@ -257,7 +284,13 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
             break;
         case BUTTON_SAVE:
         {
-            xSkill->save();
+            bool bSkill = true;
+            
+            if (m_cbNormal->getSelectedState()) {
+                bSkill = false;
+            }
+            
+            xSkill->save(bSkill);
         }
             break;
         case BUTTON_NEXT_5:
