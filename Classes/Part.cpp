@@ -477,7 +477,7 @@ string Part::makeMotionName()
     int iPos = m_sMotionName.find('_');
     
     if (iPos != string::npos) {
-        str = m_sMotionName.substr(iPos);
+        str = m_sMotionName.substr(iPos + 1);
         
         return str;
     }

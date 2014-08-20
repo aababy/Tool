@@ -181,7 +181,13 @@ int MainScene::tag2Index(int aTag)
             index = 4;
         }
             break;
+        case ISOLATE:
+        {
+            index = 5;
+        }
+            break;
         default:
+            CCAssert(false, "error");            
             break;
     }
     
@@ -190,6 +196,10 @@ int MainScene::tag2Index(int aTag)
 
 void MainScene::selectedStateEvent(CCObject *pSender, CheckBoxEventType type)
 {
+    if (!xCurAtk) {
+        return;
+    }
+    
     Widget *widget = (Widget*)pSender;
     int iTag = widget->getTag();
     int index = tag2Index(iTag);
