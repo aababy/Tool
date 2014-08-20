@@ -57,6 +57,8 @@ Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &show
     {
         m_flag[i] = false;
     }
+    
+    saveNames(vNames);
 }
 
 
@@ -109,6 +111,8 @@ Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &show
     {
         m_flag[i] = false;
     }
+    
+    saveNames(vNames);
 }
 
 Part::~Part()
@@ -383,8 +387,17 @@ string Part::getEffectName()
 void Part::saveEffectToDictionary(CCDictionary *effects)
 {
     CCDictionary *effect = new CCDictionary();
+   
+    string str;
+    for (int i = 0; i < m_vNames.size(); i++)
+    {
+        if (!str.empty()) {
+            str += ",";
+        }
+        str += m_vNames.at(i);
+    }
     
-    insertString(effect, "fileName", sPartName);
+    insertString(effect, "fileName", str);
     
     //anchorPoint
     CCPoint point = m_sprite->getAnchorPoint();
@@ -442,5 +455,13 @@ void Part::setDegree(float degree)
 float Part::getDegree()
 {
     return m_degree;
+}
+
+void Part::saveNames(vector<string> &vNames)
+{
+    for (int i = 0; i < vNames.size(); i++) {
+        m_vNames.push_back(vNames.at(i));
+    }
+    
 }
 

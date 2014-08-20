@@ -57,7 +57,7 @@ public:
     
     CCAnimation* getAnimation();            //这个函数是否分离出去?
     
-    string  sPartName;
+    string  sPartName;                      //保存的名字, 多个请用逗号分开
     
     int getCurFrameIndex();
     void checkIfNeedToStart(int iFrameIndex);
@@ -66,6 +66,8 @@ public:
     float getDelay();
     void setDegree(float degree);
     float getDegree();
+    
+    void saveNames(vector<string> &vNames);
 
     ~Part();
     
@@ -98,6 +100,8 @@ private:
     float   m_degree;
     
     bool    m_flag[FLAG_COUNT];
+    
+    vector<string> m_vNames;
 };
 
 
