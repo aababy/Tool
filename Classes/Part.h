@@ -17,8 +17,8 @@ class Part : public CCObject{
 public:
     //static Part * create(const char *pFileName, CCPoint &location, ImageView *parent);
     //origin 是主体所在的位置, 非主体就以这个位置来作为偏移坐标
-    Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, vector<string> vFrameName);
-    Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, CCNode *parentForPreview, int iAcc);
+    Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, vector<string> vFrameName, string& sMotionName);
+    Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, CCNode *parentForPreview, int iAcc, string& sMotionName);
     void setStartFrameIndex(int iStart);
     int getStartFrameIndex();
     void setMain();
@@ -57,7 +57,7 @@ public:
     
     CCAnimation* getAnimation();            //这个函数是否分离出去?
     
-    string  sPartName;                      //保存的名字, 多个请用逗号分开
+    string  sPartName;                      //显示的名字, 也影响effect
     
     int getCurFrameIndex();
     void checkIfNeedToStart(int iFrameIndex);
@@ -74,7 +74,9 @@ public:
     bool m_bRunning = false;        //动画是否在播放中
 private:
     CCPoint getOffset();
-    void actionDone();    
+    string makeMotionName();
+    void actionDone();
+    string m_sMotionName;
     
     CCSprite * m_preview = NULL;           //用于预览
     
@@ -101,7 +103,7 @@ private:
     
     bool    m_flag[FLAG_COUNT];
     
-    vector<string> m_vNames;
+    vector<string> m_vNames;        //保存的名字, 多个请用逗号分开
 };
 
 

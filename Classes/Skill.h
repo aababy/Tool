@@ -56,6 +56,7 @@ public:
     bool checkCanAddMotion();
     void deletePart();
     void setTotalPlist(string &str);
+    string getMotionFlags();
     
 private:
     void setCurIndex(int idx);

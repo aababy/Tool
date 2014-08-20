@@ -32,7 +32,7 @@ enum UITag
     DEGREE = 175,
     BUTTON_PREVIEW_ALL = 191,
     NORMAL_ATTACK = 246,
-    
+    ISOLATE = 258,
     
     LIST_BG = 1000,
     LIST_MOTION = 1100,
@@ -114,6 +114,7 @@ bool MainScene::init(CCScene* pScene)
         m_cbFlags[2] = initCheckBox(183, root, this, checkboxselectedeventselector(MainScene::selectedStateEvent));
         m_cbFlags[3] = initCheckBox(185, root, this, checkboxselectedeventselector(MainScene::selectedStateEvent));
         m_cbFlags[4] = initCheckBox(187, root, this, checkboxselectedeventselector(MainScene::selectedStateEvent));
+        m_cbFlags[5] = initCheckBox(ISOLATE, root, this, checkboxselectedeventselector(MainScene::selectedStateEvent));
         
         m_cbNormal = initCheckBox(NORMAL_ATTACK, root, this, checkboxselectedeventselector(MainScene::selectedNormal));
         CCUserDefault::sharedUserDefault()->setBoolForKey(NORMAL, false);
@@ -651,8 +652,8 @@ void MainScene::setTotalPlist(string &str)
 
 void MainScene::updateCheckBox()
 {
-    if (xCurAtk) {
-        
+    if (xCurAtk)
+    {        
         for (int i = 0; i < FLAG_COUNT; i++) {
             m_cbFlags[i]->setSelectedState(xCurAtk->getFlags((flagIndex)i));
         }

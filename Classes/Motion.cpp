@@ -45,7 +45,7 @@ Motion::~Motion()
 void Motion::importPart(vector<string> &vNames)
 {
     if (m_vParts.empty()) {
-        m_mainPart = new Part(vNames, location, location, m_preview, m_iFrameBG, m_vFrameNameOrdered);
+        m_mainPart = new Part(vNames, location, location, m_preview, m_iFrameBG, m_vFrameNameOrdered, sSaveName);
         m_mainPart->setMain();
         m_vParts.push_back(m_mainPart);
         
@@ -60,7 +60,7 @@ void Motion::importPart(vector<string> &vNames)
         //ccp(100, 0);
         //point = ccpAdd(location, point);
         
-        Part* part = new Part(vNames, point, location, m_preview, m_show, m_showPreview, m_iAccIndex);
+        Part* part = new Part(vNames, point, location, m_preview, m_show, m_showPreview, m_iAccIndex, sSaveName);
         m_iAccIndex++;
         part->setStartFrameIndex(m_iMainIndex);
         m_vParts.push_back(part);

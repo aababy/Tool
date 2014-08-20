@@ -28,6 +28,7 @@ void insertCCPoint(CCDictionary *dic, const string& key, CCPoint& value);
 string itostring(int i);
 CheckBox * initCheckBox(int iTag, Layout* root, CCObject *target, SEL_SelectedStateEvent selector);
 CCPoint pointRotateWithAngle(CCPoint& point, float fDegree);
+string flag2string(bool m_flag[FLAG_COUNT]);
 
 template <class T> string any2string(T tmp)
 {

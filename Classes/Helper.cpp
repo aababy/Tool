@@ -139,4 +139,26 @@ CCPoint pointRotateWithAngle(CCPoint& point, float fDegree)
     return ccpRotateByAngle(point, CCPointZero, radian);
 }
 
+//只对特效使用, 这个函数
+string flag2string(bool m_flag[FLAG_COUNT])
+{
+    string str;
+    
+    for (int i = 0; i < FLAG_COUNT; i++) {
+        
+        if (m_flag[i]) {
+            str += "1";
+        }
+        else
+        {
+            str += "0";
+        }
+    }
+    
+    return str;
+}
+
+
+
+
 

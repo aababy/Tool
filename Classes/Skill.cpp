@@ -403,6 +403,8 @@ void Skill::saveAtksAndEffect(CCDictionary *dic)
         insertArray(dictionary, "frames", frames);
         insertString(dictionary, "soundFileName", "");
         
+        insertString(dictionary, "flags", getMotionFlags());
+        
         //插入整个atk
         atks->setObject(dictionary, motion->sSaveName);
     }
@@ -418,6 +420,23 @@ void Skill::saveAtksAndEffect(CCDictionary *dic)
     
     dic->setObject(effects, "effects");
 }
+
+
+string Skill::getMotionFlags()
+{
+    string str;
+    if (m_curMotion->getFlags(FI_MOVE))
+    {
+        str = "1";
+    }
+    else
+    {
+        str = "0";
+    }
+    
+    return str;
+}
+
 
 bool Skill::checkCanAddMotion()
 {
@@ -490,3 +509,5 @@ void Skill::prepareTotalPlist(CCDictionary *dic)
         }
     }
 }
+
+

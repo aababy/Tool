@@ -23,9 +23,10 @@
 //    }
 //	return pRet;
 //}
-Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, vector<string> vFrameName)
+Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, vector<string> vFrameName, string& sMotionName)
 {
     sPartName = vNames.at(0);               //PartName 显示只会显示一个
+    m_sMotionName = sMotionName;
     
     for (int i = 0; i < vFrameName.size(); i++) {
         FramesName frames;
@@ -63,10 +64,11 @@ Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &show
 
 
 
-Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, CCNode *parentForPreview, int iAcc)
+Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, CCNode *parentForPreview, int iAcc, string& sMotionName)
 {
     sPartName = vNames.at(0);
     m_iAccIndex = iAcc;
+    m_sMotionName = sMotionName;
     
     //加入Cache
     for (int i = 0; i < vNames.size(); i++) {
@@ -374,11 +376,11 @@ string Part::getEffectName()
     char temp[10];
     
     if (bNormal) {
-        sprintf(temp, "normal%d", m_iAccIndex);
+        sprintf(temp, "n%s%d", makeMotionName().c_str(), m_iAccIndex);
     }
     else
     {
-        sprintf(temp, "effect%d", m_iAccIndex);
+        sprintf(temp, "e%s%d", makeMotionName().c_str(), m_iAccIndex);
     }
     
     return string(temp);
@@ -412,6 +414,9 @@ void Part::saveEffectToDictionary(CCDictionary *effects)
     
     //rotation
     insertFloat(effect, "rotation", m_sprite->getRotation());
+    
+    //flags
+    insertString(effect, "flags", flag2string(m_flag));
     
     effects->setObject(effect, getEffectName());
 }
@@ -464,4 +469,22 @@ void Part::saveNames(vector<string> &vNames)
     }
     
 }
+
+string Part::makeMotionName()
+{
+    string str;
+    
+    int iPos = m_sMotionName.find('_');
+    
+    if (iPos != string::npos) {
+        str = m_sMotionName.substr(iPos);
+        
+        return str;
+    }
+    else
+    {
+        return m_sMotionName;
+    }
+}
+
 
