@@ -70,7 +70,8 @@ bool MainScene::init(CCScene* pScene)
         
         Layout *root = static_cast<Layout*>(m_rootNode->getChildren()->objectAtIndex(0));
         
-        initButton(BUTTON_IMPORT, root, this, toucheventselector(MainScene::touchEvent));
+        btnImport = initButton(BUTTON_IMPORT, root, this, toucheventselector(MainScene::touchEvent));
+        btnImport->setTitleText("开始");
         initButton(BUTTON_PRV, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_NEXT, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_PREVIEW, root, this, toucheventselector(MainScene::touchEvent));
@@ -588,6 +589,7 @@ bool MainScene::checkIfStartToDrag(CCPoint point)
 void MainScene::importFinish(vector<string> &vec)
 {
     m_state = CS_MAIN_PLIST;
+    btnImport->setTitleText("导入");
     xSkill->importPart(vec);
     setFrameCount(NULL);
     updateList(NULL);

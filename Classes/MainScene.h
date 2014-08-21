@@ -89,6 +89,7 @@ protected:
     Button *btnNext5;
     Button *btnAddMotion;
     Button *btnDelMotion;
+    Button *btnImport;
        
     InputBox*   m_ebAnchor[2];
     InputBox*   m_ebPosition[2];
