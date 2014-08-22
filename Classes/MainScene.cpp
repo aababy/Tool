@@ -71,7 +71,7 @@ bool MainScene::init(CCScene* pScene)
         Layout *root = static_cast<Layout*>(m_rootNode->getChildren()->objectAtIndex(0));
         
         btnImport = initButton(BUTTON_IMPORT, root, this, toucheventselector(MainScene::touchEvent));
-        btnImport->setTitleText("开始");
+		btnImport->setTitleText("Start");
         initButton(BUTTON_PRV, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_NEXT, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_PREVIEW, root, this, toucheventselector(MainScene::touchEvent));
