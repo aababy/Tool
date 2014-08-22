@@ -427,6 +427,7 @@ void Part::saveEffectToDictionary(CCDictionary *effects)
     if (m_flag[FI_MOVE] && m_flag[FI_ISOLATE])
     {
         insertFloat(effect, "speed", m_speed);
+        insertFloat(effect, "degree", m_degree);
     }
     
     effects->setObject(effect, getEffectName());
