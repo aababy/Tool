@@ -22,6 +22,7 @@
 #include "FolderBrowser.h"
 #include "Motion.h"
 #include "Skill.h"
+#include "XmlData.h"
 
 using namespace cocostudio::timeline;
 

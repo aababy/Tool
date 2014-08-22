@@ -33,6 +33,7 @@ enum UITag
     BUTTON_PREVIEW_ALL = 191,
     NORMAL_ATTACK = 246,
     ISOLATE = 258,
+    SPEED = 269,
     
     LIST_BG = 1000,
     LIST_MOTION = 1100,
@@ -71,7 +72,7 @@ bool MainScene::init(CCScene* pScene)
         Layout *root = static_cast<Layout*>(m_rootNode->getChildren()->objectAtIndex(0));
         
         btnImport = initButton(BUTTON_IMPORT, root, this, toucheventselector(MainScene::touchEvent));
-		btnImport->setTitleText("Start");
+		btnImport->setTitleText(xStr("start"));
         initButton(BUTTON_PRV, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_NEXT, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_PREVIEW, root, this, toucheventselector(MainScene::touchEvent));
@@ -96,6 +97,7 @@ bool MainScene::init(CCScene* pScene)
         m_ebDelay = InputBox::create(DELAY, root, this, m_rootNode);
         m_ebName = InputBox::create(SKILL_PART_NAME, root, this, m_rootNode);
         m_ebDegree = InputBox::create(DEGREE, root, this, m_rootNode);
+        m_ebSpeed = InputBox::create(SPEED, root, this, m_rootNode);
         
         m_pHolder = static_cast<CCSprite*>(m_rootNode->getChildByTag(SPRITE_HOLDER));
         m_pHolder->initWithFile("R/cross.png");
@@ -464,6 +466,9 @@ void MainScene::updateProperty(CCObject *sender)
     
     sprintf(buffer, "%.2f", xCurAtk->getDegree());
     m_ebDegree->setText(string(buffer));
+    
+    sprintf(buffer, "%.2f", xCurAtk->getSpeed());
+    m_ebSpeed->setText(string(buffer));
 }
 
 void MainScene::editBoxEditingDidBegin(CCEditBox* editBox)
@@ -517,6 +522,9 @@ void MainScene::editBoxTextChanged(CCEditBox* editBox, const std::string& text)
         } else if(editBox == m_ebDegree->m_edit) {
             temp = atof(text.c_str());
             xCurAtk->setDegree(temp);
+        }  else if(editBox == m_ebSpeed->m_edit) {
+            temp = atof(text.c_str());
+            xCurAtk->setSpeed(temp);
         }
     }
 }

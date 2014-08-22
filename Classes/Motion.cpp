@@ -273,6 +273,17 @@ float Motion::getDegree()
     return m_vParts.at(m_iCurOperationIndex)->getDegree();
 }
 
+void Motion::setSpeed(float speed)
+{
+    m_vParts.at(m_iCurOperationIndex)->setSpeed(speed);
+}
+
+float Motion::getSpeed()
+{
+    return m_vParts.at(m_iCurOperationIndex)->getSpeed();
+}
+
+
 void Motion::setFlags(flagIndex index, bool bFlag)
 {
     m_vParts.at(m_iCurOperationIndex)->setFlags(index, bFlag);

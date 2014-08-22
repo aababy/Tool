@@ -10,7 +10,7 @@
 USING_NS_CC;
 using namespace std;
 
-#define STATIC_DATA_PATH "Script/strings.xml"
+#define STATIC_DATA_PATH "R/strings.xml"
 
 
 //static XmlData* _sharedXmlData = NULL;

@@ -252,22 +252,26 @@ void Part::checkIfNeedToStart(int iFrameIndex)
         
         
         m_pAction = CCAnimate::create(getAnimation());
-        CCSequence * sequence = CCSequence::create(m_pAction, CCCallFunc::create(this, callfunc_selector(Part::actionDone)), NULL);
+        CCSequence * sequence;
         
         //位移
         if(m_flag[FI_MOVE])
         {
             //根据帧数确定时间
-            CCPoint dest = ccp(m_iFrameCount * 50, 0);       //水平
+            CCPoint dest = ccp(1000, 0);       //水平
             dest = pointRotateWithAngle(dest, m_degree);
             
-            float duration = m_iFrameCount * m_fDelay;
-            CCSpawn* spawn = CCSpawn::create(sequence, CCMoveBy::create(duration, dest), NULL);
+            float duration = 1000 / m_speed;
+            CCRepeatForever* repeat = CCRepeatForever::create(m_pAction);
             
-            m_preview->runAction(spawn);
+            sequence = CCSequence::create(CCMoveBy::create(duration, dest), CCCallFunc::create(this, callfunc_selector(Part::actionDone)), NULL);
+            
+            m_preview->runAction(repeat);
+            m_preview->runAction(sequence);
         }
         else
         {
+            sequence = CCSequence::create(m_pAction, CCCallFunc::create(this, callfunc_selector(Part::actionDone)), NULL);
             m_preview->runAction(sequence);
         }
         
@@ -317,6 +321,7 @@ void Part::actionDone()
 //    }
     
     //主体也消失, 仅仅在对于是单独预览时.
+    m_preview->stopAllActions();
     m_preview->setVisible(false);
 }
 
@@ -418,6 +423,12 @@ void Part::saveEffectToDictionary(CCDictionary *effects)
     //flags
     insertString(effect, "flags", flag2string(m_flag));
     
+    //speed 只有子弹有速度(FI_MOVE, FI_ISOLATE 为ture)
+    if (m_flag[FI_MOVE] && m_flag[FI_ISOLATE])
+    {
+        insertFloat(effect, "speed", m_speed);
+    }
+    
     effects->setObject(effect, getEffectName());
 }
 
@@ -460,6 +471,16 @@ void Part::setDegree(float degree)
 float Part::getDegree()
 {
     return m_degree;
+}
+
+void Part::setSpeed(float speed)
+{
+    m_speed = speed;
+}
+
+float Part::getSpeed()
+{
+    return m_speed;
 }
 
 void Part::saveNames(vector<string> &vNames)

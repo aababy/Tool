@@ -53,6 +53,8 @@ public:
     bool getFlags(flagIndex index);
     void setDegree(float degree);
     float getDegree();
+    void setSpeed(float speed);
+    float getSpeed();
     
     void getEffectsName(CCDictionary *dic, CCDictionary *effects);
 

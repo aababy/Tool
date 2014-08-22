@@ -256,6 +256,7 @@
 		8C583FAD169DB6D500F63A10 /* CCEditBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C583FA8169DB6D500F63A10 /* CCEditBox.cpp */; };
 		8C583FAE169DB6D500F63A10 /* CCEditBoxImplMac.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8C583FAC169DB6D500F63A10 /* CCEditBoxImplMac.mm */; };
 		CA0D1EC8198F231B00EEA422 /* FolderBrowser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA0D1EC6198F231B00EEA422 /* FolderBrowser.cpp */; };
+		CA0E200019A6DD70003E6C5D /* XmlData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA0E1FFE19A6DD70003E6C5D /* XmlData.cpp */; };
 		CA1589C5199217B300E85524 /* Motion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA1589C3199217B300E85524 /* Motion.cpp */; };
 		CA1589C8199233BC00E85524 /* Skill.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA1589C6199233BB00E85524 /* Skill.cpp */; };
 		CA3B1BB41988C1380000299D /* MainScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA3B1BB21988C1380000299D /* MainScene.cpp */; };
@@ -792,6 +793,8 @@
 		8C583FAC169DB6D500F63A10 /* CCEditBoxImplMac.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CCEditBoxImplMac.mm; path = CCEditBox/CCEditBoxImplMac.mm; sourceTree = "<group>"; };
 		CA0D1EC6198F231B00EEA422 /* FolderBrowser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FolderBrowser.cpp; path = ../Classes/FolderBrowser.cpp; sourceTree = "<group>"; };
 		CA0D1EC7198F231B00EEA422 /* FolderBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FolderBrowser.h; path = ../Classes/FolderBrowser.h; sourceTree = "<group>"; };
+		CA0E1FFE19A6DD70003E6C5D /* XmlData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XmlData.cpp; path = ../Classes/XmlData.cpp; sourceTree = "<group>"; };
+		CA0E1FFF19A6DD70003E6C5D /* XmlData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XmlData.h; path = ../Classes/XmlData.h; sourceTree = "<group>"; };
 		CA1589C3199217B300E85524 /* Motion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Motion.cpp; path = ../Classes/Motion.cpp; sourceTree = "<group>"; };
 		CA1589C4199217B300E85524 /* Motion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Motion.h; path = ../Classes/Motion.h; sourceTree = "<group>"; };
 		CA1589C6199233BB00E85524 /* Skill.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Skill.cpp; sourceTree = "<group>"; };
@@ -835,6 +838,8 @@
 		15AA9C4015B7EC450033D6C2 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				CA0E1FFE19A6DD70003E6C5D /* XmlData.cpp */,
+				CA0E1FFF19A6DD70003E6C5D /* XmlData.h */,
 				CA9F9263198A194E002D51E4 /* Helper.cpp */,
 				CA9F9264198A194E002D51E4 /* Helper.h */,
 				CA3B1BB21988C1380000299D /* MainScene.cpp */,
@@ -2116,6 +2121,7 @@
 				15C157DE168315B300D239F2 /* cpGearJoint.c in Sources */,
 				CA7B668F1988E07400E0F419 /* Part.cpp in Sources */,
 				15C157DF168315B300D239F2 /* cpGrooveJoint.c in Sources */,
+				CA0E200019A6DD70003E6C5D /* XmlData.cpp in Sources */,
 				37C62CEB18E157C300D16FC4 /* UIWidget.cpp in Sources */,
 				15C157E0168315B300D239F2 /* cpPinJoint.c in Sources */,
 				15C157E1168315B300D239F2 /* cpPivotJoint.c in Sources */,

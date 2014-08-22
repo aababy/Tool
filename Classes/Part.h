@@ -66,6 +66,8 @@ public:
     float getDelay();
     void setDegree(float degree);
     float getDegree();
+    void setSpeed(float speed);
+    float getSpeed();
     
     void saveNames(vector<string> &vNames);
 
@@ -99,7 +101,8 @@ private:
     int     m_iAccIndex = 0;
     
     float   m_fDelay = 0.05f;        //帧间隔
-    float   m_degree;
+    float   m_degree = 0.0f;
+    float   m_speed = 1000.f;
     
     bool    m_flag[FLAG_COUNT];
     
