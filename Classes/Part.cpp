@@ -93,7 +93,7 @@ Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &show
     
     //显示帧
     m_sprite = CCSprite::createWithSpriteFrameName(getCurFrameName());
-    CCSize size = m_sprite->getContentSize();
+    CCSize size = parent->getContentSize();
     
     m_sprite->setPosition(ccp(size.width/2, size.height/2));
     parent->addChild(m_sprite);
