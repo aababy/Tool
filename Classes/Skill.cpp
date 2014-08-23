@@ -395,12 +395,10 @@ void Skill::saveAtksAndEffect(CCDictionary *dic)
         insertString(dictionary, "fileName", motion->sResName);
         
         //插入frames
-        CCArray *frames = CCArray::createWithCapacity(motion->getFramesCount());
-        for (int j = 0; j < motion->getFramesCount(); j++) {
-            CCString *str = CCString::create(motion->m_vFrameNameOrdered.at(j));
-            frames->addObject(str);
-        }
-        insertArray(dictionary, "frames", frames);
+        char buff[100];
+        sprintf(buff, "%s,%d", motion->m_vFrameNameOrdered.at(0).c_str(), motion->getFramesCount());
+        insertString(dictionary, "frames", buff);
+        
         insertString(dictionary, "soundFileName", "");
         
         insertString(dictionary, "flags", getMotionFlags());
