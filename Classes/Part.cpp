@@ -60,6 +60,10 @@ Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &show
     }
     
     saveNames(vNames);
+    
+    m_atkFrame = 0;
+    m_duration = 0.f;
+    m_interval = 0.f;
 }
 
 
@@ -115,6 +119,10 @@ Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &show
     }
     
     saveNames(vNames);
+    
+    m_atkFrame = 0;
+    m_duration = 0.f;
+    m_interval = 0.f;
 }
 
 Part::~Part()
@@ -391,7 +399,7 @@ string Part::getEffectName()
     return string(temp);
 }
 
-void Part::saveEffectToDictionary(CCDictionary *effects)
+void Part::saveEffectToDictionary(CCDictionary *effects, int iMotionStart)
 {
     CCDictionary *effect = new CCDictionary();
    
@@ -429,6 +437,15 @@ void Part::saveEffectToDictionary(CCDictionary *effects)
         insertFloat(effect, "speed", m_speed);
         insertFloat(effect, "degree", m_degree);
     }
+    
+    if (!m_bMain) {
+        if (m_flag[FI_ISOLATE] == false) {
+            insertInteger(effect, "attackFrame", m_atkFrame - iMotionStart - iStartFrameIndex);
+            insertFloat(effect, "attackDuration", m_duration);
+            insertFloat(effect, "attackInterval", m_interval);
+        }
+    }
+    
     
     effects->setObject(effect, getEffectName());
 }

@@ -34,6 +34,9 @@ enum UITag
     NORMAL_ATTACK = 246,
     ISOLATE = 258,
     SPEED = 269,
+    ATTACK_FRAME = 271,
+    ATTACK_DURATION = 274,
+    ATTACK_INTERVAL = 276,
     
     LIST_BG = 1000,
     LIST_MOTION = 1100,
@@ -98,6 +101,9 @@ bool MainScene::init(CCScene* pScene)
         m_ebName = InputBox::create(SKILL_PART_NAME, root, this, m_rootNode);
         m_ebDegree = InputBox::create(DEGREE, root, this, m_rootNode);
         m_ebSpeed = InputBox::create(SPEED, root, this, m_rootNode);
+        m_ebAttackFrame = InputBox::create(ATTACK_FRAME, root, this, m_rootNode);
+        m_ebAttackDuration = InputBox::create(ATTACK_DURATION, root, this, m_rootNode);
+        m_ebAttackInterval = InputBox::create(ATTACK_INTERVAL, root, this, m_rootNode);
         
         m_pHolder = static_cast<CCSprite*>(m_rootNode->getChildByTag(SPRITE_HOLDER));
         m_pHolder->initWithFile("R/cross.png");
@@ -469,6 +475,16 @@ void MainScene::updateProperty(CCObject *sender)
     
     sprintf(buffer, "%.2f", xCurAtk->getSpeed());
     m_ebSpeed->setText(string(buffer));
+    
+    sprintf(buffer, "%d", xCurAtk->getAtkFrame());
+    m_ebAttackFrame->setText(string(buffer));
+    
+    sprintf(buffer, "%.2f", xCurAtk->getDuration());
+    m_ebAttackDuration->setText(string(buffer));
+    
+    sprintf(buffer, "%.2f", xCurAtk->getInterval());
+    m_ebAttackInterval->setText(string(buffer));
+    
 }
 
 void MainScene::editBoxEditingDidBegin(CCEditBox* editBox)
@@ -525,6 +541,15 @@ void MainScene::editBoxTextChanged(CCEditBox* editBox, const std::string& text)
         }  else if(editBox == m_ebSpeed->m_edit) {
             temp = atof(text.c_str());
             xCurAtk->setSpeed(temp);
+        } else if(editBox == m_ebAttackFrame->m_edit) {
+            temp = atoi(text.c_str());
+            xCurAtk->setAtkFrame(temp);
+        } else if(editBox == m_ebAttackDuration->m_edit) {
+            temp = atof(text.c_str());
+            xCurAtk->setDuration(temp);
+        } else if(editBox == m_ebAttackInterval->m_edit) {
+            temp = atof(text.c_str());
+            xCurAtk->setInterval(temp);
         }
     }
 }

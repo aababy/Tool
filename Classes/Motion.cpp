@@ -242,7 +242,7 @@ void Motion::getEffectsName(CCDictionary *dic, CCDictionary *effects)
                 str += m_vParts.at(i)->getEffectName();
                 
                 //插入1个effect
-                m_vParts.at(i)->saveEffectToDictionary(effects);        //这个函数加入effects
+                m_vParts.at(i)->saveEffectToDictionary(effects, iStart + 1);        //这个函数加入effects
             }
         }
         
@@ -309,4 +309,37 @@ void Motion::removeEffect()
         
         setCurOperationIndex(m_vParts.size() - 1);
     }
+}
+
+
+void Motion::setAtkFrame(int atkFrame)
+{
+    m_vParts.at(m_iCurOperationIndex)->setAtkFrame(atkFrame);
+}
+
+int Motion::getAtkFrame()
+{
+    return m_vParts.at(m_iCurOperationIndex)->getAtkFrame();
+}
+
+
+void Motion::setDuration(float duration)
+{
+    m_vParts.at(m_iCurOperationIndex)->setSpeed(duration);
+}
+
+float Motion::getDuration()
+{
+    return m_vParts.at(m_iCurOperationIndex)->getDuration();
+}
+
+
+void Motion::setInterval(float interval)
+{
+    m_vParts.at(m_iCurOperationIndex)->setSpeed(interval);
+}
+
+float Motion::getInterval()
+{
+    return m_vParts.at(m_iCurOperationIndex)->getSpeed();
 }

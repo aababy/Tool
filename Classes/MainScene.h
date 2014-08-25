@@ -99,6 +99,9 @@ protected:
     InputBox*   m_ebName;
     InputBox*   m_ebDegree;
     InputBox*   m_ebSpeed;
+    InputBox*   m_ebAttackFrame;
+    InputBox*   m_ebAttackDuration;
+    InputBox*   m_ebAttackInterval;
     
     CCPoint     m_oldPoint;
     bool        m_bDragAndDrop = false;
