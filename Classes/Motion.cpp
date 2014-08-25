@@ -325,7 +325,7 @@ int Motion::getAtkFrame()
 
 void Motion::setDuration(float duration)
 {
-    m_vParts.at(m_iCurOperationIndex)->setSpeed(duration);
+    m_vParts.at(m_iCurOperationIndex)->setDuration(duration);
 }
 
 float Motion::getDuration()
@@ -336,10 +336,10 @@ float Motion::getDuration()
 
 void Motion::setInterval(float interval)
 {
-    m_vParts.at(m_iCurOperationIndex)->setSpeed(interval);
+    m_vParts.at(m_iCurOperationIndex)->setInterval(interval);
 }
 
 float Motion::getInterval()
 {
-    return m_vParts.at(m_iCurOperationIndex)->getSpeed();
+    return m_vParts.at(m_iCurOperationIndex)->getInterval();
 }
