@@ -56,6 +56,13 @@ public:
     void setSpeed(float speed);
     float getSpeed();
     
+    void setAtkFrame(int atkFrame);
+    int getAtkFrame();
+    void setDuration(float duration);
+    float getDuration();
+    void setInterval(float interval);
+    float getInterval();
+    
     void getEffectsName(CCDictionary *dic, CCDictionary *effects);
 
     vector<string> m_vFrameNameOrdered;

@@ -61,7 +61,7 @@ public:
     
     int getCurFrameIndex();
     void checkIfNeedToStart(int iFrameIndex);
-    void saveEffectToDictionary(CCDictionary *effects);
+    void saveEffectToDictionary(CCDictionary *effects, int iMotionStart);
     void setDelay(float delay);
     float getDelay();
     void setDegree(float degree);
@@ -103,6 +103,10 @@ private:
     float   m_fDelay = 0.05f;        //帧间隔
     float   m_degree = 0.0f;
     float   m_speed = 1000.f;
+    
+    CC_SYNTHESIZE(int, m_atkFrame, AtkFrame);
+    CC_SYNTHESIZE(float, m_duration, Duration);
+    CC_SYNTHESIZE(float, m_interval, Interval);
     
     bool    m_flag[FLAG_COUNT];
     
