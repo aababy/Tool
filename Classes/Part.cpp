@@ -378,7 +378,7 @@ string Part::getEffectName()
 {
     bool bNormal = CCUserDefault::sharedUserDefault()->getBoolForKey(NORMAL);
     
-    char temp[10];
+    char temp[40];
     
     if (bNormal) {
         sprintf(temp, "n%s%d", makeMotionName().c_str(), m_iAccIndex);
