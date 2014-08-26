@@ -61,7 +61,6 @@ Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &show
     
     saveNames(vNames);
     
-    m_atkFrame = 0;
     m_duration = 0.f;
     m_interval = 0.f;
 }
@@ -120,7 +119,6 @@ Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &show
     
     saveNames(vNames);
     
-    m_atkFrame = 0;
     m_duration = 0.f;
     m_interval = 0.f;
 }
@@ -440,7 +438,7 @@ void Part::saveEffectToDictionary(CCDictionary *effects, int iMotionStart)
     
     if (!m_bMain) {
         if (m_flag[FI_ISOLATE] == false) {
-            insertInteger(effect, "attackFrame", m_atkFrame - iMotionStart - iStartFrameIndex);
+            saveAttackFrame(effect, iMotionStart);
             insertFloat(effect, "attackDuration", m_duration);
             insertFloat(effect, "attackInterval", m_interval);
         }
@@ -448,6 +446,22 @@ void Part::saveEffectToDictionary(CCDictionary *effects, int iMotionStart)
     
     
     effects->setObject(effect, getEffectName());
+}
+
+void Part::saveAttackFrame(CCDictionary *effect, int iMotionStart)
+{
+    string str;
+    for (int i = 0; i < m_vAtkFrame.size(); i++)
+    {
+        if (!str.empty()) {
+            str += ",";
+        }
+        str += any2string(m_vAtkFrame.at(i) + 1 - iMotionStart - iStartFrameIndex);
+    }
+    
+    if (!str.empty()) {
+        insertString(effect, "attackFrame", str);
+    }
 }
 
 void Part::setDelay(float delay)
@@ -526,4 +540,40 @@ string Part::makeMotionName()
     }
 }
 
+void Part::setAtkFrame(int atkFrame, bool bChecked)
+{
+    //查找是否已经存在
+    vector<int>::iterator it;
+    for (it = m_vAtkFrame.begin(); it != m_vAtkFrame.end(); it++)
+    {
+        int value = (*it);
+        if (value == atkFrame)
+        {
+            if (bChecked == false)
+            {
+                m_vAtkFrame.erase(it);
+            }
+            break;
+        }
+    }
+    
+    if (it == m_vAtkFrame.end() && bChecked) {
+        m_vAtkFrame.push_back(atkFrame);
+    }
+}
 
+
+bool Part::getAtkFrame(int iAllIndex)
+{
+    vector<int>::iterator it;
+    for (it = m_vAtkFrame.begin(); it != m_vAtkFrame.end(); it++)
+    {
+        int value = (*it);
+        if (value == iAllIndex)
+        {
+            return true;
+        }
+    }
+    
+    return false;
+}

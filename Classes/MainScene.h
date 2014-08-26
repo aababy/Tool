@@ -64,6 +64,7 @@ public:
     int tag2Index(int aTag);
     void updateCheckBox();
     void selectedNormal(CCObject *pSender, CheckBoxEventType type);
+    void selectedAttackFrame(CCObject *pSender, CheckBoxEventType type);
     
 protected:
     void setFrameCount(CCObject *sender);
@@ -99,7 +100,6 @@ protected:
     InputBox*   m_ebName;
     InputBox*   m_ebDegree;
     InputBox*   m_ebSpeed;
-    InputBox*   m_ebAttackFrame;
     InputBox*   m_ebAttackDuration;
     InputBox*   m_ebAttackInterval;
     
@@ -111,6 +111,7 @@ protected:
     
     CheckBox*   m_cbFlags[FLAG_COUNT];
     CheckBox*   m_cbNormal;
+    CheckBox*   m_cbAttack;
 };
 
 #endif // __HELLOWORLD_SCENE_H__

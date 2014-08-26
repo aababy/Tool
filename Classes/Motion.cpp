@@ -312,14 +312,14 @@ void Motion::removeEffect()
 }
 
 
-void Motion::setAtkFrame(int atkFrame)
+void Motion::setAtkFrame(int atkFrame, bool bChecked)
 {
-    m_vParts.at(m_iCurOperationIndex)->setAtkFrame(atkFrame);
+    m_vParts.at(m_iCurOperationIndex)->setAtkFrame(atkFrame, bChecked);
 }
 
-int Motion::getAtkFrame()
+bool Motion::getAtkFrame(int iAllIndex)
 {
-    return m_vParts.at(m_iCurOperationIndex)->getAtkFrame();
+    return m_vParts.at(m_iCurOperationIndex)->getAtkFrame(iAllIndex);
 }
 
 

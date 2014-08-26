@@ -34,9 +34,9 @@ enum UITag
     NORMAL_ATTACK = 246,
     ISOLATE = 258,
     SPEED = 269,
-    ATTACK_FRAME = 271,
     ATTACK_DURATION = 274,
     ATTACK_INTERVAL = 276,
+    ATTACK_FRAME = 286,
     
     LIST_BG = 1000,
     LIST_MOTION = 1100,
@@ -101,7 +101,6 @@ bool MainScene::init(CCScene* pScene)
         m_ebName = InputBox::create(SKILL_PART_NAME, root, this, m_rootNode);
         m_ebDegree = InputBox::create(DEGREE, root, this, m_rootNode);
         m_ebSpeed = InputBox::create(SPEED, root, this, m_rootNode);
-        m_ebAttackFrame = InputBox::create(ATTACK_FRAME, root, this, m_rootNode);
         m_ebAttackDuration = InputBox::create(ATTACK_DURATION, root, this, m_rootNode);
         m_ebAttackInterval = InputBox::create(ATTACK_INTERVAL, root, this, m_rootNode);
         
@@ -127,6 +126,8 @@ bool MainScene::init(CCScene* pScene)
         
         m_cbNormal = initCheckBox(NORMAL_ATTACK, root, this, checkboxselectedeventselector(MainScene::selectedNormal));
         CCUserDefault::sharedUserDefault()->setBoolForKey(NORMAL, false);
+        
+        m_cbAttack = initCheckBox(ATTACK_FRAME, root, this, checkboxselectedeventselector(MainScene::selectedAttackFrame));
         
         //列表
         listView = (UIListView*)UIHelper::seekWidgetByTag(root, PARTS_LIST);
@@ -246,6 +247,32 @@ void MainScene::selectedNormal(CCObject *pSender, CheckBoxEventType type)
         case CHECKBOX_STATE_EVENT_SELECTED:
         {
             CCUserDefault::sharedUserDefault()->setBoolForKey(NORMAL, true);
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
+
+
+void MainScene::selectedAttackFrame(CCObject *pSender, CheckBoxEventType type)
+{
+    if (!xCurAtk) {
+        return;
+    }
+    
+    switch (type)
+    {
+        case CHECKBOX_STATE_EVENT_UNSELECTED:
+        {
+            xCurAtk->setAtkFrame(xSkill->m_iCurIndex, false);
+        }
+            break;
+            
+        case CHECKBOX_STATE_EVENT_SELECTED:
+        {
+            xCurAtk->setAtkFrame(xSkill->m_iCurIndex, true);
         }
             break;
             
@@ -377,6 +404,11 @@ void MainScene::setFrameCount(CCObject *sender)
             m_ebName->setText(xCurAtk->sSaveName);
         }
     }
+    
+    if(xCurAtk)
+    {
+        m_cbAttack->setSelectedState(xCurAtk->getAtkFrame(xSkill->m_iCurIndex));
+    }
 }
 
 void MainScene::updateList(CCObject *sender)
@@ -474,10 +506,7 @@ void MainScene::updateProperty(CCObject *sender)
     m_ebDegree->setText(string(buffer));
     
     sprintf(buffer, "%.2f", xCurAtk->getSpeed());
-    m_ebSpeed->setText(string(buffer));
-    
-    sprintf(buffer, "%d", xCurAtk->getAtkFrame());
-    m_ebAttackFrame->setText(string(buffer));
+    m_ebSpeed->setText(string(buffer));    
     
     sprintf(buffer, "%.2f", xCurAtk->getDuration());
     m_ebAttackDuration->setText(string(buffer));
@@ -541,9 +570,6 @@ void MainScene::editBoxTextChanged(CCEditBox* editBox, const std::string& text)
         }  else if(editBox == m_ebSpeed->m_edit) {
             temp = atof(text.c_str());
             xCurAtk->setSpeed(temp);
-        } else if(editBox == m_ebAttackFrame->m_edit) {
-            temp = atoi(text.c_str());
-            xCurAtk->setAtkFrame(temp);
         } else if(editBox == m_ebAttackDuration->m_edit) {
             temp = atof(text.c_str());
             xCurAtk->setDuration(temp);
@@ -702,5 +728,7 @@ void MainScene::updateCheckBox()
         for (int i = 0; i < FLAG_COUNT; i++) {
             m_cbFlags[i]->setSelectedState(xCurAtk->getFlags((flagIndex)i));
         }
+        
+        m_cbAttack->setSelectedState(xCurAtk->getAtkFrame(xSkill->m_iCurIndex));
     }
 }

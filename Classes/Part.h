@@ -68,8 +68,10 @@ public:
     float getDegree();
     void setSpeed(float speed);
     float getSpeed();
-    
+    void setAtkFrame(int atkFrame, bool bChecked);
+    bool getAtkFrame(int iAllIndex);
     void saveNames(vector<string> &vNames);
+    void saveAttackFrame(CCDictionary *effect, int iMotionStart);
 
     ~Part();
     
@@ -104,7 +106,7 @@ private:
     float   m_degree = 0.0f;
     float   m_speed = 1000.f;
     
-    CC_SYNTHESIZE(int, m_atkFrame, AtkFrame);
+    vector<int> m_vAtkFrame;
     CC_SYNTHESIZE(float, m_duration, Duration);
     CC_SYNTHESIZE(float, m_interval, Interval);
     

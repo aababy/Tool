@@ -56,8 +56,8 @@ public:
     void setSpeed(float speed);
     float getSpeed();
     
-    void setAtkFrame(int atkFrame);
-    int getAtkFrame();
+    void setAtkFrame(int atkFrame, bool bChecked);
+    bool getAtkFrame(int iAllIndex);
     void setDuration(float duration);
     float getDuration();
     void setInterval(float interval);
