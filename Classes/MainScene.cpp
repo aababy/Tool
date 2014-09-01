@@ -37,6 +37,7 @@ enum UITag
     ATTACK_DURATION = 274,
     ATTACK_INTERVAL = 276,
     ATTACK_FRAME = 286,
+    BUTTON_2X = 309,
     
     LIST_BG = 1000,
     LIST_MOTION = 1100,
@@ -83,6 +84,8 @@ bool MainScene::init(CCScene* pScene)
         initButton(BUTTON_CLEAN, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_SAVE, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_PREVIEW_ALL, root, this, toucheventselector(MainScene::touchEvent));
+        btn2x = initButton(BUTTON_2X, root, this, toucheventselector(MainScene::touchEvent));
+        btn2x->setScale(0.3f, 0.5f);
         btnAddMotion = initButton(BUTTON_ADD_MOTION, root, this, toucheventselector(MainScene::touchEvent));
         btnAddMotion->setEnabled(false);
         btnDelMotion = initButton(BUTTON_DEL_MOTION, root, this, toucheventselector(MainScene::touchEvent));
@@ -364,6 +367,15 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
         case BUTTON_DEL_MOTION:
         {
             xSkill->deletePart();
+        }
+            break;
+        case BUTTON_2X:
+        {
+            if(xCurAtk)
+            {
+                xCurAtk->setCurScale(2.f);
+                updateProperty(NULL);
+            }
         }
             break;
         default:

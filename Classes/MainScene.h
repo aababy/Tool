@@ -91,6 +91,7 @@ protected:
     Button *btnAddMotion;
     Button *btnDelMotion;
     Button *btnImport;
+    Button *btn2x;
        
     InputBox*   m_ebAnchor[2];
     InputBox*   m_ebPosition[2];
