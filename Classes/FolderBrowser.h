@@ -21,6 +21,7 @@ public:
     bool init(curState state);
     void touchEvent(CCObject *pSender, TouchEventType type);
     void updateList();
+    void updateSkillList();
     void forward();
     void forward(string &key);
     
@@ -33,17 +34,21 @@ public:
     void checkOldSearchPath();
     void handleString(string &str);
     bool isStringInMulti(string &str);
+    bool checkIfInSkill(string &str);
+    void finish();
     
 private:
     bool m_bShowSaveAddress = false;
     
     bool checkIfPlist(string &str);
+    void prepareTotalPList();
     
     CCNode *m_rootNode;
     InputBox*   m_ebAddress;
     InputBox*   m_ebSearch;
     InputBox*   m_ebModifySave;         //修改保存路径
     UIListView * listView;
+    UIListView * listSkill;
     Button*     m_btnModify;
     Label*      m_tips;
     curState    m_state;
@@ -53,9 +58,11 @@ private:
     
     vector<string> m_vFileName;
     vector<string> m_vMultiName;
+    vector<string> m_vSkillName;
     MainScene *m_mainlayer;
     string  searchPath;
     string  savePath;
+    string  sTotalPlist;
 
     
     CheckBox* m_cbMulti;

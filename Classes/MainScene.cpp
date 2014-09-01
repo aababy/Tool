@@ -744,3 +744,9 @@ void MainScene::updateCheckBox()
         m_cbAttack->setSelectedState(xCurAtk->getAtkFrame(xSkill->m_iCurIndex));
     }
 }
+
+void MainScene::setSkillName(string &str)
+{
+    
+}
+
