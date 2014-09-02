@@ -55,6 +55,7 @@ enum flagIndex
     FI_FOLLOW,
     FI_FIXED,
     FI_ISOLATE,
+    FI_MAX,
 };
 
 

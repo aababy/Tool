@@ -69,7 +69,7 @@ void Motion::importPart(vector<string> &vNames)
     }
 }
 
-void Motion::importEffect(vector<string> &vNames, int iImportIndex)
+Part* Motion::importEffect(vector<string> &vNames, int iImportIndex)
 {
     CCPoint point = CCPointZero;
     
@@ -77,6 +77,8 @@ void Motion::importEffect(vector<string> &vNames, int iImportIndex)
     m_iAccIndex++;
     part->setStartFrameIndex(iImportIndex);
     m_vParts.push_back(part);
+    
+    return part;
 }
 
 

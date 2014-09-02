@@ -479,6 +479,11 @@ void Part::setFlags(flagIndex index, bool bFlag)
     m_flag[index] = bFlag;
 }
 
+void Part::setAllFlags(bool *bFlag)
+{
+    memcpy(m_flag, bFlag, FI_MAX * sizeof(bool));
+}
+
 bool Part::getFlags(flagIndex index)
 {
     return m_flag[index];

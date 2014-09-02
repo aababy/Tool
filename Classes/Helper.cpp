@@ -199,5 +199,43 @@ void string2Vector(string &name, vector<string>& vec)
     }
 }
 
+CCPoint str2Point(const char * sz)
+{
+    string str = sz;
+    
+    int iStartX = str.find_first_of("0123456789-");
+    int iEndX = str.find_first_of(",");
+    
+    int iStartY = str.find_first_of("0123456789-", iEndX);
+    int iEndY = str.find_last_of("0123456789.");
+    
+    
+    string x = str.substr(iStartX, iEndX - iStartX);
+    string y = str.substr(iStartY, iEndY - iStartY + 1);
+    
+    return ccp(atof(x.c_str()), atof(y.c_str()));
+}
 
-
+void string2Flags(CCString *sFlags, bool *flags)
+{
+    //兼容以前的格式
+    if (sFlags == NULL)
+    {
+        for (int i = 0; i < FI_MAX; i++) {
+            flags[i] = false;
+        }
+        return;
+    }
+    
+    string str = sFlags->getCString();
+    
+    for (int i = 0; i < FI_MAX; i++) {
+        if (i >= str.length() || str.at(i) == '0') {
+            flags[i] = false;
+        }
+        else
+        {
+            flags[i] = true;
+        }
+    }
+}

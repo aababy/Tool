@@ -17,7 +17,7 @@ public:
     Motion(string sName, vector<string> &vNames, vector<string> vFrameNameOrdered, int iStart, int iEnd, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, int iMotionAccIndex);
     ~Motion();
     void importPart(vector<string> &vNames);
-    void importEffect(vector<string> &vNames, int iImportIndex);
+    Part* importEffect(vector<string> &vNames, int iImportIndex);
     int getPartsCount();
     void setCurOperationIndex(int idx);
     string& getMotionName(int i);

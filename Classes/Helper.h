@@ -33,6 +33,8 @@ CheckBox * initCheckBox(int iTag, Layout* root, CCObject *target, SEL_SelectedSt
 CCPoint pointRotateWithAngle(CCPoint& point, float fDegree);
 string flag2string(bool m_flag[FLAG_COUNT]);
 void string2Vector(string &name, vector<string>& vec);
+CCPoint str2Point(const char * sz);
+void string2Flags(CCString *sFlags, bool *flags);
 
 template <class T> string any2string(T tmp)
 {

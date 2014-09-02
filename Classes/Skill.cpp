@@ -666,6 +666,34 @@ void Skill::createEffects(int iStart, const char * effectName, CCDictionary * ef
     vector<string> vFileName;
     string2Vector(sFileName, vFileName);
     
-    m_curMotion->importEffect(vFileName, iStart);
+    Part *part = m_curMotion->importEffect(vFileName, iStart);
+    
+    //anchorPoint
+    CCString *anchorPoint = (CCString*)effect->objectForKey("anchorPoint");
+    CCPoint point = str2Point(anchorPoint->getCString());
+    part->setAnchorPoint(point);
+    
+    //attackDuration 未实现
+    
+    //attackInterval 未实现
+    
+    //delay
+    CCString *delay = (CCString*)effect->objectForKey("delay");
+    part->setDelay(atof(delay->getCString()));
+    
+    //flags
+    CCString *flags = (CCString*)effect->objectForKey("flags");
+    bool bFlags[FI_MAX];
+    string2Flags(flags, bFlags);
+    part->setAllFlags(bFlags);
+    
+    //坐标
+    CCString *position = (CCString*)effect->objectForKey("position");
+    point = str2Point(position->getCString());
+    part->setPosition(point);
+    
+    //rotation
+    CCString *rotation = (CCString*)effect->objectForKey("rotation");
+    part->setRotate(atof(rotation->getCString()));
 }
 

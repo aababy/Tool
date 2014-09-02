@@ -47,6 +47,7 @@ public:
     void preview();
     void setEnabled(bool bEnabled);
     void setFlags(flagIndex index, bool bFlag);
+    void setAllFlags(bool *bFlag);
     bool getFlags(flagIndex index);
     CCSprite* getSprite();
     CCSprite* getPreview();
