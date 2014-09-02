@@ -111,6 +111,23 @@ void Skill::addMotion()
     }
 }
 
+
+void Skill::addMotionForOld(string sSkillPart, vector<string> &vNames, vector<string> vFrameNameOrdered, int iStart, int iEnd)
+{
+    vector<string> vFrameName;
+    
+    for (int i = m_iLastIndex; i < m_iCurIndex + 1; i++) {
+        string str = m_vFrameName.at(i).sFrameName;
+        vFrameName.push_back(str);
+    }
+    
+    CCAssert(m_iLastIndex <= m_iCurIndex, "error");
+    m_curMotion = new Motion(sSkillPart, vNames, vFrameNameOrdered, iStart, iEnd, m_origin, m_showForPreview, m_parent, m_iMotionAccIndex);
+    m_vMotion.push_back(m_curMotion);
+    m_iMotionAccIndex++;
+}
+
+
 string &Skill::getMotionName(int i)
 {
     return m_vMotion.at(i)->sMotionName;
@@ -401,7 +418,7 @@ void Skill::saveAtksAndEffect(CCDictionary *dic)
         
         insertString(dictionary, "soundFileName", "");
         
-        insertString(dictionary, "flags", getMotionFlags());
+        insertString(dictionary, "flags", getMotionFlags(motion));
         
         //插入整个atk
         atks->setObject(dictionary, motion->sSaveName);
@@ -420,10 +437,10 @@ void Skill::saveAtksAndEffect(CCDictionary *dic)
 }
 
 
-string Skill::getMotionFlags()
+string Skill::getMotionFlags(Motion *motion)
 {
     string str;
-    if (m_curMotion->getFlags(FI_MOVE))
+    if (motion->getFlags(FI_MOVE))
     {
         str = "1";
     }
@@ -508,4 +525,191 @@ void Skill::prepareTotalPlist(CCDictionary *dic)
     }
 }
 
+void Skill::importOldPlist(string &str)
+{
+    //解析plist文件, 创建Motion 和 Effect(触发时再创建).
+    CCDictionary *plist = CCDictionary::createWithContentsOfFile(sTotalPlist.c_str());
+    
+    //创建motion, 先是atks
+    CCDictionary *m_effects = (CCDictionary *)plist->objectForKey("effects");
+    CCDictionary *dic = NULL;
+    for (int a = 0; a < 2; a++) {
+        if (a == 0) {
+            dic = (CCDictionary *)plist->objectForKey("atks");
+        }
+        else
+        {
+            dic = (CCDictionary *)plist->objectForKey("normals");
+        }
+        
+        if (dic)
+        {
+            CCArray *array = dic->allKeys();
+            for (int i = 0; i < array->count(); i ++)
+            {
+                //获取key的方法
+                CCString *key =  (CCString*)array->objectAtIndex(i);
+                CCDictionary* motionDic = (CCDictionary *)dic->objectForKey(key->getCString());
+                CCString *fileName = (CCString*)motionDic->objectForKey("fileName");
+                
+                if (str.compare(fileName->getCString()) == 0)
+                {
+                    //如果匹配才创建
+                    string sSkillPart = key->getCString();
+                    
+                    //fileName
+                    vector<string> vNames;
+                    string2Vector(str, vNames);
+                    
+                    int iStart, iEnd;
+                    vector<string> vFrameNameOrdered;
+                    CCString *frames = (CCString*)motionDic->objectForKey("frames");
+                    getFrames(frames, vFrameNameOrdered, &iStart, &iEnd);
+                    
+                    addMotionForOld(sSkillPart, vNames, vFrameNameOrdered, iStart, iEnd);
+                    
+                    //位移
+                    xCurAtk->setFlags(FI_MOVE, checkIfMove(motionDic));
+                    
+                    //帧间隔
+                    CCString *delay = (CCString*)motionDic->objectForKey("delay");
+                    xCurAtk->setDelay(atof(delay->getCString()));
+                    
+                    //处理特效
+                    CCDictionary * effectsInAtk = (CCDictionary* )motionDic->objectForKey("effects");
+                    if(!effectsInAtk) continue;
+                    
+                    CCArray *effectArray = effectsInAtk->allKeys();
+                    if(!effectArray) continue;
+                    for (int i = 0; i < effectArray->count(); i ++)
+                    {
+                        //获取key的方法
+                        CCString *key =  (CCString*)effectArray->objectAtIndex(i);
+                        CCString *value = (CCString*)effectsInAtk->objectForKey(key->getCString());
+                        int iStart = atoi(key->getCString());
+                        createEffects(iStart, value->getCString(), m_effects);
+                    }
+                }
+            }
+        }
+    }
+    
+    bubble_sort(m_vMotion);
+    //setMotionAccIndex
+    for (int i = 0; i < getMotionCount(); i++)
+    {
+        m_vMotion.at(i)->setMotionAccIndex(i);
+    }
+
+    setCurAtkIndex(0, OT_SELECT);
+}
+
+
+void Skill::getFrames(CCString *frames, vector<string> &vFrameNameOrdered, int *iStartIndex, int *iEndIndex)
+{
+    string sframes = frames->getCString();
+    int iComma = sframes.find(',');
+    string sCount = sframes.substr(iComma +  1, sframes.length() - (iComma +  1));
+    
+    int iDot = sframes.find('.');
+    int iNumber = sframes.find_last_not_of("0123456789", iDot - 1);
+    string sStart = sframes.substr(iNumber + 1, iDot - (iNumber + 1));
+    string sBefore = sframes.substr(0, iNumber + 1);
+    string sAfter = sframes.substr(iDot, iComma - iDot);
+    
+    char buff[100];
+    int iStart = atoi(sStart.c_str());
+    int iCount = atoi(sCount.c_str()) + iStart;
+    
+    char format[20];
+    sprintf(format, "%%s%%0%lud%%s", sStart.length());
+    
+    for (; iStart < iCount; iStart++)
+    {
+        sprintf(buff, format, sBefore.c_str(), iStart, sAfter.c_str());
+        
+        vFrameNameOrdered.push_back(buff);
+    }
+    
+    string sStartIndex = sframes.substr(iDot - 3, 3);
+    int iStartTemp = atoi(sStartIndex.c_str());
+    
+    *iStartIndex = iStartTemp;
+    *iEndIndex = iStartTemp + (atoi(sCount.c_str()) - 1);
+}
+
+
+bool Skill::checkIfMove(CCDictionary* motionDic)
+{
+    CCString *flags = (CCString*)motionDic->objectForKey("flags");
+    
+    int iFlag = atoi(flags->getCString());
+    
+    if (iFlag == 0)
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
+
+void Skill::createEffects(int iStart, const char * effectName, CCDictionary * effectsInAtk)
+{
+    CCDictionary* effect = (CCDictionary*)effectsInAtk->objectForKey(effectName);
+    
+    CCString *fileName = (CCString*)effect->objectForKey("fileName");
+    string sFileName = fileName->getCString();
+    
+    vector<string> vFileName;
+    string2Vector(sFileName, vFileName);
+    
+    Part *part = m_curMotion->importEffect(vFileName, iStart);
+    
+    //anchorPoint
+    CCString *anchorPoint = (CCString*)effect->objectForKey("anchorPoint");
+    CCPoint point = str2Point(anchorPoint->getCString());
+    part->setAnchorPoint(point);
+    
+    //delay
+    CCString *delay = (CCString*)effect->objectForKey("delay");
+    part->setDelay(atof(delay->getCString()));
+    
+    //flags
+    CCString *flags = (CCString*)effect->objectForKey("flags");
+    bool bFlags[FI_MAX];
+    string2Flags(flags, bFlags);
+    part->setAllFlags(bFlags);
+    
+    //坐标
+    CCString *position = (CCString*)effect->objectForKey("position");
+    point = str2Point(position->getCString());
+    part->setPosition(point);
+    
+    //rotation
+    CCString *rotation = (CCString*)effect->objectForKey("rotation");
+    part->setRotate(atof(rotation->getCString()));
+    
+    //speed
+    CCString *speed = (CCString*)effect->objectForKey("speed");
+    if(speed) part->setSpeed(atof(speed->getCString()));
+    
+    //degree
+    CCString *degree = (CCString*)effect->objectForKey("degree");
+    if(degree) part->setDegree(atof(degree->getCString()));
+    
+    //attackDuration
+    CCString *attackDuration = (CCString*)effect->objectForKey("attackDuration");
+    if(attackDuration) part->setDuration(atof(attackDuration->getCString()));
+    
+    //attackInterval
+    CCString *attackInterval = (CCString*)effect->objectForKey("attackInterval");
+    if(attackInterval) part->setInterval(atof(attackInterval->getCString()));
+    
+    //攻击帧
+    CCString *attackFrame = (CCString*)effect->objectForKey("attackFrame");
+    if(attackFrame) part->setAllAtkFrame(attackFrame, m_curMotion->iStart + 1);
+}
 

@@ -69,6 +69,19 @@ void Motion::importPart(vector<string> &vNames)
     }
 }
 
+Part* Motion::importEffect(vector<string> &vNames, int iImportIndex)
+{
+    CCPoint point = CCPointZero;
+    
+    Part* part = new Part(vNames, point, location, m_preview, m_show, m_showPreview, m_iAccIndex, sSaveName);
+    m_iAccIndex++;
+    part->setStartFrameIndex(iImportIndex);
+    m_vParts.push_back(part);
+    
+    return part;
+}
+
+
 int Motion::getPartsCount()
 {
     return m_vParts.size();
@@ -342,4 +355,13 @@ void Motion::setInterval(float interval)
 float Motion::getInterval()
 {
     return m_vParts.at(m_iCurOperationIndex)->getInterval();
+}
+
+void Motion::setMotionAccIndex(int iMotionAccIndex)
+{
+    m_iAccIndex = iMotionAccIndex * 100 + 1;
+    for (int i = 0; i < m_vParts.size(); i++)
+    {
+        m_vParts.at(i)->setAccIndex(m_iAccIndex);
+    }
 }

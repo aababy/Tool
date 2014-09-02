@@ -479,6 +479,11 @@ void Part::setFlags(flagIndex index, bool bFlag)
     m_flag[index] = bFlag;
 }
 
+void Part::setAllFlags(bool *bFlag)
+{
+    memcpy(m_flag, bFlag, FI_MAX * sizeof(bool));
+}
+
 bool Part::getFlags(flagIndex index)
 {
     return m_flag[index];
@@ -563,6 +568,22 @@ void Part::setAtkFrame(int atkFrame, bool bChecked)
 }
 
 
+void Part::setAllAtkFrame(CCString *atkFrames, int iMotionStart)
+{
+    string str = atkFrames->getCString();
+    vector<string> vAtkFrames;
+    
+    string2Vector(str, vAtkFrames);
+    
+    for (int i = 0; i < vAtkFrames.size(); i++)
+    {
+        int atkFrame = atoi(vAtkFrames.at(i).c_str());
+        atkFrame = atkFrame + iMotionStart + iStartFrameIndex - 1;
+        m_vAtkFrame.push_back(atkFrame);
+    }
+}
+
+
 bool Part::getAtkFrame(int iAllIndex)
 {
     vector<int>::iterator it;
@@ -577,3 +598,10 @@ bool Part::getAtkFrame(int iAllIndex)
     
     return false;
 }
+
+
+void Part::setAccIndex(int iAcc)
+{
+    m_iAccIndex = iAcc;
+}
+

@@ -17,6 +17,7 @@ public:
     Motion(string sName, vector<string> &vNames, vector<string> vFrameNameOrdered, int iStart, int iEnd, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, int iMotionAccIndex);
     ~Motion();
     void importPart(vector<string> &vNames);
+    Part* importEffect(vector<string> &vNames, int iImportIndex);
     int getPartsCount();
     void setCurOperationIndex(int idx);
     string& getMotionName(int i);
@@ -32,6 +33,7 @@ public:
     string sSaveName;           //e.g. "atk1"
     string sResName;            //e.g. "xxx.plist"
     void setDragAndDropOffset(CCPoint &point);
+    void setMotionAccIndex(int iMotionAccIndex);
     
     CCPoint getCurPosition();
     void setCurPosition(CCPoint &point);

@@ -693,6 +693,11 @@ void MainScene::switchToMain()
     m_ebName->setVisible(true);
 }
 
+void MainScene::importOldPlist(string &str)
+{
+    xSkill->importOldPlist(str);
+}
+
 void MainScene::makeAFocusOfList()
 {
     CCArray* items = listView->getItems();
@@ -744,3 +749,5 @@ void MainScene::updateCheckBox()
         m_cbAttack->setSelectedState(xCurAtk->getAtkFrame(xSkill->m_iCurIndex));
     }
 }
+
+

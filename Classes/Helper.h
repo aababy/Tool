@@ -11,6 +11,8 @@
 
 #include "IncludeForHeader.h"
 
+class Motion;
+
 int cycleNum(bool bAdd, int iCount, int *idx);
 
 Button * initButton(int iTag, Layout* root, CCObject *target, SEL_TouchEvent selector);
@@ -20,6 +22,7 @@ TextField * initTextField(int iTag, Layout* root);
 int getNumber(string &str);
 
 void bubble_sort(vector<FramesName> &vFrameName);
+void bubble_sort(vector<Motion* > &vMotion);
 void insertFloat(CCDictionary *dic, const string& key, float value);
 void insertString(CCDictionary *dic, const string& key, const string& value);
 void insertInteger(CCDictionary *dic, const string& key, int value);
@@ -29,6 +32,9 @@ string itostring(int i);
 CheckBox * initCheckBox(int iTag, Layout* root, CCObject *target, SEL_SelectedStateEvent selector);
 CCPoint pointRotateWithAngle(CCPoint& point, float fDegree);
 string flag2string(bool m_flag[FLAG_COUNT]);
+void string2Vector(string &name, vector<string>& vec);
+CCPoint str2Point(const char * sz);
+void string2Flags(CCString *sFlags, bool *flags);
 
 template <class T> string any2string(T tmp)
 {

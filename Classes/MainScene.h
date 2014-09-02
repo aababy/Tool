@@ -65,6 +65,7 @@ public:
     void updateCheckBox();
     void selectedNormal(CCObject *pSender, CheckBoxEventType type);
     void selectedAttackFrame(CCObject *pSender, CheckBoxEventType type);
+    void importOldPlist(string &str);
     
 protected:
     void setFrameCount(CCObject *sender);

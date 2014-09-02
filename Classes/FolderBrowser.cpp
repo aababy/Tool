@@ -22,8 +22,11 @@ enum UITag
     CHECK_MULTI = 172,
     BUTTON_OK = 188,
     TIPS = 190,
+    SKILL_LIST = 311,
     
     LIST_FILE = 1000,
+    
+    LIST_SKILL = 2000,
 };
 
 using namespace std;
@@ -103,12 +106,19 @@ bool FolderBrowser::init(curState state)
         Layout* defaultItem = (Layout*)UIHelper::seekWidgetByTag(listroot, 32);         //还有转一层, 一来至少加2个Panel
         listView->setItemModel(defaultItem);
         
+        //编辑列表
+        listSkill = (UIListView*)UIHelper::seekWidgetByTag(root, SKILL_LIST);
+        listSkill->setItemModel(defaultItem);
+        
         //checkbox
         m_cbMulti = (CheckBox*)UIHelper::seekWidgetByTag(root, CHECK_MULTI);
         
         setTouchEnabled(true);
         
         checkOldSearchPath();
+        
+        string str = xStr("new");
+        m_vSkillName.push_back(str);
        
         return true;
     }
@@ -148,10 +158,7 @@ void FolderBrowser::touchEvent(CCObject *pSender, TouchEventType type)
             break;
         case BUTTON_OK:
         {
-            m_mainlayer->importFinish(m_vMultiName);
-            CCNode* parent = this->getParent();
-            parent->removeChild(this);
-            m_mainlayer->switchToMain();
+            finish();
         }
             break;
         case BUTTON_MODIFY_SAVE:
@@ -183,7 +190,7 @@ void FolderBrowser::touchEvent(CCObject *pSender, TouchEventType type)
             break;
         default:
         {
-            if (iTag >= LIST_FILE) {
+            if (iTag >= LIST_FILE && iTag < LIST_SKILL) {
                 
                 string fileName = m_vFileName.at(iTag - LIST_FILE);
                 CCLOG("touch index %d", iTag - LIST_FILE);
@@ -191,8 +198,12 @@ void FolderBrowser::touchEvent(CCObject *pSender, TouchEventType type)
                 if (m_state == CS_NONE) {
                     m_state = CS_MAIN_PLIST;
                     m_mainlayer->setTotalPlist(fileName);
+                    sTotalPlist = fileName;
                     
                     m_tips->setText(xStr("second_step"));
+                    
+                    prepareTotalPList();
+                    updateSkillList();
                 }
                 else
                 {
@@ -201,10 +212,7 @@ void FolderBrowser::touchEvent(CCObject *pSender, TouchEventType type)
                         m_vMultiName.clear();
                         m_vMultiName.push_back(fileName);
                         
-                        m_mainlayer->importFinish(m_vMultiName);
-                        CCNode* parent = this->getParent();
-                        parent->removeChild(this);
-                        m_mainlayer->switchToMain();
+                        finish();
                     }
                     else
                     {
@@ -212,6 +220,24 @@ void FolderBrowser::touchEvent(CCObject *pSender, TouchEventType type)
                         updateList();
                     }
                 
+                }
+            }
+            else
+            {
+                string fileName = m_vSkillName.at(iTag - LIST_SKILL);
+                
+                if (fileName.compare(xStr("new")) != 0)
+                {
+                    m_vMultiName.clear();
+                    string2Vector(fileName, m_vMultiName);
+                    
+                    finish();
+                    m_mainlayer->importOldPlist(fileName);
+                }
+                else
+                {
+                    //选导入主体
+                    m_tips->setText(xStr("third_step"));
                 }
             }
         }
@@ -310,6 +336,26 @@ void FolderBrowser::updateList()
 }
 
 
+void FolderBrowser::updateSkillList()
+{
+    listSkill->removeAllItems();
+    
+    for (int i = 0; i < m_vSkillName.size(); ++i)
+    {
+        listSkill->pushBackDefaultItem();
+    }
+    
+    CCArray* items = listSkill->getItems();
+    for (int i = 0; i < items->count(); i++) {
+        Layout * bg = (Layout*)items->objectAtIndex(i);
+        bg->addTouchEventListener(this, toucheventselector(FolderBrowser::touchEvent));
+        bg->setTag(LIST_SKILL + i);
+        Label *label = (Label*)UIHelper::seekWidgetByTag(bg, 22);
+        label->setText(m_vSkillName.at(i));
+    }
+}
+
+
 bool FolderBrowser::checkIfPlist(string &str)
 {
     int iDot = str.rfind('.');
@@ -380,5 +426,54 @@ bool FolderBrowser::isStringInMulti(string &str)
     return false;
 }
 
+void FolderBrowser::prepareTotalPList()
+{
+    CCDictionary *plist = CCDictionary::createWithContentsOfFile(sTotalPlist.c_str());
+    
+    //创建motion, 先是atks
+    CCDictionary *atks = (CCDictionary *)plist->objectForKey("atks");
+    if (atks == NULL) {
+        m_tips->setText(xStr("second_step_new"));
+        return;
+    }
+    
+    CCArray *array = atks->allKeys();
+    if (array == NULL) {
+        m_tips->setText(xStr("second_step_new"));
+        return;
+    }
+    
+    for (int i = 0; i < array->count(); i ++)
+    {
+        //获取key的方法
+        CCString *key =  (CCString*)array->objectAtIndex(i);
+        CCDictionary* motionDic = (CCDictionary *)atks->objectForKey(key->getCString());
+        CCString *fileName =  (CCString*)motionDic->objectForKey("fileName");
+        string str = fileName->getCString();
+        
+        if (checkIfInSkill(str) == false) {
+            m_vSkillName.push_back(str);
+        }
+    }
+}
+
+bool FolderBrowser::checkIfInSkill(string &str)
+{
+    for (int i = 0; i < m_vSkillName.size(); i++)
+    {
+        if (str.compare(m_vSkillName.at(i)) == 0) {
+            return true;
+        }
+    }
+    
+    return false;
+}
 
 
+void FolderBrowser::finish()
+{
+    m_mainlayer->importFinish(m_vMultiName);
+    CCNode* parent = this->getParent();
+    parent->removeChild(this);
+    m_mainlayer->switchToMain();
+}

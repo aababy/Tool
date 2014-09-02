@@ -39,6 +39,7 @@ public:
     void setAnchorPoint(const CCPoint& point);
     void setScale(float s);
     void setDragAndDropOffset(CCPoint &point);
+    void setAccIndex(int iAcc);
     
     void setFrame(int iIndexStartFromMain);
     void nextFrame(int iCount);
@@ -46,6 +47,7 @@ public:
     void preview();
     void setEnabled(bool bEnabled);
     void setFlags(flagIndex index, bool bFlag);
+    void setAllFlags(bool *bFlag);
     bool getFlags(flagIndex index);
     CCSprite* getSprite();
     CCSprite* getPreview();
@@ -70,6 +72,7 @@ public:
     float getSpeed();
     void setAtkFrame(int atkFrame, bool bChecked);
     bool getAtkFrame(int iAllIndex);
+    void setAllAtkFrame(CCString *atkFrames, int iMotionStart);
     void saveNames(vector<string> &vNames);
     void saveAttackFrame(CCDictionary *effect, int iMotionStart);
 
