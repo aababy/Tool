@@ -59,13 +59,13 @@ public:
     void makeAFocusOfListForMotion();    
     void updateButtonForMotion(CCObject *sender);
     void setTotalPlist(string &str);
-    void setSkillName(string &str);
     
     void selectedStateEvent(CCObject *pSender, CheckBoxEventType type);
     int tag2Index(int aTag);
     void updateCheckBox();
     void selectedNormal(CCObject *pSender, CheckBoxEventType type);
     void selectedAttackFrame(CCObject *pSender, CheckBoxEventType type);
+    void importOldPlist(string &str);
     
 protected:
     void setFrameCount(CCObject *sender);

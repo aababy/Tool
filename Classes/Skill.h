@@ -27,6 +27,7 @@ public:
     const char * getCurFrameName();
     int getMotionCount();
     void addMotion();
+    void addMotionForOld(string sSkillPart, vector<string> &vNames, vector<string> vFrameNameOrdered, int iStart, int iEnd);
     string & getMotionName(int i);
     int getCurAtkIndex();
     void setCurAtkIndex(int i, setOperateType type);
@@ -56,11 +57,14 @@ public:
     bool checkCanAddMotion();
     void deletePart();
     void setTotalPlist(string &str);
-    string getMotionFlags();
+    string getMotionFlags(Motion *motion);
+    void importOldPlist(string &str);
     
 private:
     void setCurIndex(int idx);
     void prepareTotalPlist(CCDictionary *dic);
+    void getFrames(CCString *frames, vector<string> &vFrameNameOrdered, int *iStart, int *iEnd);
+    bool checkIfMove(CCDictionary* motionDic);
     
     vector<Motion *>    m_vMotion;
     vector<FramesName>  m_vFrameName;

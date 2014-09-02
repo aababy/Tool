@@ -32,6 +32,7 @@ public:
     string sSaveName;           //e.g. "atk1"
     string sResName;            //e.g. "xxx.plist"
     void setDragAndDropOffset(CCPoint &point);
+    void setMotionAccIndex(int iMotionAccIndex);
     
     CCPoint getCurPosition();
     void setCurPosition(CCPoint &point);

@@ -228,32 +228,11 @@ void FolderBrowser::touchEvent(CCObject *pSender, TouchEventType type)
                 
                 if (fileName.compare(xStr("new")) != 0)
                 {
-                    m_mainlayer->setSkillName(fileName);
-                    
                     m_vMultiName.clear();
-                    //每一帧可能有多个effects, 如果需要可以写成帮助方法
-                    int start = 0;
-                    string str;
-                    while (true) {
-                        int pos = fileName.find(',', start);
-                        if (pos != string::npos) {
-                            str = fileName.substr(start, pos - start);
-                        }
-                        else
-                        {
-                            str = fileName.substr(start, fileName.length() - start);
-                        }
-                        
-                        //寻找对应的effect
-                        m_vMultiName.push_back(str);
-                        start += str.length() + 1;
-                        
-                        if (start >= fileName.length()) {
-                            break;
-                        }
-                    }
+                    string2Vector(fileName, m_vMultiName);
                     
                     finish();
+                    m_mainlayer->importOldPlist(fileName);
                 }
                 else
                 {
@@ -453,9 +432,17 @@ void FolderBrowser::prepareTotalPList()
     
     //创建motion, 先是atks
     CCDictionary *atks = (CCDictionary *)plist->objectForKey("atks");
-    CCAssert(atks != NULL, "error");
+    if (atks == NULL) {
+        m_tips->setText(xStr("second_step_new"));
+        return;
+    }
     
     CCArray *array = atks->allKeys();
+    if (array == NULL) {
+        m_tips->setText(xStr("second_step_new"));
+        return;
+    }
+    
     for (int i = 0; i < array->count(); i ++)
     {
         //获取key的方法

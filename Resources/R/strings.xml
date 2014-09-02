@@ -8,6 +8,8 @@
 	<string>第1步:选择保存的Plist</string>
 	<key>second_step</key>
 	<string>第2步:选择编辑的技能</string>
+	<key>second_step_new</key>
+	<string>第2步:选择主角Plist</string>
 	<key>third_step</key>
 	<string>第3步:选择主角Plist</string>
 	<key>new</key>

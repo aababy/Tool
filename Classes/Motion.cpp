@@ -343,3 +343,8 @@ float Motion::getInterval()
 {
     return m_vParts.at(m_iCurOperationIndex)->getInterval();
 }
+
+void Motion::setMotionAccIndex(int iMotionAccIndex)
+{
+    m_iAccIndex = iMotionAccIndex * 100 + 1;
+}
