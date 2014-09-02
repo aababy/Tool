@@ -577,3 +577,10 @@ bool Part::getAtkFrame(int iAllIndex)
     
     return false;
 }
+
+
+void Part::setAccIndex(int iAcc)
+{
+    m_iAccIndex = iAcc;
+}
+

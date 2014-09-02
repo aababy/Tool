@@ -39,6 +39,7 @@ public:
     void setAnchorPoint(const CCPoint& point);
     void setScale(float s);
     void setDragAndDropOffset(CCPoint &point);
+    void setAccIndex(int iAcc);
     
     void setFrame(int iIndexStartFromMain);
     void nextFrame(int iCount);

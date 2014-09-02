@@ -65,6 +65,7 @@ private:
     void prepareTotalPlist(CCDictionary *dic);
     void getFrames(CCString *frames, vector<string> &vFrameNameOrdered, int *iStart, int *iEnd);
     bool checkIfMove(CCDictionary* motionDic);
+    void createEffects(int iStart, const char * effectName, CCDictionary * dic);
     
     vector<Motion *>    m_vMotion;
     vector<FramesName>  m_vFrameName;

@@ -575,6 +575,20 @@ void Skill::importOldPlist(string &str)
                     CCString *delay = (CCString*)motionDic->objectForKey("delay");
                     xCurAtk->setDelay(atof(delay->getCString()));
                     
+                    //处理特效
+                    CCDictionary * effectsInAtk = (CCDictionary* )motionDic->objectForKey("effects");
+                    if(!effectsInAtk) continue;
+                    
+                    CCArray *effectArray = effectsInAtk->allKeys();
+                    if(!effectArray) continue;
+                    for (int i = 0; i < effectArray->count(); i ++)
+                    {
+                        //获取key的方法
+                        CCString *key =  (CCString*)effectArray->objectAtIndex(i);
+                        CCString *value = (CCString*)effectsInAtk->objectForKey(key->getCString());
+                        int iStart = atoi(key->getCString());
+                        createEffects(iStart, value->getCString(), m_effects);
+                    }
                 }
             }
         }
@@ -640,3 +654,18 @@ bool Skill::checkIfMove(CCDictionary* motionDic)
         return true;
     }
 }
+
+
+void Skill::createEffects(int iStart, const char * effectName, CCDictionary * effectsInAtk)
+{
+    CCDictionary* effect = (CCDictionary*)effectsInAtk->objectForKey(effectName);
+    
+    CCString *fileName = (CCString*)effect->objectForKey("fileName");
+    string sFileName = fileName->getCString();
+    
+    vector<string> vFileName;
+    string2Vector(sFileName, vFileName);
+    
+    m_curMotion->importEffect(vFileName, iStart);
+}
+
