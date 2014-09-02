@@ -673,10 +673,6 @@ void Skill::createEffects(int iStart, const char * effectName, CCDictionary * ef
     CCPoint point = str2Point(anchorPoint->getCString());
     part->setAnchorPoint(point);
     
-    //attackDuration 未实现
-    
-    //attackInterval 未实现
-    
     //delay
     CCString *delay = (CCString*)effect->objectForKey("delay");
     part->setDelay(atof(delay->getCString()));
@@ -695,5 +691,25 @@ void Skill::createEffects(int iStart, const char * effectName, CCDictionary * ef
     //rotation
     CCString *rotation = (CCString*)effect->objectForKey("rotation");
     part->setRotate(atof(rotation->getCString()));
+    
+    //speed
+    CCString *speed = (CCString*)effect->objectForKey("speed");
+    if(speed) part->setSpeed(atof(speed->getCString()));
+    
+    //degree
+    CCString *degree = (CCString*)effect->objectForKey("degree");
+    if(degree) part->setDegree(atof(degree->getCString()));
+    
+    //attackDuration
+    CCString *attackDuration = (CCString*)effect->objectForKey("attackDuration");
+    if(attackDuration) part->setDuration(atof(attackDuration->getCString()));
+    
+    //attackInterval
+    CCString *attackInterval = (CCString*)effect->objectForKey("attackInterval");
+    if(attackInterval) part->setInterval(atof(attackInterval->getCString()));
+    
+    //攻击帧
+    CCString *attackFrame = (CCString*)effect->objectForKey("attackFrame");
+    if(attackFrame) part->setAllAtkFrame(attackFrame, m_curMotion->iStart + 1);
 }
 
