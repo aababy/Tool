@@ -420,6 +420,9 @@ void Skill::saveAtksAndEffect(CCDictionary *dic)
         
         insertString(dictionary, "flags", getMotionFlags(motion));
         
+        //保存攻击帧
+        motion->saveMainAttackFrame(dictionary);
+        
         //插入整个atk
         atks->setObject(dictionary, motion->sSaveName);
     }
@@ -435,7 +438,6 @@ void Skill::saveAtksAndEffect(CCDictionary *dic)
     
     dic->setObject(effects, "effects");
 }
-
 
 string Skill::getMotionFlags(Motion *motion)
 {
@@ -574,6 +576,10 @@ void Skill::importOldPlist(string &str)
                     //帧间隔
                     CCString *delay = (CCString*)motionDic->objectForKey("delay");
                     xCurAtk->setDelay(atof(delay->getCString()));
+                    
+                    //攻击帧
+                    CCString *attackFrame = (CCString*)motionDic->objectForKey("attackFrame");
+                    if(attackFrame) xCurAtk->setMainAllAtkFrame(attackFrame);
                     
                     //处理特效
                     CCDictionary * effectsInAtk = (CCDictionary* )motionDic->objectForKey("effects");
