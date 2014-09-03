@@ -365,3 +365,13 @@ void Motion::setMotionAccIndex(int iMotionAccIndex)
         m_vParts.at(i)->setAccIndex(m_iAccIndex);
     }
 }
+
+void Motion::saveMainAttackFrame(CCDictionary *dic)
+{
+    m_mainPart->saveAttackFrame(dic, iStart + 1);
+}
+
+void Motion::setMainAllAtkFrame(CCString *atkFrames)
+{
+    m_mainPart->setAllAtkFrame(atkFrames, iStart + 1);
+}

@@ -436,14 +436,14 @@ void Part::saveEffectToDictionary(CCDictionary *effects, int iMotionStart)
         insertFloat(effect, "degree", m_degree);
     }
     
-    if (!m_bMain) {
-        if (m_flag[FI_ISOLATE] == false) {
-            saveAttackFrame(effect, iMotionStart);
+    if (m_flag[FI_ISOLATE] == false) {
+        saveAttackFrame(effect, iMotionStart);
+        
+        if (!m_bMain) {
             insertFloat(effect, "attackDuration", m_duration);
             insertFloat(effect, "attackInterval", m_interval);
         }
     }
-    
     
     effects->setObject(effect, getEffectName());
 }
