@@ -455,6 +455,28 @@ void FolderBrowser::prepareTotalPList()
             m_vSkillName.push_back(str);
         }
     }
+    
+    CCDictionary *normals = (CCDictionary *)plist->objectForKey("normals");
+    if (normals != NULL)
+    {
+        CCArray *array = normals->allKeys();
+        if (array == NULL) {
+            return;
+        }
+        
+        for (int i = 0; i < array->count(); i ++)
+        {
+            //获取key的方法
+            CCString *key =  (CCString*)array->objectAtIndex(i);
+            CCDictionary* motionDic = (CCDictionary *)normals->objectForKey(key->getCString());
+            CCString *fileName =  (CCString*)motionDic->objectForKey("fileName");
+            string str = fileName->getCString();
+            
+            if (checkIfInSkill(str) == false) {
+                m_vSkillName.push_back(str);
+            }
+        }
+    }
 }
 
 bool FolderBrowser::checkIfInSkill(string &str)
