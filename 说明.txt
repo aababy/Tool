@@ -17,7 +17,7 @@
 软件基于 cocos2d-x 2.2.5
 
 Window
-修改 CCEditBoxImplWin::openKeyboard, pText 可以增加输入字符串的长度
+修改 CCEditBoxImplWin::openKeyboard, pText (同时改变FolderBrowser.h 中的长度, 这个长度要大于pTest至少20)可以增加输入字符串的长度
 
 任何bug和建议, 请直接给我讲.
 罗晓鹏
