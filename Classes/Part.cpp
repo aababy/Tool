@@ -562,7 +562,7 @@ void Part::setAtkFrame(int atkFrame, bool bChecked)
         }
     }
     
-    if (it == m_vAtkFrame.end() && bChecked) {
+	if (bChecked && it == m_vAtkFrame.end()) {
         m_vAtkFrame.push_back(atkFrame);
     }
 }
