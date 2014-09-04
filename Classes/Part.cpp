@@ -121,6 +121,10 @@ Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &show
     
     m_duration = 0.f;
     m_interval = 0.f;
+    
+    
+    //默认特效*2
+    setScale(2.f);
 }
 
 Part::~Part()
