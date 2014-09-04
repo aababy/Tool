@@ -664,58 +664,65 @@ bool Skill::checkIfMove(CCDictionary* motionDic)
 
 void Skill::createEffects(int iStart, const char * effectName, CCDictionary * effectsInAtk)
 {
-    CCDictionary* effect = (CCDictionary*)effectsInAtk->objectForKey(effectName);
+    //可能同一帧包含多个特效
+    string str = effectName;
+    vector<string> vec;
+    string2Vector(str, vec);
     
-    CCString *fileName = (CCString*)effect->objectForKey("fileName");
-    string sFileName = fileName->getCString();
-    
-    vector<string> vFileName;
-    string2Vector(sFileName, vFileName);
-    
-    Part *part = m_curMotion->importEffect(vFileName, iStart);
-    
-    //anchorPoint
-    CCString *anchorPoint = (CCString*)effect->objectForKey("anchorPoint");
-    CCPoint point = str2Point(anchorPoint->getCString());
-    part->setAnchorPoint(point);
-    
-    //delay
-    CCString *delay = (CCString*)effect->objectForKey("delay");
-    part->setDelay(atof(delay->getCString()));
-    
-    //flags
-    CCString *flags = (CCString*)effect->objectForKey("flags");
-    bool bFlags[FI_MAX];
-    string2Flags(flags, bFlags);
-    part->setAllFlags(bFlags);
-    
-    //坐标
-    CCString *position = (CCString*)effect->objectForKey("position");
-    point = str2Point(position->getCString());
-    part->setPosition(point);
-    
-    //rotation
-    CCString *rotation = (CCString*)effect->objectForKey("rotation");
-    part->setRotate(atof(rotation->getCString()));
-    
-    //speed
-    CCString *speed = (CCString*)effect->objectForKey("speed");
-    if(speed) part->setSpeed(atof(speed->getCString()));
-    
-    //degree
-    CCString *degree = (CCString*)effect->objectForKey("degree");
-    if(degree) part->setDegree(atof(degree->getCString()));
-    
-    //attackDuration
-    CCString *attackDuration = (CCString*)effect->objectForKey("attackDuration");
-    if(attackDuration) part->setDuration(atof(attackDuration->getCString()));
-    
-    //attackInterval
-    CCString *attackInterval = (CCString*)effect->objectForKey("attackInterval");
-    if(attackInterval) part->setInterval(atof(attackInterval->getCString()));
-    
-    //攻击帧
-    CCString *attackFrame = (CCString*)effect->objectForKey("attackFrame");
-    if(attackFrame) part->setAllAtkFrame(attackFrame, m_curMotion->iStart + 1);
+    for (int i = 0; i < vec.size(); i ++) {
+        CCDictionary* effect = (CCDictionary*)effectsInAtk->objectForKey(vec.at(i));
+        
+        CCString *fileName = (CCString*)effect->objectForKey("fileName");
+        string sFileName = fileName->getCString();
+        
+        vector<string> vFileName;
+        string2Vector(sFileName, vFileName);
+        
+        Part *part = m_curMotion->importEffect(vFileName, iStart);
+        
+        //anchorPoint
+        CCString *anchorPoint = (CCString*)effect->objectForKey("anchorPoint");
+        CCPoint point = str2Point(anchorPoint->getCString());
+        part->setAnchorPoint(point);
+        
+        //delay
+        CCString *delay = (CCString*)effect->objectForKey("delay");
+        part->setDelay(atof(delay->getCString()));
+        
+        //flags
+        CCString *flags = (CCString*)effect->objectForKey("flags");
+        bool bFlags[FI_MAX];
+        string2Flags(flags, bFlags);
+        part->setAllFlags(bFlags);
+        
+        //坐标
+        CCString *position = (CCString*)effect->objectForKey("position");
+        point = str2Point(position->getCString());
+        part->setPosition(point);
+        
+        //rotation
+        CCString *rotation = (CCString*)effect->objectForKey("rotation");
+        part->setRotate(atof(rotation->getCString()));
+        
+        //speed
+        CCString *speed = (CCString*)effect->objectForKey("speed");
+        if(speed) part->setSpeed(atof(speed->getCString()));
+        
+        //degree
+        CCString *degree = (CCString*)effect->objectForKey("degree");
+        if(degree) part->setDegree(atof(degree->getCString()));
+        
+        //attackDuration
+        CCString *attackDuration = (CCString*)effect->objectForKey("attackDuration");
+        if(attackDuration) part->setDuration(atof(attackDuration->getCString()));
+        
+        //attackInterval
+        CCString *attackInterval = (CCString*)effect->objectForKey("attackInterval");
+        if(attackInterval) part->setInterval(atof(attackInterval->getCString()));
+        
+        //攻击帧
+        CCString *attackFrame = (CCString*)effect->objectForKey("attackFrame");
+        if(attackFrame) part->setAllAtkFrame(attackFrame, m_curMotion->iStart + 1);
+    }
 }
 
