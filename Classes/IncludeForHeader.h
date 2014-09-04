@@ -33,6 +33,12 @@ struct FramesName
     int     iNumber;
 };
 
+struct SkillName
+{
+    string  s;
+    int     flag;               //0:普通攻击, 1:技能
+};
+
 enum setOperateType
 {
     OT_NEW,

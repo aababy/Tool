@@ -693,9 +693,14 @@ void MainScene::switchToMain()
     m_ebName->setVisible(true);
 }
 
-void MainScene::importOldPlist(string &str)
+void MainScene::importOldPlist(string &str, int flag)
 {
     xSkill->importOldPlist(str);
+    
+    if (flag == 0)
+    {
+        m_cbNormal->setSelectedState(true);
+    }
 }
 
 void MainScene::makeAFocusOfList()

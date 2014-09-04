@@ -117,8 +117,11 @@ bool FolderBrowser::init(curState state)
         
         checkOldSearchPath();
         
-        string str = xStr("new");
-        m_vSkillName.push_back(str);
+        SkillName skillname;
+        skillname.s = xStr("new");
+        skillname.flag = 1;
+        
+        m_vSkillName.push_back(skillname);
        
         return true;
     }
@@ -224,7 +227,7 @@ void FolderBrowser::touchEvent(CCObject *pSender, TouchEventType type)
             }
             else
             {
-                string fileName = m_vSkillName.at(iTag - LIST_SKILL);
+                string fileName = m_vSkillName.at(iTag - LIST_SKILL).s;
                 
                 if (fileName.compare(xStr("new")) != 0)
                 {
@@ -232,7 +235,7 @@ void FolderBrowser::touchEvent(CCObject *pSender, TouchEventType type)
                     string2Vector(fileName, m_vMultiName);
                     
                     finish();
-                    m_mainlayer->importOldPlist(fileName);
+                    m_mainlayer->importOldPlist(fileName, m_vSkillName.at(iTag - LIST_SKILL).flag);
                 }
                 else
                 {
@@ -351,7 +354,7 @@ void FolderBrowser::updateSkillList()
         bg->addTouchEventListener(this, toucheventselector(FolderBrowser::touchEvent));
         bg->setTag(LIST_SKILL + i);
         Label *label = (Label*)UIHelper::seekWidgetByTag(bg, 22);
-        label->setText(m_vSkillName.at(i));
+        label->setText(m_vSkillName.at(i).s);
     }
 }
 
@@ -432,27 +435,27 @@ void FolderBrowser::prepareTotalPList()
     
     //创建motion, 先是atks
     CCDictionary *atks = (CCDictionary *)plist->objectForKey("atks");
-    if (atks == NULL) {
-        m_tips->setText(xStr("second_step_new"));
-        return;
-    }
-    
-    CCArray *array = atks->allKeys();
-    if (array == NULL) {
-        m_tips->setText(xStr("second_step_new"));
-        return;
-    }
-    
-    for (int i = 0; i < array->count(); i ++)
+    if (atks != NULL)
     {
-        //获取key的方法
-        CCString *key =  (CCString*)array->objectAtIndex(i);
-        CCDictionary* motionDic = (CCDictionary *)atks->objectForKey(key->getCString());
-        CCString *fileName =  (CCString*)motionDic->objectForKey("fileName");
-        string str = fileName->getCString();
+        CCArray *array = atks->allKeys();
         
-        if (checkIfInSkill(str) == false) {
-            m_vSkillName.push_back(str);
+        if (array != NULL)
+        {
+            for (int i = 0; i < array->count(); i ++)
+            {
+                //获取key的方法
+                CCString *key =  (CCString*)array->objectAtIndex(i);
+                CCDictionary* motionDic = (CCDictionary *)atks->objectForKey(key->getCString());
+                CCString *fileName =  (CCString*)motionDic->objectForKey("fileName");
+                string str = fileName->getCString();
+                
+                if (checkIfInSkill(str) == false) {
+                    SkillName skill;
+                    skill.s = str;
+                    skill.flag = 1;
+                    m_vSkillName.push_back(skill);
+                }
+            }
         }
     }
     
@@ -460,22 +463,27 @@ void FolderBrowser::prepareTotalPList()
     if (normals != NULL)
     {
         CCArray *array = normals->allKeys();
-        if (array == NULL) {
-            return;
-        }
-        
-        for (int i = 0; i < array->count(); i ++)
-        {
-            //获取key的方法
-            CCString *key =  (CCString*)array->objectAtIndex(i);
-            CCDictionary* motionDic = (CCDictionary *)normals->objectForKey(key->getCString());
-            CCString *fileName =  (CCString*)motionDic->objectForKey("fileName");
-            string str = fileName->getCString();
-            
-            if (checkIfInSkill(str) == false) {
-                m_vSkillName.push_back(str);
+        if (array != NULL) {
+            for (int i = 0; i < array->count(); i ++)
+            {
+                //获取key的方法
+                CCString *key =  (CCString*)array->objectAtIndex(i);
+                CCDictionary* motionDic = (CCDictionary *)normals->objectForKey(key->getCString());
+                CCString *fileName =  (CCString*)motionDic->objectForKey("fileName");
+                string str = fileName->getCString();
+                
+                if (checkIfInSkill(str) == false) {
+                    SkillName skill;
+                    skill.s = str;
+                    skill.flag = 0;
+                    m_vSkillName.push_back(skill);
+                }
             }
         }
+    }
+    
+    if (m_vSkillName.empty()) {
+        m_tips->setText(xStr("second_step_new"));
     }
 }
 
@@ -483,7 +491,7 @@ bool FolderBrowser::checkIfInSkill(string &str)
 {
     for (int i = 0; i < m_vSkillName.size(); i++)
     {
-        if (str.compare(m_vSkillName.at(i)) == 0) {
+        if (str.compare(m_vSkillName.at(i).s) == 0) {
             return true;
         }
     }

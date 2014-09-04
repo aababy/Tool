@@ -58,7 +58,7 @@ private:
     
     vector<string> m_vFileName;
     vector<string> m_vMultiName;
-    vector<string> m_vSkillName;
+    vector<SkillName> m_vSkillName;
     MainScene *m_mainlayer;
     string  searchPath;
     string  savePath;
