@@ -70,6 +70,8 @@ public:
     void setMainAllAtkFrame(CCString *atkFrames);
 
     vector<string> m_vFrameNameOrdered;
+    
+    bool isMainIndex();
 
     int iEnd = 0;
     int iStart = 0;

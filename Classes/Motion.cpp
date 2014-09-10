@@ -375,3 +375,14 @@ void Motion::setMainAllAtkFrame(CCString *atkFrames)
 {
     m_mainPart->setAllAtkFrame(atkFrames, iStart + 1);
 }
+
+bool Motion::isMainIndex()
+{
+    if (m_iCurOperationIndex == 0) {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}

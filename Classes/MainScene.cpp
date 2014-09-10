@@ -74,6 +74,7 @@ bool MainScene::init(CCScene* pScene)
         addChild(m_rootNode);
         
         Layout *root = static_cast<Layout*>(m_rootNode->getChildren()->objectAtIndex(0));
+        m_root = root;
         
         btnImport = initButton(BUTTON_IMPORT, root, this, toucheventselector(MainScene::touchEvent));
 		btnImport->setTitleText(xStr("start"));
@@ -145,12 +146,9 @@ bool MainScene::init(CCScene* pScene)
         
         
         xNotify->addObserver(this, callfuncO_selector(MainScene::updateProperty), UPDATE_PROPERTY, NULL);
-        xNotify->addObserver(this, callfuncO_selector(MainScene::updateButtonForMotion), UPDATE_MOTION, NULL);
         xNotify->addObserver(this, callfuncO_selector(MainScene::updateList), UPDATE_EFFECT_LIST, NULL);
         xNotify->addObserver(this, callfuncO_selector(MainScene::updateMotionList), UPDATE_MOTION_LIST, NULL);
         xNotify->addObserver(this, callfuncO_selector(MainScene::setFrameCount), UPDATE_ALL_INDEX, NULL);
-
-        updateButtonForMotion(NULL);
         
         setTouchEnabled(true);
         
@@ -470,22 +468,6 @@ void MainScene::updateMotionList(CCObject *sender)
     makeAFocusOfListForMotion();
 }
 
-void MainScene::updateButtonForMotion(CCObject *sender)
-{
-//    if (xSkill->getFrameCount() != 0) {
-//        btnPre5->setEnabled(true);
-//        btnNext5->setEnabled(true);
-//        btnDelMotion->setEnabled(true);
-//    }
-//    else
-//    {
-//        btnPre5->setEnabled(false);
-//        btnNext5->setEnabled(false);
-//        btnAddMotion->setEnabled(false);
-//        btnDelMotion->setEnabled(false);
-//    }
-}
-
 void MainScene::updateProperty(CCObject *sender)
 {
     if (xCurAtk == NULL || xCurAtk->getPartsCount() == 0) {
@@ -664,7 +646,6 @@ void MainScene::importFinish(vector<string> &vec)
     xSkill->importPart(vec);
     setFrameCount(NULL);
     updateList(NULL);
-    updateButtonForMotion(NULL);
 }
 
 void MainScene::switchToBroswer()
@@ -748,10 +729,33 @@ void MainScene::updateCheckBox()
     if (xCurAtk)
     {        
         for (int i = 0; i < FLAG_COUNT; i++) {
+            
+            if(xCurAtk->isMainIndex() && i != 0)
+            {
+                m_cbFlags[i]->setEnabled(false);
+            }
+            else
+            {
+                m_cbFlags[i]->setEnabled(true);
+            }
+            
             m_cbFlags[i]->setSelectedState(xCurAtk->getFlags((flagIndex)i));
         }
         
         m_cbAttack->setSelectedState(xCurAtk->getAtkFrame(xSkill->m_iCurIndex));
+    }
+    
+    int m_labelTag[5] = {178, 182, 184, 186, 257};
+    
+    for (int i = 0; i < 5; i ++) {
+        Label *label = (Label*)UIHelper::seekWidgetByTag(m_root, m_labelTag[i]);
+        if (xCurAtk->isMainIndex()) {
+            label->setVisible(false);
+        }
+        else
+        {
+            label->setVisible(true);
+        }
     }
 }
 

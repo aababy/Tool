@@ -57,7 +57,6 @@ public:
     void switchToMain();
     void makeAFocusOfList();
     void makeAFocusOfListForMotion();    
-    void updateButtonForMotion(CCObject *sender);
     void setTotalPlist(string &str);
     
     void selectedStateEvent(CCObject *pSender, CheckBoxEventType type);
@@ -114,6 +113,8 @@ protected:
     CheckBox*   m_cbFlags[FLAG_COUNT];
     CheckBox*   m_cbNormal;
     CheckBox*   m_cbAttack;
+    
+    Layout*     m_root;
 };
 
 #endif // __HELLOWORLD_SCENE_H__
