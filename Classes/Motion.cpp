@@ -239,8 +239,10 @@ int Motion::getFramesCount()
     return iEnd - iStart + 1;
 }
 
-void Motion::getEffectsName(CCDictionary *dic, CCDictionary *effects)
+bool Motion::getEffectsName(CCDictionary *dic, CCDictionary *effects)
 {
+    bool bRet = false;
+    
     //从第1帧开始
     for (int iFrameIndex = 0; iFrameIndex < getFramesCount(); iFrameIndex++)
     {
@@ -255,7 +257,7 @@ void Motion::getEffectsName(CCDictionary *dic, CCDictionary *effects)
                 str += m_vParts.at(i)->getEffectName();
                 
                 //插入1个effect
-                m_vParts.at(i)->saveEffectToDictionary(effects, iStart + 1);        //这个函数加入effects
+                bRet = m_vParts.at(i)->saveEffectToDictionary(effects, iStart + 1);        //这个函数加入effects
             }
         }
         
@@ -264,6 +266,8 @@ void Motion::getEffectsName(CCDictionary *dic, CCDictionary *effects)
             insertString(dic, itostring(iFrameIndex), str);
         }
     }
+    
+    return bRet;
 }
 
 void Motion::setDelay(float delay)
@@ -366,9 +370,9 @@ void Motion::setMotionAccIndex(int iMotionAccIndex)
     }
 }
 
-void Motion::saveMainAttackFrame(CCDictionary *dic)
+bool Motion::saveMainAttackFrame(CCDictionary *dic)
 {
-    m_mainPart->saveAttackFrame(dic, iStart + 1);
+    return m_mainPart->saveAttackFrame(dic, iStart + 1);
 }
 
 void Motion::setMainAllAtkFrame(CCString *atkFrames)

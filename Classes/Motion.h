@@ -65,8 +65,8 @@ public:
     void setInterval(float interval);
     float getInterval();
     
-    void getEffectsName(CCDictionary *dic, CCDictionary *effects);
-    void saveMainAttackFrame(CCDictionary *dic);
+    bool getEffectsName(CCDictionary *dic, CCDictionary *effects);
+    bool saveMainAttackFrame(CCDictionary *dic);
     void setMainAllAtkFrame(CCString *atkFrames);
 
     vector<string> m_vFrameNameOrdered;

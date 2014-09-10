@@ -400,7 +400,7 @@ string Part::getEffectName()
     return string(temp);
 }
 
-void Part::saveEffectToDictionary(CCDictionary *effects, int iMotionStart)
+bool Part::saveEffectToDictionary(CCDictionary *effects, int iMotionStart)
 {
     CCDictionary *effect = new CCDictionary();
    
@@ -439,8 +439,10 @@ void Part::saveEffectToDictionary(CCDictionary *effects, int iMotionStart)
         insertFloat(effect, "degree", m_degree);
     }
     
+    bool bRet = true;
+    
     if (m_flag[FI_ISOLATE] == false) {
-        saveAttackFrame(effect, iMotionStart);
+        bRet = saveAttackFrame(effect, iMotionStart);
         
         if (!m_bMain) {
             insertFloat(effect, "attackDuration", m_duration);
@@ -449,9 +451,11 @@ void Part::saveEffectToDictionary(CCDictionary *effects, int iMotionStart)
     }
     
     effects->setObject(effect, getEffectName());
+    
+    return bRet;
 }
 
-void Part::saveAttackFrame(CCDictionary *effect, int iMotionStart)
+bool Part::saveAttackFrame(CCDictionary *effect, int iMotionStart)
 {
     string str;
     for (int i = 0; i < m_vAtkFrame.size(); i++)
@@ -464,6 +468,12 @@ void Part::saveAttackFrame(CCDictionary *effect, int iMotionStart)
     
     if (!str.empty()) {
         insertString(effect, "attackFrame", str);
+        
+        return true;
+    }
+    else
+    {
+        return false;
     }
 }
 

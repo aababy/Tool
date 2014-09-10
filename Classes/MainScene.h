@@ -65,12 +65,13 @@ public:
     void selectedNormal(CCObject *pSender, CheckBoxEventType type);
     void selectedAttackFrame(CCObject *pSender, CheckBoxEventType type);
     void importOldPlist(string &str, int flag);
+    void error(CCObject *sender);
     
 protected:
     void setFrameCount(CCObject *sender);
     ~MainScene();
     void switchToBroswer();
-
+    void errorDisable(float dt);
     
     CCScene *m_scene;
     
@@ -78,6 +79,7 @@ protected:
     CCNode *m_rootNode;
     ImageView *m_iFrameBG;
     Label *m_lFrameCount;
+    Label *m_lError;
     
     CCSprite * m_preview;
     CCSprite * m_pHolder;

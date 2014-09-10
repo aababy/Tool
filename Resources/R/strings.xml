@@ -14,5 +14,7 @@
 	<string>第3步:选择主角Plist</string>
 	<key>new</key>
 	<string>新技能</string>
+	<key>error_no_attack_frame</key>
+	<string>没有攻击帧</string>
 </dict>
 </plist>

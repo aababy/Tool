@@ -37,5 +37,6 @@ using namespace cocostudio::timeline;
 #define UPDATE_MOTION_LIST              "UPDATE_MOTION_LIST"
 #define UPDATE_ALL_INDEX                "UPDATE_ALL_INDEX"
 #define NORMAL                          "NORMAL"
+#define UPDATE_ERROR                     "UPDATE_ERROR"
 
 #endif

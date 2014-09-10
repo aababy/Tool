@@ -406,7 +406,8 @@ void Skill::saveAtksAndEffect(CCDictionary *dic)
         insertFloat(dictionary, "delay", motion->getDelay());
         
         CCDictionary *eff = new CCDictionary();
-        motion->getEffectsName(eff, effects);               //effect 是这个函数加入的.
+        
+        bool bHasAttackFrame = motion->getEffectsName(eff, effects);               //effect 是这个函数加入的.
         dictionary->setObject(eff, "effects");
 
         insertString(dictionary, "fileName", motion->sResName);
@@ -421,10 +422,16 @@ void Skill::saveAtksAndEffect(CCDictionary *dic)
         insertString(dictionary, "flags", getMotionFlags(motion));
         
         //保存攻击帧
-        motion->saveMainAttackFrame(dictionary);
-        
+        bool bHasAttackFrameOnMain = motion->saveMainAttackFrame(dictionary);
+
         //插入整个atk
         atks->setObject(dictionary, motion->sSaveName);
+        
+        if (!bHasAttackFrame && !bHasAttackFrameOnMain)
+        {
+            m_sError = motion->sMotionName;
+            xNotify->postNotification(UPDATE_ERROR);
+        }
     }
     
     if (m_bSkill)

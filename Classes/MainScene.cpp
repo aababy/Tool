@@ -38,6 +38,7 @@ enum UITag
     ATTACK_INTERVAL = 276,
     ATTACK_FRAME = 286,
     BUTTON_2X = 309,
+    LABEL_ERROR = 380,
     
     LIST_BG = 1000,
     LIST_MOTION = 1100,
@@ -133,6 +134,9 @@ bool MainScene::init(CCScene* pScene)
         
         m_cbAttack = initCheckBox(ATTACK_FRAME, root, this, checkboxselectedeventselector(MainScene::selectedAttackFrame));
         
+        m_lError = (Label*)(UIHelper::seekWidgetByTag(root, LABEL_ERROR));
+        m_lError->setVisible(false);
+        
         //列表
         listView = (UIListView*)UIHelper::seekWidgetByTag(root, PARTS_LIST);
         CCNode *node = (NodeReader::getInstance()->createNode("R/ListCell.ExportJson"));
@@ -149,6 +153,7 @@ bool MainScene::init(CCScene* pScene)
         xNotify->addObserver(this, callfuncO_selector(MainScene::updateList), UPDATE_EFFECT_LIST, NULL);
         xNotify->addObserver(this, callfuncO_selector(MainScene::updateMotionList), UPDATE_MOTION_LIST, NULL);
         xNotify->addObserver(this, callfuncO_selector(MainScene::setFrameCount), UPDATE_ALL_INDEX, NULL);
+        xNotify->addObserver(this, callfuncO_selector(MainScene::error), UPDATE_ERROR, NULL);
         
         setTouchEnabled(true);
         
@@ -388,6 +393,22 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
         }
             break;
     }
+}
+
+void MainScene::error(CCObject *sender)
+{
+    m_lError->setVisible(true);
+    
+    string text = xSkill->m_sError + xStr("error_no_attack_frame");
+    
+    m_lError->setText(text);
+    
+    scheduleOnce(schedule_selector(MainScene::errorDisable), 5.f);
+}
+
+void MainScene::errorDisable(float dt)
+{
+    m_lError->setVisible(false);
 }
 
 void MainScene::setFrameCount(CCObject *sender)

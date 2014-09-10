@@ -60,6 +60,7 @@ public:
     string getMotionFlags(Motion *motion);
     void importOldPlist(string &str);
     
+    string      m_sError;
 private:
     void setCurIndex(int idx);
     void prepareTotalPlist(CCDictionary *dic);

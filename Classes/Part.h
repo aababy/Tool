@@ -63,7 +63,7 @@ public:
     
     int getCurFrameIndex();
     void checkIfNeedToStart(int iFrameIndex);
-    void saveEffectToDictionary(CCDictionary *effects, int iMotionStart);
+    bool saveEffectToDictionary(CCDictionary *effects, int iMotionStart);
     void setDelay(float delay);
     float getDelay();
     void setDegree(float degree);
@@ -74,7 +74,7 @@ public:
     bool getAtkFrame(int iAllIndex);
     void setAllAtkFrame(CCString *atkFrames, int iMotionStart);
     void saveNames(vector<string> &vNames);
-    void saveAttackFrame(CCDictionary *effect, int iMotionStart);
+    bool saveAttackFrame(CCDictionary *effect, int iMotionStart);
 
     ~Part();
     
