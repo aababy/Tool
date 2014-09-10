@@ -377,6 +377,7 @@ void Motion::setMotionAccIndex(int iMotionAccIndex)
     for (int i = 0; i < m_vParts.size(); i++)
     {
         m_vParts.at(i)->setAccIndex(m_iAccIndex);
+        m_iAccIndex++;  //必须要加, 不能有bug, 会覆盖.
     }
 }
 
