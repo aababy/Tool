@@ -1,4 +1,4 @@
-1.基本步骤
+﻿1.基本步骤
 	1. 导入主角
 	1. 增加Atk,
 	2. 调整坐标, 锚点..
@@ -15,6 +15,9 @@
 8.保存文件夹必须先存在, 不能自动建立.
 
 软件基于 cocos2d-x 2.2.5
+
+Window
+修改 CCEditBoxImplWin::openKeyboard, pText (同时改变FolderBrowser.h 中的长度, 这个长度要大于pTest至少20)可以增加输入字符串的长度
 
 任何bug和建议, 请直接给我讲.
 罗晓鹏
