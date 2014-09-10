@@ -316,6 +316,16 @@ bool Motion::getFlags(flagIndex index)
     return m_vParts.at(m_iCurOperationIndex)->getFlags(index);
 }
 
+bool Motion::getMainFlags(flagIndex index)
+{
+    if(m_iCurOperationIndex == -1)
+    {
+        return false;
+    }
+    
+    return m_mainPart->getFlags(index);
+}
+
 void Motion::removeEffect()
 {
     if (m_vParts.size() >= 2) {

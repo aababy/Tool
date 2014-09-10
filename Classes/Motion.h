@@ -53,6 +53,7 @@ public:
     float getDelay();
     void setFlags(flagIndex index, bool bFlag);
     bool getFlags(flagIndex index);
+    bool getMainFlags(flagIndex index);
     void setDegree(float degree);
     float getDegree();
     void setSpeed(float speed);

@@ -419,7 +419,7 @@ void Skill::saveAtksAndEffect(CCDictionary *dic)
         
         insertString(dictionary, "soundFileName", "");
         
-        insertString(dictionary, "flags", getMotionFlags(motion));
+        insertString(dictionary, "flags", getMotionMainPartFlags(motion));
         
         //保存攻击帧
         bool bHasAttackFrameOnMain = motion->saveMainAttackFrame(dictionary);
@@ -446,10 +446,10 @@ void Skill::saveAtksAndEffect(CCDictionary *dic)
     dic->setObject(effects, "effects");
 }
 
-string Skill::getMotionFlags(Motion *motion)
+string Skill::getMotionMainPartFlags(Motion *motion)
 {
     string str;
-    if (motion->getFlags(FI_MOVE))
+    if (motion->getMainFlags(FI_MOVE))
     {
         str = "1";
     }

@@ -57,7 +57,7 @@ public:
     bool checkCanAddMotion();
     void deletePart();
     void setTotalPlist(string &str);
-    string getMotionFlags(Motion *motion);
+    string getMotionMainPartFlags(Motion *motion);
     void importOldPlist(string &str);
     
     string      m_sError;
