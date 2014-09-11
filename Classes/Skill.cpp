@@ -554,6 +554,8 @@ void Skill::importOldPlist(string &str)
         if (dic)
         {
             CCArray *array = dic->allKeys();
+            
+            if (array == NULL) continue;
             for (int i = 0; i < array->count(); i ++)
             {
                 //获取key的方法
@@ -608,6 +610,8 @@ void Skill::importOldPlist(string &str)
     }
     
     bubble_sort(m_vMotion);
+    m_iLastIndex = m_vMotion.at(getMotionCount() - 1)->iEnd + 1;
+    
     //setMotionAccIndex
     for (int i = 0; i < getMotionCount(); i++)
     {
