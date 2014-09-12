@@ -80,6 +80,7 @@ public:
     
     bool m_bRunning = false;        //动画是否在播放中
 private:
+    void makeAPartName();
     CCPoint getOffset();
     string makeMotionName();
     void actionDone();

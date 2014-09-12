@@ -122,9 +122,31 @@ Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &show
     m_duration = 0.f;
     m_interval = 0.f;
     
+    makeAPartName();
+    
     //默认特效*2
     setScale(2.f);
 }
+
+#define NAME_LEN                      (20)
+void Part::makeAPartName()
+{
+    int dot = sPartName.find('.');
+    
+    sPartName = sPartName.substr(0, dot);
+
+    if (sPartName.length() > NAME_LEN) {
+        sPartName = ".." + sPartName.substr(sPartName.length() - NAME_LEN, NAME_LEN);
+    }
+    
+    //加上帧数
+    char buffer[30];
+    
+    sprintf(buffer, "%s(%lu)", sPartName.c_str(), m_vFrameName.size());
+    
+    sPartName = buffer;
+}
+
 
 Part::~Part()
 {
