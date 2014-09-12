@@ -142,7 +142,7 @@ void Part::makeAPartName()
     //加上帧数
     char buffer[30];
     
-    sprintf(buffer, "%s(%lu)", sPartName.c_str(), m_vFrameName.size());
+    sprintf(buffer, "%s (%lu)", sPartName.c_str(), m_vFrameName.size());
     
     sPartName = buffer;
 }
