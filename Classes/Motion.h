@@ -49,8 +49,8 @@ public:
     void update(float delta);
     bool isInPreview();
     int getFramesCount();
-    void setDelay(float delay);
-    float getDelay();
+    void setDelay(int idx, float delay);
+    float getDelay(int idx);
     void setFlags(flagIndex index, bool bFlag);
     bool getFlags(flagIndex index);
     bool getMainFlags(flagIndex index);

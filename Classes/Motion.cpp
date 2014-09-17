@@ -270,14 +270,14 @@ bool Motion::getEffectsName(CCDictionary *dic, CCDictionary *effects)
     return bRet;
 }
 
-void Motion::setDelay(float delay)
+void Motion::setDelay(int idx, float delay)
 {
-    m_vParts.at(m_iCurOperationIndex)->setDelay(delay);
+    m_vParts.at(m_iCurOperationIndex)->setDelay(idx - iStart, delay);
 }
 
-float Motion::getDelay()
+float Motion::getDelay(int idx)
 {
-    return m_vParts.at(m_iCurOperationIndex)->getDelay();
+    return m_vParts.at(m_iCurOperationIndex)->getDelay(idx - iStart);
 }
 
 void Motion::setDegree(float degree)

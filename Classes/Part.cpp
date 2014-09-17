@@ -155,18 +155,6 @@ const char * Part::getCurFrameName()
     return m_vFrameName.at(m_iCurIndex).sFrameName.c_str();
 }
 
-const char * Part::getNextFrameName()
-{
-    cycleNum(true, m_iFrameCount, &m_iCurIndex);
-    return getCurFrameName();
-}
-
-const char * Part::getPreFrameName()
-{
-    cycleNum(false, m_iFrameCount, &m_iCurIndex);
-    return getCurFrameName();
-}
-
 CCAnimation* Part::getAnimation()
 {
     CCArray *animFrames = CCArray::createWithCapacity(m_iFrameCount);
@@ -179,17 +167,6 @@ CCAnimation* Part::getAnimation()
     CCAnimation* animation = CCAnimation::createWithSpriteFrames(animFrames, m_fDelay);
 
     return animation;
-}
-
-void Part::nextFrame(int iCount)
-{
-    m_sprite->initWithSpriteFrameName(getNextFrameName());
-}
-
-
-void Part::preFrame(int iCount)
-{
-    m_sprite->initWithSpriteFrameName(getPreFrameName());
 }
 
 void Part::setFrame(int iIndexStartFromMain)
@@ -261,7 +238,6 @@ void Part::checkIfNeedToStart(int iFrameIndex)
 {
     if (m_bOnWait && iFrameIndex >= iStartFrameIndex) {
         m_bOnWait = false;
-        m_iOldFrameIndex = -1;
         m_iCurFrameIndex = 0;
         m_fAccumulate = 0;
 
@@ -501,14 +477,22 @@ bool Part::saveAttackFrame(CCDictionary *effect, int iMotionStart)
     }
 }
 
-void Part::setDelay(float delay)
+void Part::setDelay(int idx, float delay)
 {
-    m_fDelay = delay;
+    if (idx >= iStartFrameIndex && idx - iStartFrameIndex < m_iFrameCount) {
+        m_vDelay.at(m_iCurIndex) = delay;
+    }
 }
 
-float Part::getDelay()
+float Part::getDelay(int idx)
 {
-    return m_fDelay;
+    if (idx >= iStartFrameIndex && idx - iStartFrameIndex < m_iFrameCount) {
+        return m_vDelay.at(m_iCurIndex);
+    }
+    else
+    {
+        return -1;
+    }
 }
 
 void Part::setFlags(flagIndex index, bool bFlag)

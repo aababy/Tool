@@ -31,8 +31,6 @@ public:
     string & getMotionName(int i);
     int getCurAtkIndex();
     void setCurAtkIndex(int i, setOperateType type);
-    void setAtkDelay(float var);
-    float getAtkDelay();
     int getFrameCount();
     void checkAllIndex();
     

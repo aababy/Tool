@@ -167,10 +167,6 @@ void Skill::setCurAtkIndex(int i, setOperateType type)
         xNotify->postNotification(UPDATE_EFFECT_LIST);
     }
     
-    if (type == OT_SELECT) {
-        xNotify->postNotification(UPDATE_PROPERTY);
-    }
-    
     if (type == OT_BROWSE || type == OT_NEW) {
         //通知相应地Motion, 改Frame
         
@@ -191,21 +187,15 @@ void Skill::setCurAtkIndex(int i, setOperateType type)
     {
         m_sprite->setVisible(false);
     }
+    
+    if (type == OT_SELECT || type == OT_BROWSE) {
+        xNotify->postNotification(UPDATE_PROPERTY);
+    }
 }
 
 const char * Skill::getCurFrameName()
 {
     return m_vFrameName.at(m_iCurIndex).sFrameName.c_str();
-}
-
-void Skill::setAtkDelay(float var)
-{
-    m_vMotion.at(m_iCurAtk)->setDelay(var);
-}
-
-float Skill::getAtkDelay()
-{
-    return m_vMotion.at(m_iCurAtk)->getDelay();
 }
 
 int Skill::getFrameCount()
@@ -403,7 +393,7 @@ void Skill::saveAtksAndEffect(CCDictionary *dic)
         
         CCDictionary *dictionary = new CCDictionary();
         
-        insertFloat(dictionary, "delay", motion->getDelay());
+        insertFloat(dictionary, "delay", motion->getDelay(m_iCurIndex));
         
         CCDictionary *eff = new CCDictionary();
         
@@ -584,7 +574,7 @@ void Skill::importOldPlist(string &str)
                     
                     //帧间隔
                     CCString *delay = (CCString*)motionDic->objectForKey("delay");
-                    xCurAtk->setDelay(atof(delay->getCString()));
+                    xCurAtk->setDelay(m_iCurAtk, atof(delay->getCString()));
                     
                     //攻击帧
                     CCString *attackFrame = (CCString*)motionDic->objectForKey("attackFrame");
@@ -698,7 +688,7 @@ void Skill::createEffects(int iStart, const char * effectName, CCDictionary * ef
         
         //delay
         CCString *delay = (CCString*)effect->objectForKey("delay");
-        part->setDelay(atof(delay->getCString()));
+        //part->setDelay(atof(delay->getCString()));        未完成
         
         //flags
         CCString *flags = (CCString*)effect->objectForKey("flags");

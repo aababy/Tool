@@ -26,8 +26,6 @@ public:
     vector<FramesName> m_vFrameName;
     
     const char * getCurFrameName();
-    const char * getNextFrameName();
-    const char * getPreFrameName();
     const char * getFrameCountStr();
     
     void setPosition(CCPoint &point);
@@ -42,8 +40,6 @@ public:
     void setAccIndex(int iAcc);
     
     void setFrame(int iIndexStartFromMain);
-    void nextFrame(int iCount);
-    void preFrame(int iCount);
     void preview();
     void setEnabled(bool bEnabled);
     void setFlags(flagIndex index, bool bFlag);
@@ -64,8 +60,8 @@ public:
     int getCurFrameIndex();
     void checkIfNeedToStart(int iFrameIndex);
     bool saveEffectToDictionary(CCDictionary *effects, int iMotionStart);
-    void setDelay(float delay);
-    float getDelay();
+    void setDelay(int idx, float delay);
+    float getDelay(int idx);
     void setDegree(float degree);
     float getDegree();
     void setSpeed(float speed);
@@ -98,7 +94,6 @@ private:
     
     CCAnimate * m_pAction;
     
-    int m_iOldFrameIndex;
     int m_iCurFrameIndex;
     float m_fAccumulate = 0.f;
     

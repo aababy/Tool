@@ -514,7 +514,7 @@ void MainScene::updateProperty(CCObject *sender)
     sprintf(buffer, "%.1f", xCurAtk->getCurScale());
     m_ebScale->setText(string(buffer));
     
-    sprintf(buffer, "%.2f", xCurAtk->getDelay());
+    sprintf(buffer, "%.2f", xCurAtk->getDelay(xSkill->m_iCurIndex));
     m_ebDelay->setText(string(buffer));
     
     sprintf(buffer, "%.2f", xCurAtk->getDegree());
@@ -576,7 +576,7 @@ void MainScene::editBoxTextChanged(CCEditBox* editBox, const std::string& text)
             xCurAtk->setCurScale(temp);
         } else if(editBox == m_ebDelay->m_edit) {
             temp = atof(text.c_str());
-            xCurAtk->setDelay(temp);
+            xCurAtk->setDelay(xSkill->m_iCurIndex, temp);
         } else if(editBox == m_ebName->m_edit) {
             xCurAtk->sSaveName = text;
         } else if(editBox == m_ebDegree->m_edit) {
