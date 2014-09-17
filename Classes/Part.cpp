@@ -9,25 +9,12 @@
 #include "Part.h"
 #include "IncludeForCpp.h"
 
+#define xScheduler      CCDirector::sharedDirector()->getScheduler()
+#define xSpriteFC       CCSpriteFrameCache::sharedSpriteFrameCache()
 
-//Part * Part::create(const char *pFileName, CCPoint &location, ImageView *parent)
-//{
-//	Part * pRet = new Part(pFileName, location, parent);
-//    if (pRet)
-//    {
-//        pRet->autorelease();
-//    }
-//    else
-//    {
-//        CC_SAFE_DELETE(pRet);
-//    }
-//	return pRet;
-//}
+
 Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, vector<string> vFrameName, string& sMotionName)
 {
-    sPartName = vNames.at(0);               //PartName 显示只会显示一个
-    m_sMotionName = sMotionName;
-    
     for (int i = 0; i < vFrameName.size(); i++) {
         FramesName frames;
         frames.iNumber = i;
@@ -44,35 +31,23 @@ Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &show
     
     parent->addChild(m_sprite);
     
-    
     m_parent = parent;
     m_origin = origin;
     m_showForPreview = showForPreview;
+    m_sMotionName = sMotionName;
     
     m_preview = CCSprite::create();
     m_preview->setVisible(false);
     
     m_parent->addChild(m_preview);
     
-    for(int i = 0; i < FLAG_COUNT; i++)
-    {
-        m_flag[i] = false;
-    }
-    
-    saveNames(vNames);
-    
-    m_duration = 0.f;
-    m_interval = 0.f;
+    init(vNames);
 }
 
 
 
 Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, CCNode *parentForPreview, int iAcc, string& sMotionName)
 {
-    sPartName = vNames.at(0);
-    m_iAccIndex = iAcc;
-    m_sMotionName = sMotionName;
-    
     //加入Cache
     for (int i = 0; i < vNames.size(); i++) {
         CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(vNames.at(i).c_str());
@@ -101,10 +76,11 @@ Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &show
     m_sprite->setPosition(ccp(size.width/2, size.height/2));
     parent->addChild(m_sprite);
     
-    
     m_parent = parent;
     m_origin = origin;
     m_showForPreview = showForPreview;
+    m_iAccIndex = iAcc;
+    m_sMotionName = sMotionName;
     
     m_preview = CCSprite::create();
     m_preview->setPosition(ccp(size.width/2, size.height/2));
@@ -112,21 +88,37 @@ Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &show
     
     parentForPreview->addChild(m_preview);
     
+    makeAPartName();
+    
+    //默认特效*2
+    setScale(2.f);
+    
+    init(vNames);
+}
+
+
+void Part::init(vector<string> &vNames)
+{
+    sPartName = vNames.at(0);               //PartName 显示只会显示一个
+    
     for(int i = 0; i < FLAG_COUNT; i++)
     {
         m_flag[i] = false;
     }
     
-    saveNames(vNames);
-    
     m_duration = 0.f;
     m_interval = 0.f;
     
-    makeAPartName();
+    saveNames(vNames);
     
-    //默认特效*2
-    setScale(2.f);
+    //间隔帧
+    for (int i = 0; i < m_iFrameCount; i++)
+    {
+        float delay = 0.05f;
+        m_vDelay.push_back(delay);
+    }
 }
+
 
 #define NAME_LEN                      (20)
 void Part::makeAPartName()
@@ -150,7 +142,7 @@ void Part::makeAPartName()
 
 Part::~Part()
 {
-    m_preview->stopAllActions();
+    xScheduler->unscheduleUpdateForTarget(this);
     CCNode *parent = m_preview->getParent();
     parent->removeChild(m_preview);
     
@@ -270,8 +262,8 @@ void Part::checkIfNeedToStart(int iFrameIndex)
     if (m_bOnWait && iFrameIndex >= iStartFrameIndex) {
         m_bOnWait = false;
         m_iOldFrameIndex = -1;
-        m_preview->stopAllActions();
-        m_preview->initWithSpriteFrameName(m_vFrameName.at(0).sFrameName.c_str());
+        m_iCurFrameIndex = 0;
+        m_fAccumulate = 0;
 
         if (m_bMain) {
             m_preview->setPosition(ccpAdd(m_showForPreview, getOffset()));
@@ -281,9 +273,14 @@ void Part::checkIfNeedToStart(int iFrameIndex)
             m_preview->setPosition(m_sprite->getPosition());
         }
         
-        
-        m_pAction = CCAnimate::create(getAnimation());
         CCSequence * sequence;
+        
+        //开始设置Frame
+        CCSpriteFrame* frame = xSpriteFC->spriteFrameByName(m_vFrameName.at(0).sFrameName.c_str());
+        m_preview->setDisplayFrame(frame);
+        
+        xScheduler->unscheduleUpdateForTarget(this);
+        xScheduler->scheduleUpdateForTarget(this, 0, false);
         
         //位移
         if(m_flag[FI_MOVE])
@@ -291,23 +288,44 @@ void Part::checkIfNeedToStart(int iFrameIndex)
             //根据帧数确定时间
             CCPoint dest = ccp(1000, 0);       //水平
             dest = pointRotateWithAngle(dest, m_degree);
-            
             float duration = 1000 / m_speed;
-            CCRepeatForever* repeat = CCRepeatForever::create(m_pAction);
             
             sequence = CCSequence::create(CCMoveBy::create(duration, dest), CCCallFunc::create(this, callfunc_selector(Part::actionDone)), NULL);
-            
-            m_preview->runAction(repeat);
-            m_preview->runAction(sequence);
-        }
-        else
-        {
-            sequence = CCSequence::create(m_pAction, CCCallFunc::create(this, callfunc_selector(Part::actionDone)), NULL);
             m_preview->runAction(sequence);
         }
         
         m_preview->setVisible(true);
         m_bRunning = true;
+    }
+}
+
+void Part::update(float delta)
+{
+    if (m_bRunning) {
+        //累积时间
+        m_fAccumulate += delta;
+        
+        //如果累积时间大于帧间隔, 清空, 然后播放下一帧
+        if (m_fAccumulate > m_vDelay.at(m_iCurFrameIndex)) {
+            m_fAccumulate = 0.f;
+            m_iCurFrameIndex++;
+            
+            if (m_iCurFrameIndex < m_vFrameName.size()) {
+                CCSpriteFrame* frame = xSpriteFC->spriteFrameByName(m_vFrameName.at(m_iCurFrameIndex).sFrameName.c_str());
+                m_preview->setDisplayFrame(frame);
+            }
+            else
+            {
+                //所有帧数都播放完.
+                m_bRunning = false;
+                m_bOnWait = false;
+                m_fAccumulate = 0;
+                //如果是特效, 设置不可见
+                m_preview->setVisible(false);
+                
+                xScheduler->unscheduleUpdateForTarget(this);
+            }
+        }
     }
 }
 
@@ -319,23 +337,8 @@ CCPoint Part::getOffset()
 
 int Part::getCurFrameIndex()
 {
-    if (m_bRunning) {
-        
-        if (m_iOldFrameIndex == m_iFrameCount - 1) {
-            return m_iOldFrameIndex;
-        }
-        
-        CCArray* spriteArray = m_pAction->getAnimation()->getFrames();     //其中的m_pLocateSkillAction是一个CCAnimate的对象指针
-        
-        for (int i = 0; i < m_iFrameCount; i++) {
-            CCAnimationFrame * tempFrame = (CCAnimationFrame*)spriteArray->objectAtIndex(i) ;   //这里要注意了，返回的是CCAnimationFrame的指针，不是CCSpriteFrame*
-            
-            if(m_preview->isFrameDisplayed(tempFrame->getSpriteFrame()))     //m_Sprite就是正在播放动画的那个精灵
-            {
-                m_iOldFrameIndex = i;
-                return i;
-            }
-        }
+    if (m_bRunning) {        
+        return m_iCurFrameIndex;
     }
     
     return -1;
@@ -352,7 +355,6 @@ void Part::actionDone()
 //    }
     
     //主体也消失, 仅仅在对于是单独预览时.
-    m_preview->stopAllActions();
     m_preview->setVisible(false);
 }
 

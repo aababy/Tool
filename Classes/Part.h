@@ -80,10 +80,12 @@ public:
     
     bool m_bRunning = false;        //动画是否在播放中
 private:
+    void init(vector<string> &vNames);
     void makeAPartName();
     CCPoint getOffset();
     string makeMotionName();
     void actionDone();
+    void update(float delta);
     string m_sMotionName;
     
     CCSprite * m_preview = NULL;           //用于预览
@@ -97,6 +99,8 @@ private:
     CCAnimate * m_pAction;
     
     int m_iOldFrameIndex;
+    int m_iCurFrameIndex;
+    float m_fAccumulate = 0.f;
     
 
     bool m_bOnWait = false;         //是否在等待主体播放到开始的那一帧.
@@ -106,6 +110,7 @@ private:
     bool    m_bEnabled;
     int     m_iAccIndex = 0;
     
+    vector<float> m_vDelay;
     float   m_fDelay = 0.05f;        //帧间隔
     float   m_degree = 0.0f;
     float   m_speed = 1000.f;
