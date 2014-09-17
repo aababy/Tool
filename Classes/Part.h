@@ -53,8 +53,6 @@ public:
     int m_iCurIndex = 0;
     int m_iFrameCount = 0;
     
-    CCAnimation* getAnimation();            //这个函数是否分离出去?
-    
     string  sPartName;                      //显示的名字, 也影响effect
     
     int getCurFrameIndex();
@@ -71,6 +69,7 @@ public:
     void setAllAtkFrame(CCString *atkFrames, int iMotionStart);
     void saveNames(vector<string> &vNames);
     bool saveAttackFrame(CCDictionary *effect, int iMotionStart);
+    void saveDelay(CCDictionary *effect);
 
     ~Part();
     
@@ -117,6 +116,7 @@ private:
     bool    m_flag[FLAG_COUNT];
     
     vector<string> m_vNames;        //保存的名字, 多个请用逗号分开
+    CCPoint posStart;               //原始位置
 };
 
 

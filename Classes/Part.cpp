@@ -155,20 +155,6 @@ const char * Part::getCurFrameName()
     return m_vFrameName.at(m_iCurIndex).sFrameName.c_str();
 }
 
-CCAnimation* Part::getAnimation()
-{
-    CCArray *animFrames = CCArray::createWithCapacity(m_iFrameCount);
-    
-    for (int i = 0; i < m_vFrameName.size(); i++) {
-        CCSpriteFrame* frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(m_vFrameName.at(i).sFrameName.c_str());
-        animFrames->addObject(frame);
-    }
-    
-    CCAnimation* animation = CCAnimation::createWithSpriteFrames(animFrames, m_fDelay);
-
-    return animation;
-}
-
 void Part::setFrame(int iIndexStartFromMain)
 {
     if (iStartFrameIndex <= iIndexStartFromMain) {
@@ -248,8 +234,7 @@ void Part::checkIfNeedToStart(int iFrameIndex)
         {
             m_preview->setPosition(m_sprite->getPosition());
         }
-        
-        CCSequence * sequence;
+        posStart = m_preview->getPosition();
         
         //开始设置Frame
         CCSpriteFrame* frame = xSpriteFC->spriteFrameByName(m_vFrameName.at(0).sFrameName.c_str());
@@ -257,18 +242,6 @@ void Part::checkIfNeedToStart(int iFrameIndex)
         
         xScheduler->unscheduleUpdateForTarget(this);
         xScheduler->scheduleUpdateForTarget(this, 0, false);
-        
-        //位移
-        if(m_flag[FI_MOVE])
-        {
-            //根据帧数确定时间
-            CCPoint dest = ccp(1000, 0);       //水平
-            dest = pointRotateWithAngle(dest, m_degree);
-            float duration = 1000 / m_speed;
-            
-            sequence = CCSequence::create(CCMoveBy::create(duration, dest), CCCallFunc::create(this, callfunc_selector(Part::actionDone)), NULL);
-            m_preview->runAction(sequence);
-        }
         
         m_preview->setVisible(true);
         m_bRunning = true;
@@ -289,6 +262,22 @@ void Part::update(float delta)
             if (m_iCurFrameIndex < m_vFrameName.size()) {
                 CCSpriteFrame* frame = xSpriteFC->spriteFrameByName(m_vFrameName.at(m_iCurFrameIndex).sFrameName.c_str());
                 m_preview->setDisplayFrame(frame);
+                
+                //位移操作
+                if(m_flag[FI_MOVE])
+                {
+                    //根据帧数确定时间
+                    CCPoint dest = ccp(1000, 0);       //水平
+                    dest = pointRotateWithAngle(dest, m_degree);
+                    
+                    //第一帧就要开始移动
+                    CCPoint posCur;
+                    
+                    posCur.x = posStart.x + dest.x * (m_iCurFrameIndex + 1) /m_vFrameName.size();
+                    posCur.y = posStart.y + dest.y * (m_iCurFrameIndex + 1) /m_vFrameName.size();
+                    
+                    m_preview->setPosition(posCur);
+                }
             }
             else
             {
@@ -420,7 +409,7 @@ bool Part::saveEffectToDictionary(CCDictionary *effects, int iMotionStart)
     insertCCPoint(effect, "anchorPoint", point);
     
     //delay
-    insertFloat(effect, "delay", m_fDelay);
+    saveDelay(effect);
     
     //position
     point = getPosition();
@@ -453,6 +442,30 @@ bool Part::saveEffectToDictionary(CCDictionary *effects, int iMotionStart)
     effects->setObject(effect, getEffectName());
     
     return bRet;
+}
+
+void Part::saveDelay(CCDictionary *effect)
+{
+    float fOld = -1.f;
+    string str;
+    
+    for (int i = 0; i < m_vDelay.size(); i++)
+    {
+        if (isEqualFloat(fOld, m_vDelay.at(i)) == false)
+        {
+            if (i != 0)
+            {
+                char buffer[40];
+                sprintf(buffer, "(%d),", i);
+                str += buffer;
+            }
+            
+            fOld = m_vDelay.at(i);
+            str += any2string(fOld);
+        }
+    }
+    
+    insertString(effect, "delay", str);
 }
 
 bool Part::saveAttackFrame(CCDictionary *effect, int iMotionStart)

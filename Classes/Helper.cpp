@@ -239,3 +239,16 @@ void string2Flags(CCString *sFlags, bool *flags)
         }
     }
 }
+
+bool isEqualFloat(float f1, float f2)
+{
+    float fRet = f1 - f2;
+    if (fRet > 0.0001f || fRet < -0.0001f) {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+

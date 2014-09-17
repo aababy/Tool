@@ -35,6 +35,7 @@ string flag2string(bool m_flag[FLAG_COUNT]);
 void string2Vector(string &name, vector<string>& vec);
 CCPoint str2Point(const char * sz);
 void string2Flags(CCString *sFlags, bool *flags);
+bool isEqualFloat(float f1, float f2);
 
 template <class T> string any2string(T tmp)
 {
