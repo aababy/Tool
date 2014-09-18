@@ -479,6 +479,10 @@ void Part::parseDelay(CCString *delay)
     
     vector<string> vLines;
     string2Vector(str, vLines);
+ 
+    m_vDelay.clear();
+    
+    int lastIndex = 0;
     
     for (int i = 0; i < vLines.size(); i++)
     {
@@ -492,6 +496,9 @@ void Part::parseDelay(CCString *delay)
         
         float delay = atof(sDelay.c_str());
         int count = atoi(sCount.c_str());
+        int temp = count;
+        count -= lastIndex;
+        lastIndex = temp;
         
         for (int j = 0; j < count; j++)
         {
