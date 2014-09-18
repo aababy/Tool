@@ -49,6 +49,7 @@ public:
     void update(float delta);
     bool isInPreview();
     int getFramesCount();
+    void parseDelay(CCString *delay);
     void setDelay(int idx, float delay);
     float getDelay(int idx);
     void setFlags(flagIndex index, bool bFlag);
@@ -73,6 +74,7 @@ public:
     vector<string> m_vFrameNameOrdered;
     
     bool isMainIndex();
+    void saveMainDelay(CCDictionary *dic);
 
     int iEnd = 0;
     int iStart = 0;

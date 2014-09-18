@@ -70,6 +70,7 @@ public:
     void saveNames(vector<string> &vNames);
     bool saveAttackFrame(CCDictionary *effect, int iMotionStart);
     void saveDelay(CCDictionary *effect);
+    void parseDelay(CCString *delay);
 
     ~Part();
     

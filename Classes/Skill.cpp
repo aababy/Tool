@@ -393,7 +393,7 @@ void Skill::saveAtksAndEffect(CCDictionary *dic)
         
         CCDictionary *dictionary = new CCDictionary();
         
-        insertFloat(dictionary, "delay", motion->getDelay(m_iCurIndex));
+        motion->saveMainDelay(dictionary);
         
         CCDictionary *eff = new CCDictionary();
         
@@ -574,7 +574,7 @@ void Skill::importOldPlist(string &str)
                     
                     //帧间隔
                     CCString *delay = (CCString*)motionDic->objectForKey("delay");
-                    xCurAtk->setDelay(m_iCurAtk, atof(delay->getCString()));
+                    xCurAtk->parseDelay(delay);
                     
                     //攻击帧
                     CCString *attackFrame = (CCString*)motionDic->objectForKey("attackFrame");
@@ -688,7 +688,7 @@ void Skill::createEffects(int iStart, const char * effectName, CCDictionary * ef
         
         //delay
         CCString *delay = (CCString*)effect->objectForKey("delay");
-        //part->setDelay(atof(delay->getCString()));        未完成
+        part->parseDelay(delay);
         
         //flags
         CCString *flags = (CCString*)effect->objectForKey("flags");

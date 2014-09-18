@@ -448,14 +448,15 @@ void Part::saveDelay(CCDictionary *effect)
 {
     float fOld = -1.f;
     string str;
+    char buffer[40];
+    int i;
     
-    for (int i = 0; i < m_vDelay.size(); i++)
+    for (i = 0; i < m_vDelay.size(); i++)
     {
         if (isEqualFloat(fOld, m_vDelay.at(i)) == false)
         {
             if (i != 0)
             {
-                char buffer[40];
                 sprintf(buffer, "(%d),", i);
                 str += buffer;
             }
@@ -465,8 +466,40 @@ void Part::saveDelay(CCDictionary *effect)
         }
     }
     
+    sprintf(buffer, "(%d)", i);
+    str += buffer;
+    
     insertString(effect, "delay", str);
 }
+
+
+void Part::parseDelay(CCString *delay)
+{
+    string str = delay->getCString();
+    
+    vector<string> vLines;
+    string2Vector(str, vLines);
+    
+    for (int i = 0; i < vLines.size(); i++)
+    {
+        string line = vLines.at(i);
+        
+        int left = line.find('(');
+        int right = line.find(')');
+        
+        string sDelay = line.substr(0, left);
+        string sCount = line.substr(left + 1, right - left - 1);
+        
+        float delay = atof(sDelay.c_str());
+        int count = atoi(sCount.c_str());
+        
+        for (int j = 0; j < count; j++)
+        {
+            m_vDelay.push_back(delay);
+        }
+    }
+}
+
 
 bool Part::saveAttackFrame(CCDictionary *effect, int iMotionStart)
 {

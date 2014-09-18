@@ -270,6 +270,11 @@ bool Motion::getEffectsName(CCDictionary *dic, CCDictionary *effects)
     return bRet;
 }
 
+void Motion::parseDelay(CCString *delay)
+{
+    m_mainPart->parseDelay(delay);
+}
+
 void Motion::setDelay(int idx, float delay)
 {
     m_vParts.at(m_iCurOperationIndex)->setDelay(idx - iStart, delay);
@@ -401,3 +406,9 @@ bool Motion::isMainIndex()
         return false;
     }
 }
+
+void Motion::saveMainDelay(CCDictionary *dic)
+{
+    m_mainPart->saveDelay(dic);
+}
+
