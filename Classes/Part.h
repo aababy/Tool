@@ -80,7 +80,6 @@ private:
     void makeAPartName();
     CCPoint getOffset();
     string makeMotionName();
-    //void actionDone();
     void update(float delta);
     string m_sMotionName;
     
