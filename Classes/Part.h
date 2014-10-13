@@ -18,7 +18,7 @@ public:
     //static Part * create(const char *pFileName, CCPoint &location, ImageView *parent);
     //origin 是主体所在的位置, 非主体就以这个位置来作为偏移坐标
     Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, vector<string> vFrameName, string& sMotionName);
-    Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, CCNode *parentForPreview, int iAcc, string& sMotionName);
+    Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, CCNode *partner, int iAcc, string& sMotionName);
     void setStartFrameIndex(int iStart);
     int getStartFrameIndex();
     void setMain();
@@ -80,7 +80,7 @@ private:
     void makeAPartName();
     CCPoint getOffset();
     string makeMotionName();
-    void actionDone();
+    //void actionDone();
     void update(float delta);
     string m_sMotionName;
     
@@ -118,6 +118,8 @@ private:
     
     vector<string> m_vNames;        //保存的名字, 多个请用逗号分开
     CCPoint posStart;               //原始位置
+
+    CCNode *m_partner;                //现在特效加到背景上, 所以和主体是同一级, 主体为特效的partner.
 };
 
 

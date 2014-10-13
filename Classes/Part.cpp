@@ -46,7 +46,7 @@ Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &show
 
 
 
-Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, CCNode *parentForPreview, int iAcc, string& sMotionName)
+Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &showForPreview, CCNode *parent, CCNode *partner, int iAcc, string& sMotionName)
 {
     //加入Cache
     for (int i = 0; i < vNames.size(); i++) {
@@ -85,8 +85,11 @@ Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &show
     m_preview = CCSprite::create();
     m_preview->setPosition(ccp(size.width/2, size.height/2));
     m_preview->setVisible(false);
-    
-    parentForPreview->addChild(m_preview);
+
+    //也改为直接加到背景上面.实际坐标再转换.
+    m_partner = partner;
+    CCNode * parentForPartner = m_partner->getParent();
+    parentForPartner->addChild(m_preview);
     
     makeAPartName();
     
@@ -232,7 +235,19 @@ void Part::checkIfNeedToStart(int iFrameIndex)
         }
         else
         {
-            m_preview->setPosition(m_sprite->getPosition());
+            //特效, 重新算坐标
+            //1. 获取坐标差值.
+            CCPoint posDiff = m_sprite->getPosition();
+            CCNode *parent = m_sprite->getParent();
+            posDiff = ccpSub(posDiff, ccp(parent->getContentSize().width / 2, parent->getContentSize().height / 2));
+
+            //2. 获取partner的坐标
+            CCPoint pos = m_partner->getPosition();
+
+            //3. 坐标加上差值
+            pos = ccpAdd(pos, posDiff);
+
+            m_preview->setPosition(pos);
         }
         posStart = m_preview->getPosition();
         
@@ -309,19 +324,19 @@ int Part::getCurFrameIndex()
     return -1;
 }
 
-void Part::actionDone()
-{
-    m_bRunning = false;
-    m_bOnWait = false;
-    
-    //非主体在运行完后自动消失
-//    if (!m_bMain) {
-//        m_preview->setVisible(false);
-//    }
-    
-    //主体也消失, 仅仅在对于是单独预览时.
-    m_preview->setVisible(false);
-}
+//void Part::actionDone()
+//{
+//    m_bRunning = false;
+//    m_bOnWait = false;
+//
+//    //非主体在运行完后自动消失
+////    if (!m_bMain) {
+////        m_preview->setVisible(false);
+////    }
+//
+//    //主体也消失, 仅仅在对于是单独预览时.
+//    m_preview->setVisible(false);
+//}
 
 void Part::setStartFrameIndex(int iStart)
 {
