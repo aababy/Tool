@@ -23,6 +23,7 @@ public:
     int getStartFrameIndex();
     void setMain();
     bool getMain();
+    void saveReduceFrame(ofstream &fout);
 
     vector<FramesName> m_vFrameOriginal;
     vector<FramesName> m_vFrameUsed;

@@ -502,6 +502,24 @@ void Part::saveDelay(CCDictionary *effect)
 }
 
 
+void Part::saveReduceFrame(ofstream &fout)
+{
+    //写入资源名 xxx.plist
+    fout << sPartName << endl;
+
+    //写入缺少的帧名称
+    for(int i = 0; i < m_vFrameOriginal.size(); i++)
+    {
+        if(m_vFrameOriginal.at(i).bDeleted)
+        {
+            fout << m_vFrameOriginal.at(i).sFrameName << endl;
+        }
+    }
+
+    fout << endl;
+}
+
+
 void Part::parseDelay(CCString *delay)
 {
     string str = delay->getCString();

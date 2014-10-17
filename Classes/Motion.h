@@ -73,6 +73,7 @@ public:
     bool getEffectsName(CCDictionary *dic, CCDictionary *effects);
     bool saveMainAttackFrame(CCDictionary *dic);
     void setMainAllAtkFrame(CCString *atkFrames);
+    void saveReduceFrame(ofstream &fout);
 
     vector<string> m_vFrameNameOrdered;
     

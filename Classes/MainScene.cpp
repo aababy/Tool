@@ -390,7 +390,7 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
             break;
         case REDUCE:
         {
-            FrameBrowser * browser = FrameBrowser::create(this);
+            FrameBrowser * browser = FrameBrowser::create();
             m_scene->addChild(browser);
         }
             break;

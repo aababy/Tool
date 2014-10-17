@@ -16,8 +16,8 @@ class MainScene;
 class FrameBrowser : public CCLayer
 {
 public:
-    FrameBrowser(MainScene *mainlayer);
-    static FrameBrowser* create(MainScene *mainlayer);
+    FrameBrowser();
+    static FrameBrowser* create();
 
 private:
     bool init();

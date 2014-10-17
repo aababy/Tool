@@ -430,6 +430,15 @@ void Motion::repairAllEffectStartFrameIndex()
     }
 }
 
+void Motion::saveReduceFrame(ofstream &fout)
+{
+    for (int i = 0; i < m_vParts.size(); i++)
+    {
+        m_vParts.at(i)->saveReduceFrame(fout);
+    }
+}
+
+
 int Motion::findRealStartFrameIndex(int iStartFrameIndexOriginal)
 {
     int iAcc = 0;

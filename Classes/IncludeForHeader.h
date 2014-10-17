@@ -20,6 +20,7 @@
 using std::string;
 using std::vector;
 using std::swap;
+using std::ofstream;
 
 USING_NS_CC;
 using namespace cocos2d::extension;

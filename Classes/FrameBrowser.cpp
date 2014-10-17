@@ -17,14 +17,14 @@ enum UITag
     CHECK_BOX = 394,
 };
 
-FrameBrowser::FrameBrowser(MainScene *mainlayer)
+FrameBrowser::FrameBrowser()
 {
 
 }
 
-FrameBrowser* FrameBrowser::create(MainScene *mainlayer)
+FrameBrowser* FrameBrowser::create()
 {
-    FrameBrowser* uiLayer = new FrameBrowser(mainlayer);
+    FrameBrowser* uiLayer = new FrameBrowser();
     if (uiLayer && uiLayer->init())
     {
         uiLayer->autorelease();
