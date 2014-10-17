@@ -31,6 +31,7 @@ struct FramesName
 {
     string  sFrameName;
     int     iNumber;
+    bool    bDeleted;           //这一帧是否被删除.
 };
 
 struct SkillName

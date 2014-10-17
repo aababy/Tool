@@ -1,5 +1,6 @@
 #include "MainScene.h"
 #include "IncludeForCpp.h"
+#include "FrameBrowser.h"
 
 enum UITag
 {
@@ -39,6 +40,8 @@ enum UITag
     ATTACK_FRAME = 286,
     BUTTON_2X = 309,
     LABEL_ERROR = 380,
+    APPLY_TO_ALL = 394,
+    REDUCE = 395,
     
     LIST_BG = 1000,
     LIST_MOTION = 1100,
@@ -71,7 +74,7 @@ bool MainScene::init(CCScene* pScene)
     
     if (CCLayer::init())
     {      
-        m_rootNode = (NodeReader::getInstance()->createNode("R/Tool_1.ExportJson"));
+        m_rootNode = (NodeReader::getInstance()->createNode("R/MainScene_1.ExportJson"));
         addChild(m_rootNode);
         
         Layout *root = static_cast<Layout*>(m_rootNode->getChildren()->objectAtIndex(0));
@@ -86,6 +89,10 @@ bool MainScene::init(CCScene* pScene)
         initButton(BUTTON_CLEAN, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_SAVE, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_PREVIEW_ALL, root, this, toucheventselector(MainScene::touchEvent));
+        initButton(REDUCE, root, this, toucheventselector(MainScene::touchEvent));
+        Button * btn = initButton(APPLY_TO_ALL, root, this, toucheventselector(MainScene::touchEvent));
+        btn->setScale(0.5f);
+
         btn2x = initButton(BUTTON_2X, root, this, toucheventselector(MainScene::touchEvent));
         btn2x->setScale(0.3f, 0.5f);
         btnAddMotion = initButton(BUTTON_ADD_MOTION, root, this, toucheventselector(MainScene::touchEvent));
@@ -139,7 +146,7 @@ bool MainScene::init(CCScene* pScene)
         
         //列表
         listView = (UIListView*)UIHelper::seekWidgetByTag(root, PARTS_LIST);
-        CCNode *node = (NodeReader::getInstance()->createNode("R/ListCell.ExportJson"));
+        CCNode *node = (NodeReader::getInstance()->createNode("R/FolderBrowser_2.ExportJson"));
         listroot = static_cast<Layout*>(node->getChildren()->objectAtIndex(0));
         Layout* defaultItem = (Layout*)UIHelper::seekWidgetByTag(listroot, 32);         //还有转一层, 一来至少加2个Panel
         listView->setItemModel(defaultItem);
@@ -379,6 +386,18 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
                 xCurAtk->setCurScale(2.f);
                 updateProperty(NULL);
             }
+        }
+            break;
+        case REDUCE:
+        {
+            FrameBrowser * browser = FrameBrowser::create(this);
+            m_scene->addChild(browser);
+        }
+            break;
+        case APPLY_TO_ALL:
+        {
+            float fDelay = xCurAtk->getDelay(xSkill->m_iCurIndex);
+            xCurAtk->setDelay(fDelay);
         }
             break;
         default:

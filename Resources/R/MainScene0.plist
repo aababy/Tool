@@ -23,56 +23,18 @@
 				<key>offsetY</key>
 				<real>0</real>
 			</dict>
-			<key>GUI/button.png</key>
+			<key>edit_bg.png</key>
 			<dict>
 				<key>width</key>
-				<integer>103</integer>
+				<integer>960</integer>
 				<key>height</key>
-				<integer>40</integer>
+				<integer>432</integer>
 				<key>originalWidth</key>
-				<integer>103</integer>
+				<integer>960</integer>
 				<key>originalHeight</key>
-				<integer>40</integer>
+				<integer>432</integer>
 				<key>x</key>
 				<integer>961</integer>
-				<key>y</key>
-				<integer>0</integer>
-				<key>offsetX</key>
-				<real>0</real>
-				<key>offsetY</key>
-				<real>0</real>
-			</dict>
-			<key>GUI/selected01.png</key>
-			<dict>
-				<key>width</key>
-				<integer>56</integer>
-				<key>height</key>
-				<integer>56</integer>
-				<key>originalWidth</key>
-				<integer>56</integer>
-				<key>originalHeight</key>
-				<integer>56</integer>
-				<key>x</key>
-				<integer>1065</integer>
-				<key>y</key>
-				<integer>0</integer>
-				<key>offsetX</key>
-				<real>0</real>
-				<key>offsetY</key>
-				<real>0</real>
-			</dict>
-			<key>GUI/selected02.png</key>
-			<dict>
-				<key>width</key>
-				<integer>56</integer>
-				<key>height</key>
-				<integer>47</integer>
-				<key>originalWidth</key>
-				<integer>56</integer>
-				<key>originalHeight</key>
-				<integer>47</integer>
-				<key>x</key>
-				<integer>1122</integer>
 				<key>y</key>
 				<integer>0</integer>
 				<key>offsetX</key>
@@ -99,16 +61,35 @@
 				<key>offsetY</key>
 				<real>0</real>
 			</dict>
-			<key>edit_bg.png</key>
+			<key>GUI/button.png</key>
 			<dict>
 				<key>width</key>
-				<integer>960</integer>
+				<integer>102</integer>
 				<key>height</key>
-				<integer>432</integer>
+				<integer>36</integer>
 				<key>originalWidth</key>
-				<integer>960</integer>
+				<integer>103</integer>
 				<key>originalHeight</key>
-				<integer>432</integer>
+				<integer>40</integer>
+				<key>x</key>
+				<integer>1921</integer>
+				<key>y</key>
+				<integer>433</integer>
+				<key>offsetX</key>
+				<real>0.5</real>
+				<key>offsetY</key>
+				<real>0</real>
+			</dict>
+			<key>GUI/selected01.png</key>
+			<dict>
+				<key>width</key>
+				<integer>54</integer>
+				<key>height</key>
+				<integer>54</integer>
+				<key>originalWidth</key>
+				<integer>56</integer>
+				<key>originalHeight</key>
+				<integer>56</integer>
 				<key>x</key>
 				<integer>0</integer>
 				<key>y</key>
@@ -118,18 +99,37 @@
 				<key>offsetY</key>
 				<real>0</real>
 			</dict>
+			<key>GUI/selected02.png</key>
+			<dict>
+				<key>width</key>
+				<integer>42</integer>
+				<key>height</key>
+				<integer>41</integer>
+				<key>originalWidth</key>
+				<integer>56</integer>
+				<key>originalHeight</key>
+				<integer>47</integer>
+				<key>x</key>
+				<integer>55</integer>
+				<key>y</key>
+				<integer>866</integer>
+				<key>offsetX</key>
+				<real>-1</real>
+				<key>offsetY</key>
+				<real>-1</real>
+			</dict>
 			<key>GUI/Sprite.png</key>
 			<dict>
 				<key>width</key>
-				<integer>48</integer>
+				<integer>46</integer>
 				<key>height</key>
-				<integer>48</integer>
+				<integer>46</integer>
 				<key>originalWidth</key>
 				<integer>48</integer>
 				<key>originalHeight</key>
 				<integer>48</integer>
 				<key>x</key>
-				<integer>961</integer>
+				<integer>98</integer>
 				<key>y</key>
 				<integer>866</integer>
 				<key>offsetX</key>
@@ -143,9 +143,9 @@
 			<key>format</key>
 			<integer>0</integer>
 			<key>textureFileName</key>
-			<string>Tool0.png</string>
+			<string>MainScene0.png</string>
 			<key>realTextureFileName</key>
-			<string>Tool0.png</string>
+			<string>MainScene0.png</string>
 			<key>size</key>
 			<string>{2048,2048}</string>
 		</dict>

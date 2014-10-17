@@ -56,7 +56,7 @@ bool FolderBrowser::init(curState state)
 {
     if (CCLayer::init())
     {
-        m_rootNode = (NodeReader::getInstance()->createNode("R/FolderBrower.ExportJson"));
+        m_rootNode = (NodeReader::getInstance()->createNode("R/FolderBrowser_1.ExportJson"));
         addChild(m_rootNode);
         
         Layout *root = static_cast<Layout*>(m_rootNode->getChildren()->objectAtIndex(0));
@@ -101,7 +101,7 @@ bool FolderBrowser::init(curState state)
         
         //列表
         listView = (UIListView*)UIHelper::seekWidgetByTag(root, FILE_LIST);
-        CCNode *node = (NodeReader::getInstance()->createNode("R/ListCell.ExportJson"));
+        CCNode *node = (NodeReader::getInstance()->createNode("R/FolderBrowser_2.ExportJson"));
         Layout *listroot = static_cast<Layout*>(node->getChildren()->objectAtIndex(0));
         Layout* defaultItem = (Layout*)UIHelper::seekWidgetByTag(listroot, 32);         //还有转一层, 一来至少加2个Panel
         listView->setItemModel(defaultItem);

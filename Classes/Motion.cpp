@@ -280,6 +280,11 @@ void Motion::setDelay(int idx, float delay)
     m_vParts.at(m_iCurOperationIndex)->setDelay(idx - iStart, delay);
 }
 
+void Motion::setDelay(float delay)
+{
+    m_vParts.at(m_iCurOperationIndex)->setDelay(delay);
+}
+
 float Motion::getDelay(int idx)
 {
     return m_vParts.at(m_iCurOperationIndex)->getDelay(idx - iStart);
@@ -412,3 +417,34 @@ void Motion::saveMainDelay(CCDictionary *dic)
     m_mainPart->saveDelay(dic);
 }
 
+Part *Motion::getCurPart()
+{
+    return m_vParts.at(m_iCurOperationIndex);
+}
+
+void Motion::repairAllEffectStartFrameIndex()
+{
+    for (int i = 1; i < m_vParts.size(); i++)
+    {
+        m_vParts.at(i)->iStartFrameIndex = findRealStartFrameIndex(m_vParts.at(i)->iStartFrameIndexOriginal);
+    }
+}
+
+int Motion::findRealStartFrameIndex(int iStartFrameIndexOriginal)
+{
+    int iAcc = 0;
+    vector<FramesName> & vOriginal = m_mainPart->m_vFrameOriginal;
+
+    for(int i = 0; i < iStartFrameIndexOriginal; i++)
+    {
+        if(vOriginal.at(i).bDeleted == true)
+        {
+            iAcc++;
+        }
+    }
+
+    iStartFrameIndexOriginal -= iAcc;
+    if(iStartFrameIndexOriginal < 0) iStartFrameIndexOriginal = 0;
+
+    return iStartFrameIndexOriginal;
+}

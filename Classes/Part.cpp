@@ -20,10 +20,10 @@ Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &show
         frames.iNumber = i;
         frames.sFrameName = vFrameName.at(i);
         
-        m_vFrameName.push_back(frames);
+        m_vFrameUsed.push_back(frames);
     }
     
-    m_iFrameCount = m_vFrameName.size();
+    m_iFrameCount = m_vFrameUsed.size();
     
     //显示帧
     m_sprite = CCSprite::createWithSpriteFrameName(getCurFrameName());
@@ -61,13 +61,13 @@ Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &show
             FramesName frame;
             frame.sFrameName = pElement->getStrKey();
             frame.iNumber = getNumber(frame.sFrameName);
-            m_vFrameName.push_back(frame);
+            m_vFrameUsed.push_back(frame);
         }
     }
     
-    m_iFrameCount = m_vFrameName.size();
+    m_iFrameCount = m_vFrameUsed.size();
     
-    bubble_sort(m_vFrameName);
+    bubble_sort(m_vFrameUsed);
     
     //显示帧
     m_sprite = CCSprite::createWithSpriteFrameName(getCurFrameName());
@@ -100,6 +100,23 @@ Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &show
 }
 
 
+void Part::makeNewPart()
+{
+    m_vFrameUsed.clear();           //清除以前的.
+
+    //加入Cache
+    for (int i = 0; i < m_vFrameOriginal.size(); i++) {
+
+        if(m_vFrameOriginal.at(i).bDeleted == false)
+        {
+            m_vFrameUsed.push_back(m_vFrameOriginal.at(i));
+        }
+    }
+
+    m_iFrameCount = m_vFrameUsed.size();
+}
+
+
 void Part::init(vector<string> &vNames)
 {
     sPartName = vNames.at(0);               //PartName 显示只会显示一个
@@ -119,6 +136,10 @@ void Part::init(vector<string> &vNames)
     {
         float delay = 0.05f;
         m_vDelay.push_back(delay);
+
+        //复制到original里面
+        m_vFrameUsed.at(i).bDeleted = false;
+        m_vFrameOriginal.push_back(m_vFrameUsed.at(i));
     }
 }
 
@@ -137,7 +158,7 @@ void Part::makeAPartName()
     //加上帧数
     char buffer[30];
     
-    sprintf(buffer, "%s (%lu)", sPartName.c_str(), m_vFrameName.size());
+    sprintf(buffer, "%s (%lu)", sPartName.c_str(), m_vFrameUsed.size());
     
     sPartName = buffer;
 }
@@ -155,7 +176,7 @@ Part::~Part()
 
 const char * Part::getCurFrameName()
 {
-    return m_vFrameName.at(m_iCurIndex).sFrameName.c_str();
+    return m_vFrameUsed.at(m_iCurIndex).sFrameName.c_str();
 }
 
 void Part::setFrame(int iIndexStartFromMain)
@@ -163,7 +184,7 @@ void Part::setFrame(int iIndexStartFromMain)
     if (iStartFrameIndex <= iIndexStartFromMain) {
         m_iCurIndex = iIndexStartFromMain - iStartFrameIndex;
         
-        if (m_iCurIndex < m_vFrameName.size()) {
+        if (m_iCurIndex < m_vFrameUsed.size()) {
             m_sprite->initWithSpriteFrameName(getCurFrameName());
             m_sprite->setVisible(true);
         }
@@ -252,7 +273,7 @@ void Part::checkIfNeedToStart(int iFrameIndex)
         posStart = m_preview->getPosition();
         
         //开始设置Frame
-        CCSpriteFrame* frame = xSpriteFC->spriteFrameByName(m_vFrameName.at(0).sFrameName.c_str());
+        CCSpriteFrame* frame = xSpriteFC->spriteFrameByName(m_vFrameUsed.at(0).sFrameName.c_str());
         m_preview->setDisplayFrame(frame);
         
         xScheduler->unscheduleUpdateForTarget(this);
@@ -274,8 +295,8 @@ void Part::update(float delta)
             m_fAccumulate = 0.f;
             m_iCurFrameIndex++;
             
-            if (m_iCurFrameIndex < m_vFrameName.size()) {
-                CCSpriteFrame* frame = xSpriteFC->spriteFrameByName(m_vFrameName.at(m_iCurFrameIndex).sFrameName.c_str());
+            if (m_iCurFrameIndex < m_vFrameUsed.size()) {
+                CCSpriteFrame* frame = xSpriteFC->spriteFrameByName(m_vFrameUsed.at(m_iCurFrameIndex).sFrameName.c_str());
                 m_preview->setDisplayFrame(frame);
                 
                 //位移操作
@@ -288,8 +309,8 @@ void Part::update(float delta)
                     //第一帧就要开始移动
                     CCPoint posCur;
                     
-                    posCur.x = posStart.x + dest.x * (m_iCurFrameIndex + 1) /m_vFrameName.size();
-                    posCur.y = posStart.y + dest.y * (m_iCurFrameIndex + 1) /m_vFrameName.size();
+                    posCur.x = posStart.x + dest.x * (m_iCurFrameIndex + 1) / m_vFrameUsed.size();
+                    posCur.y = posStart.y + dest.y * (m_iCurFrameIndex + 1) / m_vFrameUsed.size();
                     
                     m_preview->setPosition(posCur);
                 }
@@ -328,6 +349,7 @@ int Part::getCurFrameIndex()
 void Part::setStartFrameIndex(int iStart)
 {
     iStartFrameIndex = iStart;
+    iStartFrameIndexOriginal = iStartFrameIndex;
 }
 
 int Part::getStartFrameIndex()
@@ -339,6 +361,11 @@ int Part::getStartFrameIndex()
 void Part::setMain()
 {
     m_bMain = true;    
+}
+
+bool Part::getMain()
+{
+    return m_bMain;
 }
 
 CCPoint Part::getPosition()
@@ -538,6 +565,15 @@ void Part::setDelay(int idx, float delay)
         m_vDelay.at(m_iCurIndex) = delay;
     }
 }
+
+void Part::setDelay(float delay)
+{
+    for(int i = 0; i < m_vDelay.size(); i++)
+    {
+        m_vDelay.at(i) = delay;
+    }
+}
+
 
 float Part::getDelay(int idx)
 {

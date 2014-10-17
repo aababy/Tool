@@ -259,6 +259,7 @@
 		CA0E200019A6DD70003E6C5D /* XmlData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA0E1FFE19A6DD70003E6C5D /* XmlData.cpp */; };
 		CA1589C5199217B300E85524 /* Motion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA1589C3199217B300E85524 /* Motion.cpp */; };
 		CA1589C8199233BC00E85524 /* Skill.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA1589C6199233BB00E85524 /* Skill.cpp */; };
+		CA1919DA19EFCAE300D36B60 /* FrameBrowser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA1919D819EFCAE300D36B60 /* FrameBrowser.cpp */; };
 		CA3B1BB41988C1380000299D /* MainScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA3B1BB21988C1380000299D /* MainScene.cpp */; };
 		CA3B1BB61988C53C0000299D /* R in Resources */ = {isa = PBXBuildFile; fileRef = CA3B1BB51988C53C0000299D /* R */; };
 		CA47514B198B638200D8C21E /* InputBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA475149198B638200D8C21E /* InputBox.cpp */; };
@@ -799,6 +800,8 @@
 		CA1589C4199217B300E85524 /* Motion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Motion.h; path = ../Classes/Motion.h; sourceTree = "<group>"; };
 		CA1589C6199233BB00E85524 /* Skill.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Skill.cpp; sourceTree = "<group>"; };
 		CA1589C7199233BC00E85524 /* Skill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Skill.h; sourceTree = "<group>"; };
+		CA1919D819EFCAE300D36B60 /* FrameBrowser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FrameBrowser.cpp; sourceTree = "<group>"; };
+		CA1919D919EFCAE300D36B60 /* FrameBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrameBrowser.h; sourceTree = "<group>"; };
 		CA3B1BB21988C1380000299D /* MainScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MainScene.cpp; path = ../Classes/MainScene.cpp; sourceTree = "<group>"; };
 		CA3B1BB31988C1380000299D /* MainScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainScene.h; path = ../Classes/MainScene.h; sourceTree = "<group>"; };
 		CA3B1BB51988C53C0000299D /* R */ = {isa = PBXFileReference; lastKnownFileType = folder; path = R; sourceTree = "<group>"; };
@@ -858,6 +861,8 @@
 				CA1589C4199217B300E85524 /* Motion.h */,
 				CA1589C6199233BB00E85524 /* Skill.cpp */,
 				CA1589C7199233BC00E85524 /* Skill.h */,
+				CA1919D819EFCAE300D36B60 /* FrameBrowser.cpp */,
+				CA1919D919EFCAE300D36B60 /* FrameBrowser.h */,
 			);
 			name = Classes;
 			path = ../classes;
@@ -2081,6 +2086,7 @@
 				15C1575E1683159E00D239F2 /* b2Contact.cpp in Sources */,
 				15C1575F1683159E00D239F2 /* b2ContactSolver.cpp in Sources */,
 				15C157601683159E00D239F2 /* b2EdgeAndCircleContact.cpp in Sources */,
+				CA1919DA19EFCAE300D36B60 /* FrameBrowser.cpp in Sources */,
 				37C62CD118E157C300D16FC4 /* CCActionNode.cpp in Sources */,
 				15C157611683159E00D239F2 /* b2EdgeAndPolygonContact.cpp in Sources */,
 				15C157621683159E00D239F2 /* b2PolygonAndCircleContact.cpp in Sources */,

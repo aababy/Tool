@@ -22,8 +22,11 @@ public:
     void setStartFrameIndex(int iStart);
     int getStartFrameIndex();
     void setMain();
-    
-    vector<FramesName> m_vFrameName;
+    bool getMain();
+
+    vector<FramesName> m_vFrameOriginal;
+    vector<FramesName> m_vFrameUsed;
+    vector<FramesName> m_vFrameDelete;
     
     const char * getCurFrameName();
     const char * getFrameCountStr();
@@ -52,6 +55,8 @@ public:
     
     int m_iCurIndex = 0;
     int m_iFrameCount = 0;
+    int iStartFrameIndex = 0;   //这个也是相对的.
+    int iStartFrameIndexOriginal = 0;
     
     string  sPartName;                      //显示的名字, 也影响effect
     
@@ -59,6 +64,7 @@ public:
     void checkIfNeedToStart(int iFrameIndex);
     bool saveEffectToDictionary(CCDictionary *effects, int iMotionStart);
     void setDelay(int idx, float delay);
+    void setDelay(float delay);
     float getDelay(int idx);
     void setDegree(float degree);
     float getDegree();
@@ -100,12 +106,11 @@ private:
     bool m_bOnWait = false;         //是否在等待主体播放到开始的那一帧.
     bool m_bMain = false;           //是否是主体
     
-    int     iStartFrameIndex = 0;   //这个也是相对的.
+
     bool    m_bEnabled;
     int     m_iAccIndex = 0;
     
-    vector<float> m_vDelay;
-    float   m_fDelay = 0.05f;        //帧间隔
+    vector<float> m_vDelay;         //帧间隔
     float   m_degree = 0.0f;
     float   m_speed = 1000.f;
     
@@ -119,6 +124,9 @@ private:
     CCPoint posStart;               //原始位置
 
     CCNode *m_partner;                //现在特效加到背景上, 所以和主体是同一级, 主体为特效的partner.
+    void makeNewPart();
+
+
 };
 
 

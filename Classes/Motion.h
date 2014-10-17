@@ -28,6 +28,8 @@ public:
     void setFrame(int iFrame);
     int getLastFrameIndex();
     void removeEffect();
+    int findRealStartFrameIndex(int iStartFrameIndexOriginal);
+    void repairAllEffectStartFrameIndex();
     
     string sMotionName;         //e.g. "0-5" or "6-11"
     string sSaveName;           //e.g. "atk1"
@@ -51,6 +53,7 @@ public:
     int getFramesCount();
     void parseDelay(CCString *delay);
     void setDelay(int idx, float delay);
+    void setDelay(float delay);
     float getDelay(int idx);
     void setFlags(flagIndex index, bool bFlag);
     bool getFlags(flagIndex index);
@@ -78,6 +81,8 @@ public:
 
     int iEnd = 0;
     int iStart = 0;
+
+    Part* getCurPart();
     
 private:
    

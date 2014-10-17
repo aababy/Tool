@@ -93,7 +93,7 @@ void Skill::addMotion()
         }
         
         char buffer[20];
-        sprintf(buffer, "skillpart_%d", getMotionCount() + 1);
+        sprintf(buffer, "p_%d", getMotionCount() + 1);
         
         CCAssert(m_iLastIndex <= m_iCurIndex, "error");
         m_curMotion = new Motion(buffer, sSkillName, vFrameName, m_iLastIndex, m_iCurIndex, m_origin, m_showForPreview, m_parent, m_iMotionAccIndex);
