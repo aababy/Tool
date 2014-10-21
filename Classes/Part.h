@@ -27,7 +27,6 @@ public:
 
     vector<FramesName> m_vFrameOriginal;
     vector<FramesName> m_vFrameUsed;
-    vector<FramesName> m_vFrameDelete;
     
     const char * getCurFrameName();
     const char * getFrameCountStr();

@@ -115,6 +115,9 @@ protected:
     CheckBox*   m_cbFlags[FLAG_COUNT];
     CheckBox*   m_cbNormal;
     CheckBox*   m_cbAttack;
+    ImageView*  m_iPreviewBG;
+    ImageView*  m_iPreviewBG1;
+    int         iBGIndex;
     
     Layout*     m_root;
 };

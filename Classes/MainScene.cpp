@@ -4,6 +4,7 @@
 
 enum UITag
 {
+    PREVIEW_BG = 4,
     FRAME_BG = 6,
     BUTTON_IMPORT = 8,
     BUTTON_PRV = 10,
@@ -42,6 +43,7 @@ enum UITag
     LABEL_ERROR = 380,
     APPLY_TO_ALL = 394,
     REDUCE = 395,
+    CHANGE_BG = 406,
     
     LIST_BG = 1000,
     LIST_MOTION = 1100,
@@ -70,6 +72,7 @@ CCScene* MainScene::scene()
 
 bool MainScene::init(CCScene* pScene)
 {
+    iBGIndex = 1;
     m_scene = pScene;
     
     if (CCLayer::init())
@@ -89,6 +92,7 @@ bool MainScene::init(CCScene* pScene)
         initButton(BUTTON_CLEAN, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_SAVE, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_PREVIEW_ALL, root, this, toucheventselector(MainScene::touchEvent));
+        initButton(CHANGE_BG, root, this, toucheventselector(MainScene::touchEvent));
         initButton(REDUCE, root, this, toucheventselector(MainScene::touchEvent));
         Button * btn = initButton(APPLY_TO_ALL, root, this, toucheventselector(MainScene::touchEvent));
         btn->setScale(0.5f);
@@ -120,6 +124,14 @@ bool MainScene::init(CCScene* pScene)
         m_pHolder->initWithFile("R/cross.png");
         m_iFrameBG = (ImageView*)UIHelper::seekWidgetByTag(root, FRAME_BG);
         m_iFrameBG->addTouchEventListener(this, toucheventselector(MainScene::touchEvent));
+
+        m_iPreviewBG = (ImageView*)UIHelper::seekWidgetByTag(root, PREVIEW_BG);
+        m_iPreviewBG->loadTexture("R/bg_1.jpg");
+        m_iPreviewBG->setPosition(ccp(m_iPreviewBG->getPositionX() - 240, m_iPreviewBG->getPositionY()));
+        m_iPreviewBG1 = ImageView::create();
+        m_iPreviewBG1->loadTexture("R/bg_1.jpg");
+        m_iPreviewBG1->setPosition(ccp(1440, 0));
+        m_iPreviewBG->addChild(m_iPreviewBG1);
         
         m_lFrameCount = (Label*)UIHelper::seekWidgetByTag(root, LABEL_FRAME_COUNT);
         m_preview = static_cast<CCSprite*>(m_rootNode->getChildByTag(PREVIEW));
@@ -386,6 +398,16 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
                 xCurAtk->setCurScale(2.f);
                 updateProperty(NULL);
             }
+        }
+            break;
+        case CHANGE_BG:
+        {
+            iBGIndex ++;
+            if(iBGIndex == 6) iBGIndex = 1;
+            char name[100];
+            sprintf(name, "R/bg_%d.jpg", iBGIndex);
+            m_iPreviewBG->loadTexture(name);
+            m_iPreviewBG1->loadTexture(name);
         }
             break;
         case REDUCE:
