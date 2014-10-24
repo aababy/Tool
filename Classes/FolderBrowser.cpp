@@ -157,6 +157,9 @@ void FolderBrowser::touchEvent(CCObject *pSender, TouchEventType type)
         {
             string search = m_ebSearch->getText();
             forward(search);
+            
+            //保存搜索的文字
+            CCUserDefault::sharedUserDefault()->setStringForKey(SEARCH_KEYWORD, search);
         }
             break;
         case BUTTON_OK:
@@ -396,7 +399,12 @@ void FolderBrowser::checkOldSearchPath()
     string str = CCUserDefault::sharedUserDefault()->getStringForKey(SEARCH_PATH);            
     if (!str.empty()) {
         m_ebAddress->setText(str);
-        forward();
+        
+        //检查就的关键字
+        string keyword = CCUserDefault::sharedUserDefault()->getStringForKey(SEARCH_KEYWORD);
+        forward(keyword);
+
+        m_ebSearch->setText(keyword);
     }
 }
 

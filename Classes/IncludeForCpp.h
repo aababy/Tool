@@ -31,6 +31,7 @@ using namespace cocostudio::timeline;
 
 #define UPDATE_PROPERTY                 "UPDATE_PROPERTY"
 #define SEARCH_PATH                     "SEARCH_PATH"
+#define SEARCH_KEYWORD                     "SEARCH_KEYWORD"
 #define SAVE_PATH                       "SAVE_PATH"
 #define UPDATE_MOTION                   "UPDATE_MOTION"
 #define UPDATE_EFFECT_LIST              "UPDATE_EFFECT_LIST"
