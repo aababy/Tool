@@ -100,6 +100,8 @@ private:
     CCAnimate * m_pAction;
     
     int m_iCurFrameIndex;
+    int m_iMoveIndex = 0;
+    float m_iMoveCount = 0;
     float m_fAccumulate = 0.f;
     
 
