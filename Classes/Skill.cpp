@@ -327,7 +327,13 @@ void Skill::save(bool bSkill)
         
         ////////////////////////////////////////////////////////////////////////////////////////////////    修改内容
         
-        saveAtksAndEffect(dic);
+        saveAtksAndEffect(dic, false);
+
+        if(m_bSkill)
+        {
+            saveAtksAndEffect(dic, true);
+        }
+
         
         ////////////////////////////////////////////////////////////////////////////////////////////////    写文件
         
@@ -364,14 +370,21 @@ void Skill::saveOfActions(CCDictionary *dic)
 }
 
 //保存 atks 和 effects, 最好同时保存, 节省效率
-void Skill::saveAtksAndEffect(CCDictionary *dic)
+void Skill::saveAtksAndEffect(CCDictionary *dic, bool bJoin)
 {
     //判断是否已经有这些字段
     CCDictionary *atks = NULL;
     
     if (m_bSkill)
     {
-        atks = (CCDictionary *)dic->objectForKey("atks");
+        if(!bJoin)
+        {
+            atks = (CCDictionary *)dic->objectForKey("atks");
+        }
+        else
+        {
+            atks = (CCDictionary *)dic->objectForKey("join");
+        }
     }
     else
     {
@@ -390,6 +403,16 @@ void Skill::saveAtksAndEffect(CCDictionary *dic)
     
     for (int i = 0; i < getMotionCount(); i++) {
         Motion *motion = m_vMotion.at(i);
+
+        if(!bJoin && motion->getMainFlags(FI_MOVE))
+        {
+            continue;
+        }
+        else if(bJoin && !motion->getMainFlags(FI_MOVE))
+        {
+            continue;
+        }
+
         
         CCDictionary *dictionary = new CCDictionary();
         
@@ -426,7 +449,14 @@ void Skill::saveAtksAndEffect(CCDictionary *dic)
     
     if (m_bSkill)
     {
-        dic->setObject(atks, "atks");
+        if(!bJoin)
+        {
+            dic->setObject(atks, "atks");
+        }
+        else
+        {
+            dic->setObject(atks, "join");
+        }
     }
     else
     {
@@ -532,13 +562,17 @@ void Skill::importOldPlist(string &str)
     //创建motion, 先是atks
     CCDictionary *m_effects = (CCDictionary *)plist->objectForKey("effects");
     CCDictionary *dic = NULL;
-    for (int a = 0; a < 2; a++) {
+    for (int a = 0; a < 3; a++) {
         if (a == 0) {
             dic = (CCDictionary *)plist->objectForKey("atks");
         }
-        else
+        else if(a == 1)
         {
             dic = (CCDictionary *)plist->objectForKey("normals");
+        }
+        else
+        {
+            dic = (CCDictionary *)plist->objectForKey("join");
         }
         
         if (dic)
