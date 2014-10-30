@@ -271,6 +271,8 @@ void Part::checkIfNeedToStart(int iFrameIndex)
             m_preview->setPosition(pos);
         }
         posStart = m_preview->getPosition();
+        m_iMoveIndex = 0;
+        m_iMoveCount = 1000 / (m_speed/60);
         
         //开始设置Frame
         CCSpriteFrame* frame = xSpriteFC->spriteFrameByName(m_vFrameUsed.at(0).sFrameName.c_str());
@@ -294,6 +296,7 @@ void Part::update(float delta)
         if (m_fAccumulate > m_vDelay.at(m_iCurFrameIndex)) {
             m_fAccumulate = 0.f;
             m_iCurFrameIndex++;
+            m_iMoveIndex++;
             
             if (m_iCurFrameIndex < m_vFrameUsed.size()) {
                 CCSpriteFrame* frame = xSpriteFC->spriteFrameByName(m_vFrameUsed.at(m_iCurFrameIndex).sFrameName.c_str());
@@ -303,14 +306,14 @@ void Part::update(float delta)
                 if(m_flag[FI_MOVE])
                 {
                     //根据帧数确定时间
-                    CCPoint dest = ccp(1000, 0);       //水平
+                    CCPoint dest = ccp(m_speed / 60, 0);       //水平
                     dest = pointRotateWithAngle(dest, m_degree);
                     
                     //第一帧就要开始移动
-                    CCPoint posCur;
+                    CCPoint posCur = m_preview->getPosition();
                     
-                    posCur.x = posStart.x + dest.x * (m_iCurFrameIndex + 1) / m_vFrameUsed.size();
-                    posCur.y = posStart.y + dest.y * (m_iCurFrameIndex + 1) / m_vFrameUsed.size();
+                    posCur.x += dest.x;
+                    posCur.y += dest.y;
                     
                     m_preview->setPosition(posCur);
                 }
@@ -318,13 +321,34 @@ void Part::update(float delta)
             else
             {
                 //所有帧数都播放完.
-                m_bRunning = false;
-                m_bOnWait = false;
-                m_fAccumulate = 0;
-                //如果是特效, 设置不可见
-                m_preview->setVisible(false);
-                
-                xScheduler->unscheduleUpdateForTarget(this);
+                if(!m_flag[FI_MOVE])
+                {
+                    m_bRunning = false;
+                }
+                else
+                {
+                    if(m_iMoveIndex > m_iMoveCount)
+                    {
+                        m_bRunning = false;
+                    }
+                    else
+                    {
+                        //否则重新开始
+                        m_iCurFrameIndex = 0;
+                        CCSpriteFrame* frame = xSpriteFC->spriteFrameByName(m_vFrameUsed.at(0).sFrameName.c_str());
+                        m_preview->setDisplayFrame(frame);
+                    }
+                }
+
+                if(!m_bRunning)
+                {
+                    m_bOnWait = false;
+                    m_fAccumulate = 0;
+                    //如果是特效, 设置不可见
+                    m_preview->setVisible(false);
+
+                    xScheduler->unscheduleUpdateForTarget(this);
+                }
             }
         }
     }

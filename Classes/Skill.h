@@ -49,7 +49,7 @@ public:
     void clear();
     void save(bool bNormal);
     void saveOfActions(CCDictionary *dic);
-    void saveAtksAndEffect(CCDictionary *dic);
+    void saveAtksAndEffect(CCDictionary *dic, bool bJoin);
     void saveOfEffects(CCDictionary *dic);
     
     bool checkCanAddMotion();
