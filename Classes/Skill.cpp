@@ -641,8 +641,8 @@ void Skill::getFrames(CCString *frames, vector<string> &vFrameNameOrdered, int *
     string sStartIndex = sframes.substr(iDot - 3, 3);
     int iStartTemp = atoi(sStartIndex.c_str());
     
-    *iStartIndex = iStartTemp;
-    *iEndIndex = iStartTemp + (atoi(sCount.c_str()) - 1);
+    *iStartIndex = iStartTemp - 1;
+    *iEndIndex = iStartTemp + (atoi(sCount.c_str()) - 1) - 1;
 }
 
 
