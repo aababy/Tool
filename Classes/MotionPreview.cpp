@@ -7,6 +7,7 @@
 //
 #include "IncludeForCpp.h"
 #include "MotionPreview.h"
+#include "MainScene.h"
 
 
 enum UITag
@@ -15,7 +16,9 @@ enum UITag
     T_LIST_PLAY = 448,
     INPUT_ADDRESS = 6,
     BUTTON_START = 8,
+    BUTTON_PREVIEW = 9,
     BUTTON_DEL = 450,
+    BUTTON_BACK = 452,
 };
 
 using namespace std;
@@ -48,10 +51,12 @@ bool MotionPreview::init()
         m_rootNode = (NodeReader::getInstance()->createNode("R/MotionPreview_1.ExportJson"));
         addChild(m_rootNode);
         
-        Layout *root = static_cast<Layout*>(m_rootNode->getChildren()->objectAtIndex(1));
+        Layout *root = static_cast<Layout*>(m_rootNode->getChildren()->objectAtIndex(0));
         
         initButton(BUTTON_START, root, this, toucheventselector(MotionPreview::touchEvent));
         initButton(BUTTON_DEL, root, this, toucheventselector(MotionPreview::touchEvent));
+        initButton(BUTTON_PREVIEW, root, this, toucheventselector(MotionPreview::touchEvent));
+        initButton(BUTTON_BACK, root, this, toucheventselector(MotionPreview::touchEvent));
 
         //输入区
         m_ebAddress = InputBox::create(INPUT_ADDRESS, root, this, m_rootNode);
@@ -61,18 +66,6 @@ bool MotionPreview::init()
 
         setTouchEnabled(true);
         checkOldSearchPath();
-
-        m_iPreviewBG = ImageView::create();
-        m_iPreviewBG->loadTexture("R/bg_1.jpg");
-        m_iPreviewBG->setPosition(ccp(m_iPreviewBG->getContentSize().width / 2, m_iPreviewBG->getContentSize().height / 2 + 250));
-        m_iPreviewBG1 = ImageView::create();
-        m_iPreviewBG1->loadTexture("R/bg_1.jpg");
-        m_iPreviewBG1->setPosition(ccp(m_iPreviewBG->getContentSize().width * 1.5, m_iPreviewBG->getContentSize().height / 2 + 250));
-
-        Layout *root1 = static_cast<Layout*>(m_rootNode->getChildren()->objectAtIndex(0));
-
-        root1->addChild(m_iPreviewBG, 0);
-        root1->addChild(m_iPreviewBG1, 0);
 
         return true;
     }
@@ -98,7 +91,23 @@ void MotionPreview::touchEvent(CCObject *pSender, TouchEventType type)
             m_listPlay->removeItem(m_listPlay->getCurSelectedIndex());
         }
             break;
-
+        case BUTTON_START:
+        {
+            forward("");
+        }
+            break;
+        case BUTTON_PREVIEW:
+        {
+            preview();
+        }
+            break;
+        case BUTTON_BACK:
+        {
+            //换回来, 再clear
+            xSkill->backFromPreview();
+            removeFromParent();
+        }
+            break;
         default:
             break;
     }
@@ -265,6 +274,7 @@ void MotionPreview::prepareTotalPList()
     parserAction(plist, "atks");
     parserAction(plist, "normals");
     parserAction(plist, "join");
+    parserAction(plist, "actions");
 
 
     //先排下序
@@ -335,7 +345,7 @@ void MotionPreview::makeAFocusOfList()
 }
 
 
-void MotionPreview::startPreview()
+void MotionPreview::preview()
 {
     //准备好所有浏览的Part
     m_vSkillNameForPreview.clear();
@@ -351,17 +361,24 @@ void MotionPreview::startPreview()
         m_vSkillNameForPreview.push_back(str);
     }
 
+    xSkill->setTotalPlist(sTotalPlist);
     xSkill->setMotionPreviewName(m_vSkillNameForPreview);
 
-    //清除Skill,
-    xSkill->clear();
-
     //重新导入所有Part
-    xSkill->importOldPlist("", true);
+    if(bAllReady == false)
+    {
+        //清除Skill,
+        xSkill->clear();
+
+        bAllReady = true;
+        xSkill->importOldPlist("", true);
+    }
 
     //将Part的指针按顺序放到 m_vMotionPreview 中
     xSkill->prepareMotionPreview();
 
     //开始preview
+    xSkill->previewSequence();
+
 
 }

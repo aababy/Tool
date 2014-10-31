@@ -31,13 +31,14 @@ public:
     void parserAction(CCDictionary * plist, const string &name);
     void insertPlay(const string &sSkillName);
     void makeAFocusOfList();
-    void startPreview();
+    void preview();
 
 private:
     void updateAltern(vector<string> &vFileName);
     void forward(const string &key);
     void checkOldSearchPath();
     bool checkIfPlist(const string &str);
+
 
     CCNode*     m_rootNode;
     UIListView * m_listAltern;
@@ -59,6 +60,9 @@ private:
     ImageView * m_iPreviewBG1;
 
     previewState state;
+
+    MainScene * m_mainLayer;
+    bool bAllReady = false;
 };
 
 

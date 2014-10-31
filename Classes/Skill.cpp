@@ -73,6 +73,7 @@ void Skill::init(CCPoint location, CCPoint preview, CCNode *parent)
     m_origin = location;
     m_showForPreview = preview;
     m_parent = parent;
+    m_sprite = NULL;
     
     CCDirector::sharedDirector()->getScheduler()->scheduleUpdateForTarget(this, 0, false);
 }
@@ -128,6 +129,32 @@ void Skill::addMotionForOld(string sSkillPart, vector<string> &vNames, vector<st
 }
 
 
+void Skill::addMotionForPreview(string sSkillPart, vector<string> &vNames, vector<string> vFrameNameOrdered, int iStart, int iEnd)
+{
+    for (int i = 0; i < vNames.size(); i++) {
+        CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(vNames.at(i).c_str());
+
+//        m_dictionary = CCDictionary::createWithContentsOfFile(vNames.at(i).c_str());
+//        m_dictionary->retain();
+//        CCDictionary *framesDict = (CCDictionary*)m_dictionary->objectForKey("frames");
+//
+//        CCDictElement* pElement = NULL;
+//        CCDICT_FOREACH(framesDict, pElement)
+//            {
+//                FramesName frame;
+//                frame.sFrameName = pElement->getStrKey();
+//                frame.iNumber = getNumber(frame.sFrameName);
+//                m_vFrameName.push_back(frame);
+//            }
+    }
+
+
+    m_curMotion = new Motion(sSkillPart, vNames, vFrameNameOrdered, iStart, iEnd, m_origin, m_showForPreview, m_parent, m_iMotionAccIndex);
+    m_vMotion.push_back(m_curMotion);
+    m_iMotionAccIndex++;
+}
+
+
 string &Skill::getMotionName(int i)
 {
     return m_vMotion.at(i)->sMotionName;
@@ -177,7 +204,7 @@ void Skill::setCurAtkIndex(int i, setOperateType type)
                 m_sprite->setVisible(false);
             }
         }
-        else
+        else if(m_sprite)
         {
             m_sprite->initWithSpriteFrameName(getCurFrameName());
             m_sprite->setVisible(true);
@@ -185,6 +212,7 @@ void Skill::setCurAtkIndex(int i, setOperateType type)
     }
     else
     {
+        if(m_sprite)
         m_sprite->setVisible(false);
     }
     
@@ -266,26 +294,9 @@ void Skill::preview()
 void Skill::previewSequence()
 {
     //将m_vMotion 和 m_vMotionPreview 互换.
-    //1 temp = m_vMotion;
-    vector<Motion*> temp;
-    for(int i = 0; i < m_vMotion.size(); i++)
-    {
-        temp.push_back(m_vMotion.at(i));
-    }
+    swapAllVector(m_vMotion, m_vMotionPreview);
 
-    //2. m_vMotion = m_vMotionPreview;
-    m_vMotion.clear();
-    for(int i = 0; i < m_vMotionPreview.size(); i++)
-    {
-        m_vMotion.push_back(m_vMotionPreview.at(i));
-    }
-
-    //3. m_vMotionPreview = temp;
-    m_vMotionPreview.clear();
-    for(int i = 0; i < temp.size(); i++)
-    {
-        m_vMotionPreview.push_back(temp.at(i));
-    }
+    preview();
 }
 
 void Skill::previewSingle()
@@ -579,6 +590,80 @@ void Skill::prepareTotalPlist(CCDictionary *dic)
     }
 }
 
+void Skill::parsePlist(const string &name, const string &str, bool bImportAll, CCDictionary * plist, CCDictionary *m_effects)
+{
+    CCDictionary *dic = (CCDictionary *) plist->objectForKey(name);
+
+    if (dic) {
+        CCArray *array = dic->allKeys();
+
+        if (array == NULL) return;
+        for (int i = 0; i < array->count(); i++) {
+            //获取key的方法
+            CCString *key = (CCString *) array->objectAtIndex(i);
+            CCDictionary *motionDic = (CCDictionary *) dic->objectForKey(key->getCString());
+            CCString *fileName = (CCString *) motionDic->objectForKey("fileName");
+
+            if (bImportAll || str.compare(fileName->getCString()) == 0) {
+                //如果匹配才创建
+                string sSkillPart = key->getCString();
+
+                if (bImportAll && checkIfInPreviewName(sSkillPart) == false) {
+                    continue;
+                }
+
+                //fileName
+                vector<string> vNames;
+                string2Vector(fileName->getCString(), vNames);
+
+                int iStart, iEnd;
+                vector<string> vFrameNameOrdered;
+                CCString *frames = (CCString *) motionDic->objectForKey("frames");
+                if(frames)
+                {
+                    getFrames(frames, vFrameNameOrdered, &iStart, &iEnd);
+                }
+                else //actions
+                {
+
+                }
+
+                if (!bImportAll) {
+                    addMotionForOld(sSkillPart, vNames, vFrameNameOrdered, iStart, iEnd);
+                }
+                else {
+                    addMotionForPreview(sSkillPart, vNames, vFrameNameOrdered, iStart, iEnd);
+                }
+
+                //位移
+                xCurAtk->setFlags(FI_MOVE, checkIfMove(motionDic));
+
+                //帧间隔
+                CCString *delay = (CCString *) motionDic->objectForKey("delay");
+                xCurAtk->parseDelay(delay);
+
+                //攻击帧
+                CCString *attackFrame = (CCString *) motionDic->objectForKey("attackFrame");
+                if (attackFrame) xCurAtk->setMainAllAtkFrame(attackFrame);
+
+                //处理特效
+                CCDictionary *effectsInAtk = (CCDictionary *) motionDic->objectForKey("effects");
+                if (!effectsInAtk) continue;
+
+                CCArray *effectArray = effectsInAtk->allKeys();
+                if (!effectArray) continue;
+                for (int i = 0; i < effectArray->count(); i++) {
+                    //获取key的方法
+                    CCString *key = (CCString *) effectArray->objectAtIndex(i);
+                    CCString *value = (CCString *) effectsInAtk->objectForKey(key->getCString());
+                    int iStart = atoi(key->getCString());
+                    createEffects(iStart, value->getCString(), m_effects);
+                }
+            }
+        }
+    }
+}
+
 void Skill::importOldPlist(const string &str, bool bImportAll)
 {
     //解析plist文件, 创建Motion 和 Effect(触发时再创建).
@@ -587,82 +672,16 @@ void Skill::importOldPlist(const string &str, bool bImportAll)
     //创建motion, 先是atks
     CCDictionary *m_effects = (CCDictionary *)plist->objectForKey("effects");
     CCDictionary *dic = NULL;
-    for (int a = 0; a < 3; a++) {
-        if (a == 0) {
-            dic = (CCDictionary *)plist->objectForKey("atks");
-        }
-        else if(a == 1)
-        {
-            dic = (CCDictionary *)plist->objectForKey("normals");
-        }
-        else
-        {
-            dic = (CCDictionary *)plist->objectForKey("join");
-        }
-        
-        if (dic)
-        {
-            CCArray *array = dic->allKeys();
-            
-            if (array == NULL) continue;
-            for (int i = 0; i < array->count(); i ++)
-            {
-                //获取key的方法
-                CCString *key =  (CCString*)array->objectAtIndex(i);
-                CCDictionary* motionDic = (CCDictionary *)dic->objectForKey(key->getCString());
-                CCString *fileName = (CCString*)motionDic->objectForKey("fileName");
-                
-                if (bImportAll || str.compare(fileName->getCString()) == 0)
-                {
-                    //如果匹配才创建
-                    string sSkillPart = key->getCString();
 
-                    if(checkIfInPreviewName(sSkillPart) == false)
-                    {
-                        continue;
-                    }
+    parsePlist("atks", str, bImportAll, plist, m_effects);
+    parsePlist("normals", str, bImportAll, plist, m_effects);
+    parsePlist("join", str, bImportAll, plist, m_effects);
 
-                    //fileName
-                    vector<string> vNames;
-                    string2Vector(fileName->getCString(), vNames);
-                    
-                    int iStart, iEnd;
-                    vector<string> vFrameNameOrdered;
-                    CCString *frames = (CCString*)motionDic->objectForKey("frames");
-                    getFrames(frames, vFrameNameOrdered, &iStart, &iEnd);
-                    
-                    addMotionForOld(sSkillPart, vNames, vFrameNameOrdered, iStart, iEnd);
-                    
-                    //位移
-                    xCurAtk->setFlags(FI_MOVE, checkIfMove(motionDic));
-                    
-                    //帧间隔
-                    CCString *delay = (CCString*)motionDic->objectForKey("delay");
-                    xCurAtk->parseDelay(delay);
-                    
-                    //攻击帧
-                    CCString *attackFrame = (CCString*)motionDic->objectForKey("attackFrame");
-                    if(attackFrame) xCurAtk->setMainAllAtkFrame(attackFrame);
-                    
-                    //处理特效
-                    CCDictionary * effectsInAtk = (CCDictionary* )motionDic->objectForKey("effects");
-                    if(!effectsInAtk) continue;
-                    
-                    CCArray *effectArray = effectsInAtk->allKeys();
-                    if(!effectArray) continue;
-                    for (int i = 0; i < effectArray->count(); i ++)
-                    {
-                        //获取key的方法
-                        CCString *key =  (CCString*)effectArray->objectAtIndex(i);
-                        CCString *value = (CCString*)effectsInAtk->objectForKey(key->getCString());
-                        int iStart = atoi(key->getCString());
-                        createEffects(iStart, value->getCString(), m_effects);
-                    }
-                }
-            }
-        }
+    if(bImportAll)
+    {
+        parsePlist("actions", str, bImportAll, plist, m_effects);
     }
-    
+
     bubble_sort(m_vMotion);
     m_iLastIndex = m_vMotion.at(getMotionCount() - 1)->iEnd + 1;
     
@@ -794,6 +813,7 @@ void Skill::createEffects(int iStart, const char * effectName, CCDictionary * ef
 
 void Skill::setMotionPreviewName(vector<string> &vMotionPreviewName)
 {
+    m_vMotionPreviewName.clear();
     for(int i = 0; i < vMotionPreviewName.size(); i++)
     {
         m_vMotionPreviewName.push_back(vMotionPreviewName.at(i));
@@ -816,6 +836,7 @@ bool Skill::checkIfInPreviewName(const string &name)
 
 void Skill::prepareMotionPreview()
 {
+    m_vMotionPreview.clear();
     for(int i = 0; i < m_vMotionPreviewName.size(); i++)
     {
         m_vMotionPreview.push_back(findMotionByPartName(m_vMotionPreviewName.at(i)));
@@ -836,4 +857,36 @@ Motion* Skill::findMotionByPartName(const string &partName)
     CCAssert(false, "error");
 
     return NULL;
+}
+
+
+void Skill::backFromPreview()
+{
+    //将m_vMotion 和 m_vMotionPreview 互换.
+    swapAllVector(m_vMotion, m_vMotionPreview);
+    clear();
+}
+
+void Skill::swapAllVector(vector<Motion*> &vecSrc, vector<Motion*> &vecDest)
+{
+    //1 temp = m_vMotion;
+    vector<Motion*> temp;
+    for(int i = 0; i < vecSrc.size(); i++)
+    {
+        temp.push_back(vecSrc.at(i));
+    }
+
+    //2. m_vMotion = m_vMotionPreview;
+    vecSrc.clear();
+    for(int i = 0; i < vecDest.size(); i++)
+    {
+        vecSrc.push_back(vecDest.at(i));
+    }
+
+    //3. m_vMotionPreview = temp;
+    vecDest.clear();
+    for(int i = 0; i < temp.size(); i++)
+    {
+        vecDest.push_back(temp.at(i));
+    }
 }

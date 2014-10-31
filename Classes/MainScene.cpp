@@ -412,6 +412,8 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
             break;
         case MOTION_PREVIEW:
         {
+            m_state = CS_NONE;      //暂时这样处理
+
             MotionPreview * browser = MotionPreview::create();
             m_scene->addChild(browser);
         }
@@ -485,7 +487,7 @@ void MainScene::setFrameCount(CCObject *sender)
 
 void MainScene::updateList(CCObject *sender)
 {
-    if (xCurAtk == NULL) {
+    if (xCurAtk == NULL || m_state != CS_MAIN_PLIST) {
         return;
     }
     

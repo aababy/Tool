@@ -28,6 +28,7 @@ public:
     int getMotionCount();
     void addMotion();
     void addMotionForOld(string sSkillPart, vector<string> &vNames, vector<string> vFrameNameOrdered, int iStart, int iEnd);
+    void addMotionForPreview(string sSkillPart, vector<string> &vNames, vector<string> vFrameNameOrdered, int iStart, int iEnd);
     string & getMotionName(int i);
     int getCurAtkIndex();
     void setCurAtkIndex(int i, setOperateType type);
@@ -60,6 +61,7 @@ public:
     void importOldPlist(const string &str, bool bImportAll);
     void setMotionPreviewName(vector<string> &vMotionPreviewName);
     void prepareMotionPreview();
+    void backFromPreview();
 
     string      m_sError;
 private:
@@ -70,6 +72,8 @@ private:
     bool checkIfMove(CCDictionary* motionDic);
     void createEffects(int iStart, const char * effectName, CCDictionary * dic);
     bool checkIfInPreviewName(const string &name);
+    void swapAllVector(vector<Motion*> &vecSrc, vector<Motion*> &vecDest);
+    void parsePlist(const string &name, const string &str, bool bImportAll, CCDictionary * plist, CCDictionary *m_effects);
 
     
     vector<Motion *>    m_vMotion;

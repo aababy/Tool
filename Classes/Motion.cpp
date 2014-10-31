@@ -89,7 +89,7 @@ int Motion::getPartsCount()
 
 void Motion::setCurOperationIndex(int idx)
 {
-    if (m_iCurOperationIndex != idx) {
+    if (m_iCurOperationIndex != idx && idx != -1) {
         m_iCurOperationIndex = idx;
         xNotify->postNotification(UPDATE_PROPERTY);
         xNotify->postNotification(UPDATE_MOTION);
