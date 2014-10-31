@@ -48,7 +48,7 @@ bool MotionPreview::init()
         m_rootNode = (NodeReader::getInstance()->createNode("R/MotionPreview_1.ExportJson"));
         addChild(m_rootNode);
         
-        Layout *root = static_cast<Layout*>(m_rootNode->getChildren()->objectAtIndex(0));
+        Layout *root = static_cast<Layout*>(m_rootNode->getChildren()->objectAtIndex(1));
         
         initButton(BUTTON_START, root, this, toucheventselector(MotionPreview::touchEvent));
         initButton(BUTTON_DEL, root, this, toucheventselector(MotionPreview::touchEvent));
@@ -61,6 +61,18 @@ bool MotionPreview::init()
 
         setTouchEnabled(true);
         checkOldSearchPath();
+
+        m_iPreviewBG = ImageView::create();
+        m_iPreviewBG->loadTexture("R/bg_1.jpg");
+        m_iPreviewBG->setPosition(ccp(m_iPreviewBG->getContentSize().width / 2, m_iPreviewBG->getContentSize().height / 2 + 250));
+        m_iPreviewBG1 = ImageView::create();
+        m_iPreviewBG1->loadTexture("R/bg_1.jpg");
+        m_iPreviewBG1->setPosition(ccp(m_iPreviewBG->getContentSize().width * 1.5, m_iPreviewBG->getContentSize().height / 2 + 250));
+
+        Layout *root1 = static_cast<Layout*>(m_rootNode->getChildren()->objectAtIndex(0));
+
+        root1->addChild(m_iPreviewBG, 0);
+        root1->addChild(m_iPreviewBG1, 0);
 
         return true;
     }
@@ -93,7 +105,7 @@ void MotionPreview::touchEvent(CCObject *pSender, TouchEventType type)
 }
 
 
-void MotionPreview::onList(CCObject *pSender, TouchEventType type)
+void MotionPreview::onAlternList(CCObject *pSender, TouchEventType type)
 {
     if(type != TOUCH_EVENT_ENDED)
     {
@@ -225,6 +237,7 @@ void MotionPreview::editBoxReturn(CCEditBox* editBox)
 {
 }
 
+
 void MotionPreview::updateAltern(vector<string> &vFileName)
 {
     m_listAltern->removeAllItems();
@@ -235,7 +248,7 @@ void MotionPreview::updateAltern(vector<string> &vFileName)
 
     for (int i = 0; i < vFileName.size(); i++) {
         Layout *panel = (Layout *)defaultItem->clone();
-        panel->addTouchEventListener(this, toucheventselector(MotionPreview::onList));
+        panel->addTouchEventListener(this, toucheventselector(MotionPreview::onAlternList));
 
         Label *label = (Label*)UIHelper::seekWidgetByTag(panel, 22);
         label->setText(vFileName.at(i));
@@ -319,4 +332,36 @@ void MotionPreview::makeAFocusOfList()
             bg->setBackGroundColorType(LAYOUT_COLOR_NONE);
         }
     }
+}
+
+
+void MotionPreview::startPreview()
+{
+    //准备好所有浏览的Part
+    m_vSkillNameForPreview.clear();
+    CCArray * array = m_listPlay->getItems();
+
+    CCObject *obj = NULL;
+    CCARRAY_FOREACH(array, obj)
+    {
+        Layout *widget = (Layout*)obj;
+        Label *label = (Label*)UIHelper::seekWidgetByTag(widget, 22);
+        string str = label->getStringValue();
+
+        m_vSkillNameForPreview.push_back(str);
+    }
+
+    xSkill->setMotionPreviewName(m_vSkillNameForPreview);
+
+    //清除Skill,
+    xSkill->clear();
+
+    //重新导入所有Part
+    xSkill->importOldPlist("", true);
+
+    //将Part的指针按顺序放到 m_vMotionPreview 中
+    xSkill->prepareMotionPreview();
+
+    //开始preview
+
 }

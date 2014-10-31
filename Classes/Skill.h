@@ -51,20 +51,26 @@ public:
     void saveOfActions(CCDictionary *dic);
     void saveAtksAndEffect(CCDictionary *dic, bool bJoin);
     void saveOfEffects(CCDictionary *dic);
+    void previewSequence();
     
     bool checkCanAddMotion();
     void deletePart();
     void setTotalPlist(string &str);
     string getMotionMainPartFlags(Motion *motion);
-    void importOldPlist(string &str);
-    
+    void importOldPlist(const string &str, bool bImportAll);
+    void setMotionPreviewName(vector<string> &vMotionPreviewName);
+    void prepareMotionPreview();
+
     string      m_sError;
 private:
+    Motion* findMotionByPartName(const string &partName);
     void setCurIndex(int idx);
     void prepareTotalPlist(CCDictionary *dic);
     void getFrames(CCString *frames, vector<string> &vFrameNameOrdered, int *iStart, int *iEnd);
     bool checkIfMove(CCDictionary* motionDic);
     void createEffects(int iStart, const char * effectName, CCDictionary * dic);
+    bool checkIfInPreviewName(const string &name);
+
     
     vector<Motion *>    m_vMotion;
     vector<FramesName>  m_vFrameName;
@@ -89,6 +95,9 @@ private:
     string      sTotalPlist;
     bool        m_bPreviewAll;
     bool        m_bSkill;
+
+    vector<Motion *>    m_vMotionPreview;
+    vector<string>      m_vMotionPreviewName;
 };
 
 

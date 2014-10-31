@@ -738,7 +738,7 @@ void MainScene::switchToMain()
 
 void MainScene::importOldPlist(string &str, int flag)
 {
-    xSkill->importOldPlist(str);
+    xSkill->importOldPlist(str, false);
     
     if (flag == 0)
     {

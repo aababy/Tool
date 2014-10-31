@@ -175,7 +175,7 @@ string flag2string(bool m_flag[FLAG_COUNT])
     return str;
 }
 
-void string2Vector(string &name, vector<string>& vec)
+void string2Vector(const string &name, vector<string>& vec)
 {
     int start = 0;
     string str;

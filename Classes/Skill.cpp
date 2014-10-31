@@ -263,6 +263,31 @@ void Skill::preview()
     }
 }
 
+void Skill::previewSequence()
+{
+    //将m_vMotion 和 m_vMotionPreview 互换.
+    //1 temp = m_vMotion;
+    vector<Motion*> temp;
+    for(int i = 0; i < m_vMotion.size(); i++)
+    {
+        temp.push_back(m_vMotion.at(i));
+    }
+
+    //2. m_vMotion = m_vMotionPreview;
+    m_vMotion.clear();
+    for(int i = 0; i < m_vMotionPreview.size(); i++)
+    {
+        m_vMotion.push_back(m_vMotionPreview.at(i));
+    }
+
+    //3. m_vMotionPreview = temp;
+    m_vMotionPreview.clear();
+    for(int i = 0; i < temp.size(); i++)
+    {
+        m_vMotionPreview.push_back(temp.at(i));
+    }
+}
+
 void Skill::previewSingle()
 {
     m_bPreviewAll = false;
@@ -554,7 +579,7 @@ void Skill::prepareTotalPlist(CCDictionary *dic)
     }
 }
 
-void Skill::importOldPlist(string &str)
+void Skill::importOldPlist(const string &str, bool bImportAll)
 {
     //解析plist文件, 创建Motion 和 Effect(触发时再创建).
     CCDictionary *plist = CCDictionary::createWithContentsOfFile(sTotalPlist.c_str());
@@ -587,14 +612,19 @@ void Skill::importOldPlist(string &str)
                 CCDictionary* motionDic = (CCDictionary *)dic->objectForKey(key->getCString());
                 CCString *fileName = (CCString*)motionDic->objectForKey("fileName");
                 
-                if (str.compare(fileName->getCString()) == 0)
+                if (bImportAll || str.compare(fileName->getCString()) == 0)
                 {
                     //如果匹配才创建
                     string sSkillPart = key->getCString();
-                    
+
+                    if(checkIfInPreviewName(sSkillPart) == false)
+                    {
+                        continue;
+                    }
+
                     //fileName
                     vector<string> vNames;
-                    string2Vector(str, vNames);
+                    string2Vector(fileName->getCString(), vNames);
                     
                     int iStart, iEnd;
                     vector<string> vFrameNameOrdered;
@@ -761,3 +791,49 @@ void Skill::createEffects(int iStart, const char * effectName, CCDictionary * ef
     }
 }
 
+
+void Skill::setMotionPreviewName(vector<string> &vMotionPreviewName)
+{
+    for(int i = 0; i < vMotionPreviewName.size(); i++)
+    {
+        m_vMotionPreviewName.push_back(vMotionPreviewName.at(i));
+    }
+}
+
+
+bool Skill::checkIfInPreviewName(const string &name)
+{
+    for(int i = 0; i < m_vMotionPreviewName.size(); i++)
+    {
+        if(name.compare(m_vMotionPreviewName.at(i)) == 0)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void Skill::prepareMotionPreview()
+{
+    for(int i = 0; i < m_vMotionPreviewName.size(); i++)
+    {
+        m_vMotionPreview.push_back(findMotionByPartName(m_vMotionPreviewName.at(i)));
+    }
+}
+
+
+Motion* Skill::findMotionByPartName(const string &partName)
+{
+    for(int i = 0; i < m_vMotion.size(); i++)
+    {
+        if(partName.compare(m_vMotion.at(i)->sSaveName) == 0)
+        {
+            return m_vMotion.at(i);
+        }
+    }
+
+    CCAssert(false, "error");
+
+    return NULL;
+}

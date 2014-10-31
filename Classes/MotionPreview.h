@@ -25,12 +25,13 @@ public:
     virtual void editBoxEditingDidEnd(CCEditBox* editBox);
     virtual void editBoxTextChanged(CCEditBox* editBox, const std::string& text);
     virtual void editBoxReturn(CCEditBox* editBox);
-    void onList(CCObject *pSender, TouchEventType type);
+    void onAlternList(CCObject *pSender, TouchEventType type);
     void onPlayList(CCObject *pSender, TouchEventType type);
     void prepareTotalPList();
     void parserAction(CCDictionary * plist, const string &name);
     void insertPlay(const string &sSkillName);
     void makeAFocusOfList();
+    void startPreview();
 
 private:
     void updateAltern(vector<string> &vFileName);
@@ -41,22 +42,21 @@ private:
     CCNode*     m_rootNode;
     UIListView * m_listAltern;
     UIListView * m_listPlay;
-    Button*     m_btnModify;
-    Label*      m_tips;
     
     char    address[200];
     char    fullPathName[200];
     
     vector<string> m_vFileName;
-    vector<string> m_vMultiName;
     vector<string> m_vSkillName;
+    vector<string> m_vSkillNameForPreview;
     vector<FramesName> m_vMotionName;
-    MainScene *m_mainlayer;
     string  searchPath;
     string  savePath;
     string  sTotalPlist;
 
     InputBox *m_ebAddress;
+    ImageView * m_iPreviewBG;
+    ImageView * m_iPreviewBG1;
 
     previewState state;
 };
