@@ -253,6 +253,7 @@
 		41BC70E715BF81A5006A0A6C /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 41BC70E015BF81A5006A0A6C /* Icon.icns */; };
 		41BC70E815BF81A5006A0A6C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 41BC70E115BF81A5006A0A6C /* main.m */; };
 		43B91F091949BB0500F7F815 /* CocoLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B91F071949BB0500F7F815 /* CocoLoader.cpp */; };
+		628C96BE06AEFDF90F14D609 /* MotionPreview.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 628C962067EA5FADAF0FF5A4 /* MotionPreview.cpp */; };
 		8C583FAD169DB6D500F63A10 /* CCEditBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C583FA8169DB6D500F63A10 /* CCEditBox.cpp */; };
 		8C583FAE169DB6D500F63A10 /* CCEditBoxImplMac.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8C583FAC169DB6D500F63A10 /* CCEditBoxImplMac.mm */; };
 		CA0D1EC8198F231B00EEA422 /* FolderBrowser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA0D1EC6198F231B00EEA422 /* FolderBrowser.cpp */; };
@@ -787,6 +788,8 @@
 		41BC70E315BF81A5006A0A6C /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = SOURCE_ROOT; };
 		43B91F071949BB0500F7F815 /* CocoLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CocoLoader.cpp; sourceTree = "<group>"; };
 		43B91F081949BB0500F7F815 /* CocoLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CocoLoader.h; sourceTree = "<group>"; };
+		628C962067EA5FADAF0FF5A4 /* MotionPreview.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MotionPreview.cpp; sourceTree = "<group>"; };
+		628C9E4891CF3DF7D3E41916 /* MotionPreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MotionPreview.h; sourceTree = "<group>"; };
 		8C583FA8169DB6D500F63A10 /* CCEditBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CCEditBox.cpp; path = CCEditBox/CCEditBox.cpp; sourceTree = "<group>"; };
 		8C583FA9169DB6D500F63A10 /* CCEditBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CCEditBox.h; path = CCEditBox/CCEditBox.h; sourceTree = "<group>"; };
 		8C583FAA169DB6D500F63A10 /* CCEditBoxImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CCEditBoxImpl.h; path = CCEditBox/CCEditBoxImpl.h; sourceTree = "<group>"; };
@@ -863,6 +866,8 @@
 				CA1589C7199233BC00E85524 /* Skill.h */,
 				CA1919D819EFCAE300D36B60 /* FrameBrowser.cpp */,
 				CA1919D919EFCAE300D36B60 /* FrameBrowser.h */,
+				628C962067EA5FADAF0FF5A4 /* MotionPreview.cpp */,
+				628C9E4891CF3DF7D3E41916 /* MotionPreview.h */,
 			);
 			name = Classes;
 			path = ../classes;
@@ -2282,6 +2287,7 @@
 				1A9CE9A51765A7FA000E3062 /* LocalStorage.cpp in Sources */,
 				1A9CE9A61765A7FA000E3062 /* LocalStorageAndroid.cpp in Sources */,
 				37C62CFA18E157C300D16FC4 /* UILabelBMFont.cpp in Sources */,
+				628C96BE06AEFDF90F14D609 /* MotionPreview.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

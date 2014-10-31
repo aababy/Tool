@@ -55,6 +55,13 @@ enum curState
     CS_MAIN_PLIST,
 };
 
+enum previewState
+{
+    PS_NONE,
+    PS_TOTAL_PLIST,
+    PS_CHOOSE,
+};
+
 enum flagIndex
 {
     FI_MOVE,                    //主体特有

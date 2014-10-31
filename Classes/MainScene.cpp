@@ -1,6 +1,6 @@
 #include "MainScene.h"
 #include "IncludeForCpp.h"
-#include "FrameBrowser.h"
+#include "MotionPreview.h"
 
 enum UITag
 {
@@ -42,7 +42,7 @@ enum UITag
     BUTTON_2X = 309,
     LABEL_ERROR = 380,
     APPLY_TO_ALL = 394,
-    REDUCE = 395,
+    MOTION_PREVIEW = 395,
     CHANGE_BG = 406,
     
     LIST_BG = 1000,
@@ -93,7 +93,7 @@ bool MainScene::init(CCScene* pScene)
         initButton(BUTTON_SAVE, root, this, toucheventselector(MainScene::touchEvent));
         initButton(BUTTON_PREVIEW_ALL, root, this, toucheventselector(MainScene::touchEvent));
         initButton(CHANGE_BG, root, this, toucheventselector(MainScene::touchEvent));
-        initButton(REDUCE, root, this, toucheventselector(MainScene::touchEvent));
+        initButton(MOTION_PREVIEW, root, this, toucheventselector(MainScene::touchEvent));
         Button * btn = initButton(APPLY_TO_ALL, root, this, toucheventselector(MainScene::touchEvent));
         btn->setScale(0.5f);
 
@@ -410,9 +410,9 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
             m_iPreviewBG1->loadTexture(name);
         }
             break;
-        case REDUCE:
+        case MOTION_PREVIEW:
         {
-            FrameBrowser * browser = FrameBrowser::create();
+            MotionPreview * browser = MotionPreview::create();
             m_scene->addChild(browser);
         }
             break;
