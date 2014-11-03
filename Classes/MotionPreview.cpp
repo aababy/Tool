@@ -373,8 +373,14 @@ void MotionPreview::preview()
         bAllReady = true;
         xSkill->importOldPlist("", true);
     }
+    else
+    {
+        //换回来
+        xSkill->swapMotion();
+    }
 
     //将Part的指针按顺序放到 m_vMotionPreview 中
+
     xSkill->prepareMotionPreview();
 
     //开始preview

@@ -62,6 +62,8 @@ public:
     void setMotionPreviewName(vector<string> &vMotionPreviewName);
     void prepareMotionPreview();
     void backFromPreview();
+    void swapMotion();
+    void swapAllVector(vector<Motion*> &vecSrc, vector<Motion*> &vecDest);
 
     string      m_sError;
 private:
@@ -72,10 +74,10 @@ private:
     bool checkIfMove(CCDictionary* motionDic);
     void createEffects(int iStart, const char * effectName, CCDictionary * dic);
     bool checkIfInPreviewName(const string &name);
-    void swapAllVector(vector<Motion*> &vecSrc, vector<Motion*> &vecDest);
     void parsePlist(const string &name, const string &str, bool bImportAll, CCDictionary * plist, CCDictionary *m_effects);
+    void getFrames(vector<string> &vNames, vector<string> &vFrameNameOrdered, int *iStart, int *iEnd);
 
-    
+
     vector<Motion *>    m_vMotion;
     vector<FramesName>  m_vFrameName;
     int         m_iFrameCount = 0;          //这个来判断是否导入了主体
