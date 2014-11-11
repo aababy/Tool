@@ -339,12 +339,13 @@ bool Motion::getMainFlags(flagIndex index)
 void Motion::removeEffect()
 {
     if (m_vParts.size() >= 2) {
-        Part* part = m_vParts.at(m_vParts.size() - 1);
+        //删除指定位置的特效
+        Part* part = m_vParts.at(m_iCurOperationIndex);
+        m_vParts.erase(remove(m_vParts.begin(), m_vParts.end(), part), m_vParts.end());
         delete part;
-        
-        m_vParts.pop_back();
-        
         setCurOperationIndex(m_vParts.size() - 1);
+
+        xNotify->postNotification(UPDATE_EFFECT_LIST);
     }
 }
 
