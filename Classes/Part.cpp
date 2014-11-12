@@ -68,28 +68,30 @@ Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &show
     m_iFrameCount = m_vFrameUsed.size();
     
     bubble_sort(m_vFrameUsed);
-    
-    //显示帧
-    m_sprite = CCSprite::createWithSpriteFrameName(getCurFrameName());
-    CCSize size = parent->getContentSize();
-    
-    m_sprite->setPosition(ccp(size.width/2, size.height/2));
-    parent->addChild(m_sprite);
-    
+
+    m_partnerForPreview = partner;
+    CCNode *parentForPreview = m_partnerForPreview->getParent();
+
     m_parent = parent;
+    m_partnerForFrame = parent;
     m_origin = origin;
     m_showForPreview = showForPreview;
     m_iAccIndex = iAcc;
     m_sMotionName = sMotionName;
-    
+
+    //帧显示
+    m_sprite = CCSprite::createWithSpriteFrameName(getCurFrameName());
+    m_sprite->setPosition(origin);
+    m_partnerForFrame->getParent()->addChild(m_sprite);
+
+    //预览显示
     m_preview = CCSprite::create();
+    CCSize size = parentForPreview->getContentSize();
     m_preview->setPosition(ccp(size.width/2, size.height/2));
     m_preview->setVisible(false);
 
     //也改为直接加到背景上面.实际坐标再转换.
-    m_partner = partner;
-    CCNode * parentForPartner = m_partner->getParent();
-    parentForPartner->addChild(m_preview);
+    parentForPreview->addChild(m_preview);
     
     makeAPartName();
     
@@ -258,12 +260,10 @@ void Part::checkIfNeedToStart(int iFrameIndex)
         {
             //特效, 重新算坐标
             //1. 获取坐标差值.
-            CCPoint posDiff = m_sprite->getPosition();
-            CCNode *parent = m_sprite->getParent();
-            posDiff = ccpSub(posDiff, ccp(parent->getContentSize().width / 2, parent->getContentSize().height / 2));
+            CCPoint posDiff = ccpSub(m_sprite->getPosition(), m_partnerForFrame->getPosition());
 
-            //2. 获取partner的坐标
-            CCPoint pos = m_partner->getPosition();
+            //2. 获取主体的坐标
+            CCPoint pos = m_partnerForPreview->getPosition();
 
             //3. 坐标加上差值
             pos = ccpAdd(pos, posDiff);
@@ -399,7 +399,8 @@ CCPoint Part::getPosition()
     }
     else
     {
-        return m_sprite->getPosition();
+        CCPoint pos = m_sprite->getParent()->convertToWorldSpace(m_sprite->getPosition());
+        return m_partnerForFrame->convertToNodeSpace(pos);
     }
 }
 
@@ -412,10 +413,28 @@ void Part::setPosition(CCPoint &point)
     }
     else
     {
-        m_sprite->setPosition(point);
-        m_preview->setPosition(point);
+        CCPoint pos = m_partnerForFrame->convertToWorldSpace(point);
+        pos = m_sprite->getParent()->convertToNodeSpace(pos);
+        m_sprite->setPosition(pos);
     }
 }
+
+//临时修正帧的特效的位置, 只用于特效
+void Part::setPositionForImportEffect(CCPoint &point)
+{
+    if (m_bMain)
+    {
+        CCAssert(false, "error");
+    }
+    else
+    {
+        //特效, 重新算坐标
+        CCPoint pos = m_partnerForFrame->convertToWorldSpace(point);
+        pos = m_sprite->getParent()->convertToNodeSpace(pos);
+        m_sprite->setPosition(pos);
+    }
+}
+
 
 void Part::setEnabled(bool bEnabled)
 {

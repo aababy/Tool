@@ -32,6 +32,7 @@ public:
     const char * getFrameCountStr();
     
     void setPosition(CCPoint &point);
+    void setPositionForImportEffect(CCPoint &point);
     CCPoint getPosition();
     float getRotate();
     const CCPoint& getAnchorPoint();
@@ -125,7 +126,8 @@ private:
     vector<string> m_vNames;        //保存的名字, 多个请用逗号分开
     CCPoint posStart;               //原始位置
 
-    CCNode *m_partner;                //现在特效加到背景上, 所以和主体是同一级, 主体为特效的partner.
+    CCNode *m_partnerForPreview;                //现在特效加到背景上, 所以和主体是同一级, 主体为特效的partner.
+    CCNode *m_partnerForFrame;                  //现在特效加到背景上, 所以和主体是同一级, 主体为特效的partner.
     void makeNewPart();
 
 
