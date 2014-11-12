@@ -193,6 +193,18 @@ void Motion::setCurScale(float s)
     m_vParts.at(m_iCurOperationIndex)->setScale(s);
 }
 
+void Motion::setMainScale(float s)
+{
+    m_mainPart->setScale(s);
+}
+
+void Motion::setEffectScale(float s)
+{
+    for (int i = 1; i < m_vParts.size(); i++) {
+        m_vParts.at(i)->setScale(s);
+    }
+}
+
 void Motion::preview()
 {
     m_bInPreview = true;

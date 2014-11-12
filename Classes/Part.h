@@ -32,7 +32,6 @@ public:
     const char * getFrameCountStr();
     
     void setPosition(CCPoint &point);
-    void setPositionForImportEffect(CCPoint &point);
     CCPoint getPosition();
     float getRotate();
     const CCPoint& getAnchorPoint();

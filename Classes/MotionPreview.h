@@ -56,6 +56,8 @@ private:
     string  sTotalPlist;
 
     InputBox *m_ebAddress;
+    InputBox *m_ebMain;
+    InputBox *m_ebEffect;
     ImageView * m_iPreviewBG;
     ImageView * m_iPreviewBG1;
 

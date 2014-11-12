@@ -419,23 +419,6 @@ void Part::setPosition(CCPoint &point)
     }
 }
 
-//临时修正帧的特效的位置, 只用于特效
-void Part::setPositionForImportEffect(CCPoint &point)
-{
-    if (m_bMain)
-    {
-        CCAssert(false, "error");
-    }
-    else
-    {
-        //特效, 重新算坐标
-        CCPoint pos = m_partnerForFrame->convertToWorldSpace(point);
-        pos = m_sprite->getParent()->convertToNodeSpace(pos);
-        m_sprite->setPosition(pos);
-    }
-}
-
-
 void Part::setEnabled(bool bEnabled)
 {
     m_bEnabled = bEnabled;

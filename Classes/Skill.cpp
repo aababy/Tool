@@ -281,8 +281,6 @@ void Skill::previewSequence()
 {
     //将m_vMotion 和 m_vMotionPreview 互换.
     swapAllVector(m_vMotion, m_vMotionPreview);
-
-    preview();
 }
 
 void Skill::previewSingle()
@@ -915,4 +913,19 @@ void Skill::getFrames(vector<string> &vNames, vector<string> &vFrameNameOrdered,
 
     *iStart = 1;
     *iEnd = vFrameNameOrdered.size() + 1;
+}
+
+
+void Skill::setMainScale(float s)
+{
+    for (int i = 0; i < getMotionCount(); i++) {
+        m_vMotion.at(i)->setMainScale(s);
+    }
+}
+
+void Skill::setEffectScale(float s)
+{
+    for (int i = 0; i < getMotionCount(); i++) {
+        m_vMotion.at(i)->setEffectScale(s);
+    }
 }

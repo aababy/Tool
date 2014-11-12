@@ -65,6 +65,9 @@ public:
     void swapMotion();
     void swapAllVector(vector<Motion*> &vecSrc, vector<Motion*> &vecDest);
 
+    void setMainScale(float s);
+    void setEffectScale(float s);
+
     string      m_sError;
 private:
     Motion* findMotionByPartName(const string &partName);

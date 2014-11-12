@@ -19,6 +19,8 @@ enum UITag
     BUTTON_PREVIEW = 9,
     BUTTON_DEL = 450,
     BUTTON_BACK = 452,
+    INPUT_MAIN_SCALE = 613,
+    INPUT_EFFECT_SCALE = 614
 };
 
 using namespace std;
@@ -60,6 +62,10 @@ bool MotionPreview::init()
 
         //输入区
         m_ebAddress = InputBox::create(INPUT_ADDRESS, root, this, m_rootNode);
+        m_ebMain = InputBox::create(INPUT_MAIN_SCALE, root, this, m_rootNode);
+        m_ebMain->setText("1.0");
+        m_ebEffect = InputBox::create(INPUT_EFFECT_SCALE, root, this, m_rootNode);
+        m_ebEffect->setText("2.0");
 
         m_listAltern = (UIListView*)UIHelper::seekWidgetByTag(root, T_LIST_ALTERN);
         m_listPlay = (UIListView*)UIHelper::seekWidgetByTag(root, T_LIST_PLAY);
@@ -386,5 +392,8 @@ void MotionPreview::preview()
     //开始preview
     xSkill->previewSequence();
 
+    xSkill->setMainScale(atof(m_ebMain->getText()));
+    xSkill->setEffectScale(atof(m_ebEffect->getText()));
 
+    xSkill->preview();
 }

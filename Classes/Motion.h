@@ -45,7 +45,9 @@ public:
     void setCurRotate(float r);
     void setCurAnchorPoint(const CCPoint& point);
     void setCurScale(float s);
-    
+    void setMainScale(float s);
+    void setEffectScale(float s);
+
     void preview();
     void clear();
     void update(float delta);
