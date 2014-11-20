@@ -45,9 +45,10 @@ public:
     void setFrame(int iIndexStartFromMain);
     void preview();
     void setEnabled(bool bEnabled);
-    void setFlags(flagIndex index, bool bFlag);
-    void setAllFlags(bool *bFlag);
-    bool getFlags(flagIndex index);
+    void setFlags(flagIndex index, int bFlag);
+    int getFlags(flagIndex index);
+    void setAllFlags(int *bFlag);
+
     CCSprite* getSprite();
     CCSprite* getPreview();
     
@@ -120,7 +121,7 @@ private:
     CC_SYNTHESIZE(float, m_duration, Duration);
     CC_SYNTHESIZE(float, m_interval, Interval);
     
-    bool    m_flag[FLAG_COUNT];
+    int    m_flag[FLAG_COUNT];
     
     vector<string> m_vNames;        //保存的名字, 多个请用逗号分开
     CCPoint posStart;               //原始位置

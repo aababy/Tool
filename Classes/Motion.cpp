@@ -323,12 +323,12 @@ float Motion::getSpeed()
 }
 
 
-void Motion::setFlags(flagIndex index, bool bFlag)
+void Motion::setFlags(flagIndex index, int bFlag)
 {
     m_vParts.at(m_iCurOperationIndex)->setFlags(index, bFlag);
 }
 
-bool Motion::getFlags(flagIndex index)
+int Motion::getFlags(flagIndex index)
 {
     if(m_iCurOperationIndex == -1)
     {

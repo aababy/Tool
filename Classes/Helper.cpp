@@ -157,19 +157,13 @@ CCPoint pointRotateWithAngle(CCPoint& point, float fDegree)
 }
 
 //只对特效使用, 这个函数
-string flag2string(bool m_flag[FLAG_COUNT])
+string flag2string(int m_flag[FLAG_COUNT])
 {
     string str;
     
-    for (int i = 0; i < FLAG_COUNT; i++) {
-        
-        if (m_flag[i]) {
-            str += "1";
-        }
-        else
-        {
-            str += "0";
-        }
+    for (int i = 0; i < FLAG_COUNT; i++)
+    {
+        str += any2string(m_flag[i]);
     }
     
     return str;
@@ -216,7 +210,7 @@ CCPoint str2Point(const char * sz)
     return ccp(atof(x.c_str()), atof(y.c_str()));
 }
 
-void string2Flags(CCString *sFlags, bool *flags)
+void string2Flags(CCString *sFlags, int *flags)
 {
     //兼容以前的格式
     if (sFlags == NULL)
@@ -231,11 +225,11 @@ void string2Flags(CCString *sFlags, bool *flags)
     
     for (int i = 0; i < FI_MAX; i++) {
         if (i >= str.length() || str.at(i) == '0') {
-            flags[i] = false;
+            flags[i] = 0;
         }
         else
         {
-            flags[i] = true;
+            flags[i] = atoi(str.substr(i, 1).c_str());
         }
     }
 }

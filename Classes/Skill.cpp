@@ -622,7 +622,7 @@ void Skill::parsePlist(const string &name, const string &str, bool bImportAll, C
                 if(frames)
                 {
                     //位移
-                    xCurAtk->setFlags(FI_MOVE, checkIfMove(motionDic));
+                    xCurAtk->setFlags(FI_MOVE, checkIfMove(motionDic) ? 1:0 );
 
                     //帧间隔
                     CCString *delay = (CCString *) motionDic->objectForKey("delay");
@@ -762,7 +762,7 @@ void Skill::createEffects(int iStart, const char * effectName, CCDictionary * ef
         
         //flags
         CCString *flags = (CCString*)effect->objectForKey("flags");
-        bool bFlags[FI_MAX];
+        int bFlags[FI_MAX];
         string2Flags(flags, bFlags);
         part->setAllFlags(bFlags);
         

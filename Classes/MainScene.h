@@ -105,14 +105,15 @@ protected:
     InputBox*   m_ebSpeed;
     InputBox*   m_ebAttackDuration;
     InputBox*   m_ebAttackInterval;
-    
+    InputBox*   m_ebBulletType;
+
     CCPoint     m_oldPoint;
     bool        m_bDragAndDrop = false;
     bool        m_bInOtherLayer = false;
     
     curState    m_state = CS_NONE;
     
-    CheckBox*   m_cbFlags[FLAG_COUNT];
+    CheckBox*   m_cbFlags[6];
     CheckBox*   m_cbNormal;
     CheckBox*   m_cbAttack;
     ImageView*  m_iPreviewBG;

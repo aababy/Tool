@@ -630,17 +630,17 @@ float Part::getDelay(int idx)
     }
 }
 
-void Part::setFlags(flagIndex index, bool bFlag)
+void Part::setFlags(flagIndex index, int bFlag)
 {
     m_flag[index] = bFlag;
 }
 
-void Part::setAllFlags(bool *bFlag)
+void Part::setAllFlags(int *bFlag)
 {
-    memcpy(m_flag, bFlag, FI_MAX * sizeof(bool));
+    memcpy(m_flag, bFlag, FI_MAX * sizeof(int));
 }
 
-bool Part::getFlags(flagIndex index)
+int Part::getFlags(flagIndex index)
 {
     return m_flag[index];
 }

@@ -44,7 +44,8 @@ enum UITag
     APPLY_TO_ALL = 394,
     MOTION_PREVIEW = 395,
     CHANGE_BG = 406,
-    
+    BULLET_TYPE = 446,
+
     LIST_BG = 1000,
     LIST_MOTION = 1100,
 };
@@ -119,7 +120,9 @@ bool MainScene::init(CCScene* pScene)
         m_ebSpeed = InputBox::create(SPEED, root, this, m_rootNode);
         m_ebAttackDuration = InputBox::create(ATTACK_DURATION, root, this, m_rootNode);
         m_ebAttackInterval = InputBox::create(ATTACK_INTERVAL, root, this, m_rootNode);
-        
+        m_ebBulletType = InputBox::create(BULLET_TYPE, root, this, m_rootNode);
+        m_ebBulletType->setText("0");
+
         m_pHolder = static_cast<CCSprite*>(m_rootNode->getChildByTag(SPRITE_HOLDER));
         m_pHolder->initWithFile("R/cross.png");
         m_iFrameBG = (ImageView*)UIHelper::seekWidgetByTag(root, FRAME_BG);
@@ -243,13 +246,13 @@ void MainScene::selectedStateEvent(CCObject *pSender, CheckBoxEventType type)
     {
         case CHECKBOX_STATE_EVENT_UNSELECTED:
         {
-            xCurAtk->setFlags((flagIndex)index, false);
+            xCurAtk->setFlags((flagIndex)index, 0);
         }
             break;
             
         case CHECKBOX_STATE_EVENT_SELECTED:
         {
-            xCurAtk->setFlags((flagIndex)index, true);
+            xCurAtk->setFlags((flagIndex)index, 1);
         }
             break;
             
@@ -571,6 +574,9 @@ void MainScene::updateProperty(CCObject *sender)
     
     sprintf(buffer, "%.2f", xCurAtk->getInterval());
     m_ebAttackInterval->setText(string(buffer));
+
+    sprintf(buffer, "%d", xCurAtk->getFlags(FI_BULLET_TYPE));
+    m_ebBulletType->setText(string(buffer));
     
 }
 
@@ -634,6 +640,9 @@ void MainScene::editBoxTextChanged(CCEditBox* editBox, const std::string& text)
         } else if(editBox == m_ebAttackInterval->m_edit) {
             temp = atof(text.c_str());
             xCurAtk->setInterval(temp);
+        }
+        else if(editBox == m_ebBulletType->m_edit) {
+            xCurAtk->setFlags(FI_BULLET_TYPE, atoi(text.c_str()));
         }
     }
 }
@@ -792,7 +801,7 @@ void MainScene::updateCheckBox()
 {
     if (xCurAtk)
     {        
-        for (int i = 0; i < FLAG_COUNT; i++) {
+        for (int i = 0; i < 6; i++) {
             
             if(xCurAtk->isMainIndex() && i != 0)
             {

@@ -57,8 +57,8 @@ public:
     void setDelay(int idx, float delay);
     void setDelay(float delay);
     float getDelay(int idx);
-    void setFlags(flagIndex index, bool bFlag);
-    bool getFlags(flagIndex index);
+    void setFlags(flagIndex index, int bFlag);
+    int getFlags(flagIndex index);
     bool getMainFlags(flagIndex index);
     void setDegree(float degree);
     float getDegree();
