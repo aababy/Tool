@@ -125,7 +125,7 @@ void Part::init(vector<string> &vNames)
     
     for(int i = 0; i < FLAG_COUNT; i++)
     {
-        m_flag[i] = false;
+        m_flag[i] = 0;
     }
     
     m_duration = 0.f;
