@@ -489,6 +489,29 @@ void FolderBrowser::prepareTotalPList()
             }
         }
     }
+
+    CCDictionary *join = (CCDictionary *)plist->objectForKey("join");
+    if (join != NULL)
+    {
+        CCArray *array = join->allKeys();
+        if (array != NULL) {
+            for (int i = 0; i < array->count(); i ++)
+            {
+                //获取key的方法
+                CCString *key =  (CCString*)array->objectAtIndex(i);
+                CCDictionary* motionDic = (CCDictionary *)join->objectForKey(key->getCString());
+                CCString *fileName =  (CCString*)motionDic->objectForKey("fileName");
+                string str = fileName->getCString();
+
+                if (checkIfInSkill(str) == false) {
+                    SkillName skill;
+                    skill.s = str;
+                    skill.flag = 0;
+                    m_vSkillName.push_back(skill);
+                }
+            }
+        }
+    }
     
     if (m_vSkillName.empty()) {
         m_tips->setText(xStr("second_step_new"));
