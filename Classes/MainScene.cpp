@@ -45,6 +45,7 @@ enum UITag
     MOTION_PREVIEW = 395,
     CHANGE_BG = 406,
     BULLET_TYPE = 446,
+    HIGH_LIGHT = 457,
 
     LIST_BG = 1000,
     LIST_MOTION = 1100,
@@ -150,7 +151,8 @@ bool MainScene::init(CCScene* pScene)
         m_cbFlags[3] = initCheckBox(185, root, this, checkboxselectedeventselector(MainScene::selectedStateEvent));
         m_cbFlags[4] = initCheckBox(187, root, this, checkboxselectedeventselector(MainScene::selectedStateEvent));
         m_cbFlags[5] = initCheckBox(ISOLATE, root, this, checkboxselectedeventselector(MainScene::selectedStateEvent));
-        
+        m_cbFlags[6] = initCheckBox(HIGH_LIGHT, root, this, checkboxselectedeventselector(MainScene::selectedStateEvent));
+
         m_cbNormal = initCheckBox(NORMAL_ATTACK, root, this, checkboxselectedeventselector(MainScene::selectedNormal));
         CCUserDefault::sharedUserDefault()->setBoolForKey(NORMAL, false);
         
@@ -222,6 +224,11 @@ int MainScene::tag2Index(int aTag)
         case ISOLATE:
         {
             index = 5;
+        }
+            break;
+        case HIGH_LIGHT:
+        {
+            index = 7;
         }
             break;
         default:

@@ -71,6 +71,7 @@ enum flagIndex
     FI_FIXED,
     FI_ISOLATE,
     FI_BULLET_TYPE,
+    FI_HIGH_LIGHT,
     FI_MAX,
 };
 

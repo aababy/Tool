@@ -277,6 +277,11 @@ void Part::checkIfNeedToStart(int iFrameIndex)
         //开始设置Frame
         CCSpriteFrame* frame = xSpriteFC->spriteFrameByName(m_vFrameUsed.at(0).sFrameName.c_str());
         m_preview->setDisplayFrame(frame);
+        if(!m_bMain)
+        {
+            ccBlendFunc tmp_oBlendFunc = {GL_SRC_ALPHA, GL_ONE};
+            m_preview->setBlendFunc(tmp_oBlendFunc);
+        }
         
         xScheduler->unscheduleUpdateForTarget(this);
         xScheduler->scheduleUpdateForTarget(this, 0, false);
@@ -301,6 +306,11 @@ void Part::update(float delta)
             if (m_iCurFrameIndex < m_vFrameUsed.size()) {
                 CCSpriteFrame* frame = xSpriteFC->spriteFrameByName(m_vFrameUsed.at(m_iCurFrameIndex).sFrameName.c_str());
                 m_preview->setDisplayFrame(frame);
+                if(!m_bMain)
+                {
+                    ccBlendFunc tmp_oBlendFunc = {GL_SRC_ALPHA, GL_ONE};
+                    m_preview->setBlendFunc(tmp_oBlendFunc);
+                }
                 
                 //位移操作
                 if(m_flag[FI_MOVE])
@@ -337,6 +347,11 @@ void Part::update(float delta)
                         m_iCurFrameIndex = 0;
                         CCSpriteFrame* frame = xSpriteFC->spriteFrameByName(m_vFrameUsed.at(0).sFrameName.c_str());
                         m_preview->setDisplayFrame(frame);
+                        if(!m_bMain)
+                        {
+                            ccBlendFunc tmp_oBlendFunc = {GL_SRC_ALPHA, GL_ONE};
+                            m_preview->setBlendFunc(tmp_oBlendFunc);
+                        }
                     }
                 }
 
