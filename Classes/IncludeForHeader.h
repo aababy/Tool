@@ -26,7 +26,6 @@ USING_NS_CC;
 using namespace cocos2d::extension;
 using namespace ui;
 
-#define FLAG_COUNT              (7)
 
 struct FramesName
 {

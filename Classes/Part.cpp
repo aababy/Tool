@@ -123,7 +123,7 @@ void Part::init(vector<string> &vNames)
 {
     sPartName = vNames.at(0);               //PartName 显示只会显示一个
     
-    for(int i = 0; i < FLAG_COUNT; i++)
+    for(int i = 0; i < FI_MAX; i++)
     {
         m_flag[i] = 0;
     }
@@ -279,8 +279,16 @@ void Part::checkIfNeedToStart(int iFrameIndex)
         m_preview->setDisplayFrame(frame);
         if(!m_bMain)
         {
-            ccBlendFunc tmp_oBlendFunc = {GL_SRC_ALPHA, GL_ONE};
-            m_preview->setBlendFunc(tmp_oBlendFunc);
+            if(m_flag[FI_HIGH_LIGHT] == 0)
+            {
+                ccBlendFunc tmp_oBlendFunc = {GL_SRC_ALPHA, GL_ONE};
+                m_preview->setBlendFunc(tmp_oBlendFunc);
+            }
+            else
+            {
+                ccBlendFunc tmp_oBlendFunc = {GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA};
+                m_preview->setBlendFunc(tmp_oBlendFunc);
+            }
         }
         
         xScheduler->unscheduleUpdateForTarget(this);
@@ -306,7 +314,7 @@ void Part::update(float delta)
             if (m_iCurFrameIndex < m_vFrameUsed.size()) {
                 CCSpriteFrame* frame = xSpriteFC->spriteFrameByName(m_vFrameUsed.at(m_iCurFrameIndex).sFrameName.c_str());
                 m_preview->setDisplayFrame(frame);
-                if(!m_bMain)
+                if(!m_bMain && m_flag[FI_HIGH_LIGHT] == 0)
                 {
                     ccBlendFunc tmp_oBlendFunc = {GL_SRC_ALPHA, GL_ONE};
                     m_preview->setBlendFunc(tmp_oBlendFunc);
@@ -347,7 +355,7 @@ void Part::update(float delta)
                         m_iCurFrameIndex = 0;
                         CCSpriteFrame* frame = xSpriteFC->spriteFrameByName(m_vFrameUsed.at(0).sFrameName.c_str());
                         m_preview->setDisplayFrame(frame);
-                        if(!m_bMain)
+                        if(!m_bMain && m_flag[FI_HIGH_LIGHT] == 0)
                         {
                             ccBlendFunc tmp_oBlendFunc = {GL_SRC_ALPHA, GL_ONE};
                             m_preview->setBlendFunc(tmp_oBlendFunc);

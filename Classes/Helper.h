@@ -31,7 +31,7 @@ void insertCCPoint(CCDictionary *dic, const string& key, CCPoint& value);
 string itostring(int i);
 CheckBox * initCheckBox(int iTag, Layout* root, CCObject *target, SEL_SelectedStateEvent selector);
 CCPoint pointRotateWithAngle(CCPoint& point, float fDegree);
-string flag2string(int m_flag[FLAG_COUNT]);
+string flag2string(int m_flag[FI_MAX]);
 void string2Vector(const string &name, vector<string>& vec);
 CCPoint str2Point(const char * sz);
 void string2Flags(CCString *sFlags, int *flags);

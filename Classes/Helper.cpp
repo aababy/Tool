@@ -157,11 +157,11 @@ CCPoint pointRotateWithAngle(CCPoint& point, float fDegree)
 }
 
 //只对特效使用, 这个函数
-string flag2string(int m_flag[FLAG_COUNT])
+string flag2string(int m_flag[FI_MAX])
 {
     string str;
     
-    for (int i = 0; i < FLAG_COUNT; i++)
+    for (int i = 0; i < FI_MAX; i++)
     {
         str += any2string(m_flag[i]);
     }

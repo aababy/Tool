@@ -121,7 +121,7 @@ private:
     CC_SYNTHESIZE(float, m_duration, Duration);
     CC_SYNTHESIZE(float, m_interval, Interval);
     
-    int    m_flag[FLAG_COUNT];
+    int    m_flag[FI_MAX];
     
     vector<string> m_vNames;        //保存的名字, 多个请用逗号分开
     CCPoint posStart;               //原始位置

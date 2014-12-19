@@ -79,7 +79,7 @@ bool MainScene::init(CCScene* pScene)
     
     if (CCLayer::init())
     {      
-        m_rootNode = (NodeReader::getInstance()->createNode("R/MainScene_1.ExportJson"));
+        m_rootNode = (NodeReader::getInstance()->createNode("R/MainScene_1.json"));
         addChild(m_rootNode);
         
         Layout *root = static_cast<Layout*>(m_rootNode->getChildren()->objectAtIndex(0));
@@ -151,7 +151,8 @@ bool MainScene::init(CCScene* pScene)
         m_cbFlags[3] = initCheckBox(185, root, this, checkboxselectedeventselector(MainScene::selectedStateEvent));
         m_cbFlags[4] = initCheckBox(187, root, this, checkboxselectedeventselector(MainScene::selectedStateEvent));
         m_cbFlags[5] = initCheckBox(ISOLATE, root, this, checkboxselectedeventselector(MainScene::selectedStateEvent));
-        m_cbFlags[6] = initCheckBox(HIGH_LIGHT, root, this, checkboxselectedeventselector(MainScene::selectedStateEvent));
+        m_cbFlags[6] = NULL;    //FI_BULLET_TYPE
+        m_cbFlags[7] = initCheckBox(HIGH_LIGHT, root, this, checkboxselectedeventselector(MainScene::selectedStateEvent));
 
         m_cbNormal = initCheckBox(NORMAL_ATTACK, root, this, checkboxselectedeventselector(MainScene::selectedNormal));
         CCUserDefault::sharedUserDefault()->setBoolForKey(NORMAL, false);
@@ -808,7 +809,11 @@ void MainScene::updateCheckBox()
 {
     if (xCurAtk)
     {        
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < FI_MAX; i++) {
+            
+            if (i == FI_BULLET_TYPE) {
+                continue;
+            }
             
             if(xCurAtk->isMainIndex() && i != 0)
             {

@@ -113,7 +113,7 @@ protected:
     
     curState    m_state = CS_NONE;
     
-    CheckBox*   m_cbFlags[7];
+    CheckBox*   m_cbFlags[FI_MAX];
     CheckBox*   m_cbNormal;
     CheckBox*   m_cbAttack;
     ImageView*  m_iPreviewBG;
