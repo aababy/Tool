@@ -266,6 +266,12 @@ void Part::checkIfNeedToStart(int iFrameIndex)
                 
                 m_preview->setPosition(ccpAdd(m_showForPreview, getOffset()));
             }
+            else
+            {
+                CCPoint pos = ccpAdd(m_showForPreview, getOffset());
+                pos = ccpAdd(pos, ccp(800, 0));
+                m_preview->setPosition(pos);
+            }
         }
         else
         {
@@ -281,6 +287,10 @@ void Part::checkIfNeedToStart(int iFrameIndex)
                 
                 //3. 坐标加上差值
                 pos = ccpAdd(pos, posDiff);
+                
+                //这个坐标转换为世界坐标
+                pos = m_partnerForPreview->getParent()->convertToWorldSpace(pos);
+                pos = m_partnerForPreview->convertToNodeSpace(pos);
                 
                 m_preview->setPosition(pos);
             }
