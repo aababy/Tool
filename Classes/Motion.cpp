@@ -57,8 +57,6 @@ void Motion::importPart(vector<string> &vNames)
     else
     {
         CCPoint point = CCPointZero;
-        //ccp(100, 0);
-        //point = ccpAdd(location, point);
         
         Part* part = new Part(vNames, point, location, m_preview, m_show, m_showPreview, m_iAccIndex, sSaveName);
         m_iAccIndex++;

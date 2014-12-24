@@ -85,13 +85,20 @@ Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &show
     m_partnerForFrame->getParent()->addChild(m_sprite);
 
     //预览显示
-    m_preview = CCSprite::create();
-    CCSize size = parentForPreview->getContentSize();
-    m_preview->setPosition(ccp(size.width/2, size.height/2));
-    m_preview->setVisible(false);
-
-    //也改为直接加到背景上面.实际坐标再转换.
-    parentForPreview->addChild(m_preview);
+    if (m_sMotionName.compare("p_120601") == 0 || m_sMotionName.compare("p_120602") == 0) {
+        m_preview = CCSprite::create();
+        m_preview->setVisible(false);
+        m_partnerForPreview->addChild(m_preview);
+    }
+    else
+    {
+        m_preview = CCSprite::create();
+        CCSize size = parentForPreview->getContentSize();
+        m_preview->setPosition(ccp(size.width/2, size.height/2));
+        m_preview->setVisible(false);
+        //也改为直接加到背景上面.实际坐标再转换.
+        parentForPreview->addChild(m_preview);
+    }
     
     makeAPartName();
     
@@ -254,21 +261,43 @@ void Part::checkIfNeedToStart(int iFrameIndex)
         m_fAccumulate = 0;
 
         if (m_bMain) {
-            m_preview->setPosition(ccpAdd(m_showForPreview, getOffset()));
+            //跳回来的时候不需要重新设置坐标
+            if (m_sMotionName.compare("p_120602") != 0) {
+                
+                m_preview->setPosition(ccpAdd(m_showForPreview, getOffset()));
+            }
         }
         else
         {
-            //特效, 重新算坐标
-            //1. 获取坐标差值.
-            CCPoint posDiff = ccpSub(m_sprite->getPosition(), m_partnerForFrame->getPosition());
-
-            //2. 获取主体的坐标
-            CCPoint pos = m_partnerForPreview->getPosition();
-
-            //3. 坐标加上差值
-            pos = ccpAdd(pos, posDiff);
-
-            m_preview->setPosition(pos);
+            CCPoint posDiff, pos;
+            
+            if (m_sMotionName.compare("p_120601") == 0 || m_sMotionName.compare("p_120602") == 0)
+            {
+                //1. 获取坐标差值.
+                posDiff = ccpSub(m_sprite->getPosition(), m_partnerForFrame->getPosition());
+                
+                //2. 获取主体的坐标
+                pos = m_partnerForPreview->getPosition();
+                
+                //3. 坐标加上差值
+                pos = ccpAdd(pos, posDiff);
+                
+                m_preview->setPosition(pos);
+            }
+            else
+            {
+                //特效, 重新算坐标
+                //1. 获取坐标差值.
+                posDiff = ccpSub(m_sprite->getPosition(), m_partnerForFrame->getPosition());
+                
+                //2. 获取主体的坐标
+                pos = m_partnerForPreview->getPosition();
+                
+                //3. 坐标加上差值
+                pos = ccpAdd(pos, posDiff);
+                
+                m_preview->setPosition(pos);
+            }
         }
         posStart = m_preview->getPosition();
         m_iMoveIndex = 0;
@@ -334,6 +363,33 @@ void Part::update(float delta)
                     posCur.y += dest.y;
                     
                     m_preview->setPosition(posCur);
+                }
+                
+                if (m_bMain) {
+                    if (m_sMotionName.compare("p_120601") == 0)
+                    {
+                        CCPoint dest = ccp(160, 0);       //水平
+                        
+                        //第一帧就要开始移动
+                        CCPoint posCur = m_preview->getPosition();
+                        
+                        posCur.x += dest.x;
+                        posCur.y += dest.y;
+                        
+                        m_preview->setPosition(posCur);
+                    }
+                    else if (m_sMotionName.compare("p_120602") == 0)
+                    {
+                        CCPoint dest = ccp(-133, 0);       //水平
+                        
+                        //第一帧就要开始移动
+                        CCPoint posCur = m_preview->getPosition();
+                        
+                        posCur.x += dest.x;
+                        posCur.y += dest.y;
+                        
+                        m_preview->setPosition(posCur);
+                    }
                 }
             }
             else
