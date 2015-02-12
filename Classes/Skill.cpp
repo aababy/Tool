@@ -635,6 +635,10 @@ void Skill::parsePlist(const string &name, const string &str, bool bImportAll, C
                     //处理特效
                     CCDictionary *effectsInAtk = (CCDictionary *) motionDic->objectForKey("effects");
                     if (!effectsInAtk) continue;
+                    
+                    //音效
+                    CCString *soundFileName = (CCString*)motionDic->objectForKey("soundFileName");
+                    if(soundFileName) xCurAtk->parseSoundFile(soundFileName->getCString());
 
                     CCArray *effectArray = effectsInAtk->allKeys();
                     if (!effectArray) continue;

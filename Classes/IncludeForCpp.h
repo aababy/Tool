@@ -23,6 +23,7 @@
 #include "Motion.h"
 #include "Skill.h"
 #include "XmlData.h"
+#include "AudioManager.h"
 
 using namespace cocostudio::timeline;
 

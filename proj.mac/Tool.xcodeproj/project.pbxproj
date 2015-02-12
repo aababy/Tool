@@ -264,6 +264,7 @@
 		CA3B1BB41988C1380000299D /* MainScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA3B1BB21988C1380000299D /* MainScene.cpp */; };
 		CA3B1BB61988C53C0000299D /* R in Resources */ = {isa = PBXBuildFile; fileRef = CA3B1BB51988C53C0000299D /* R */; };
 		CA47514B198B638200D8C21E /* InputBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA475149198B638200D8C21E /* InputBox.cpp */; };
+		CA78A9111A8C48D80006AA35 /* AudioManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA78A90F1A8C48D80006AA35 /* AudioManager.cpp */; };
 		CA7B668F1988E07400E0F419 /* Part.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA7B668D1988E07400E0F419 /* Part.cpp */; };
 		CA9F9265198A194E002D51E4 /* Helper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA9F9263198A194E002D51E4 /* Helper.cpp */; };
 /* End PBXBuildFile section */
@@ -811,6 +812,8 @@
 		CA3B1BB81988C86B0000299D /* IncludeForCpp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IncludeForCpp.h; sourceTree = "<group>"; };
 		CA475149198B638200D8C21E /* InputBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InputBox.cpp; path = ../Classes/InputBox.cpp; sourceTree = "<group>"; };
 		CA47514A198B638200D8C21E /* InputBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InputBox.h; path = ../Classes/InputBox.h; sourceTree = "<group>"; };
+		CA78A90F1A8C48D80006AA35 /* AudioManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AudioManager.cpp; path = ../Classes/AudioManager.cpp; sourceTree = "<group>"; };
+		CA78A9101A8C48D80006AA35 /* AudioManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioManager.h; path = ../Classes/AudioManager.h; sourceTree = "<group>"; };
 		CA7B668D1988E07400E0F419 /* Part.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Part.cpp; path = ../Classes/Part.cpp; sourceTree = "<group>"; };
 		CA7B668E1988E07400E0F419 /* Part.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Part.h; path = ../Classes/Part.h; sourceTree = "<group>"; };
 		CA7B66901988E0C200E0F419 /* IncludeForHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IncludeForHeader.h; path = ../Classes/IncludeForHeader.h; sourceTree = "<group>"; };
@@ -844,6 +847,8 @@
 		15AA9C4015B7EC450033D6C2 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				CA78A90F1A8C48D80006AA35 /* AudioManager.cpp */,
+				CA78A9101A8C48D80006AA35 /* AudioManager.h */,
 				CA0E1FFE19A6DD70003E6C5D /* XmlData.cpp */,
 				CA0E1FFF19A6DD70003E6C5D /* XmlData.h */,
 				CA9F9263198A194E002D51E4 /* Helper.cpp */,
@@ -2175,6 +2180,7 @@
 				15C1591B168315E500D239F2 /* CCBFileLoader.cpp in Sources */,
 				15C1591C168315E500D239F2 /* CCBKeyframe.cpp in Sources */,
 				15C1591D168315E500D239F2 /* CCBReader.cpp in Sources */,
+				CA78A9111A8C48D80006AA35 /* AudioManager.cpp in Sources */,
 				15C1591E168315E500D239F2 /* CCBSequence.cpp in Sources */,
 				15C1591F168315E500D239F2 /* CCBSequenceProperty.cpp in Sources */,
 				15C15920168315E500D239F2 /* CCBValue.cpp in Sources */,

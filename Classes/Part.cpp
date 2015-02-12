@@ -109,6 +109,62 @@ Part::Part(vector<string> &vNames, CCPoint &show, CCPoint &origin, CCPoint &show
 }
 
 
+void Part::parseSoundFile(const string &soundFile)
+{
+    if(soundFile.empty())
+    {
+        return;
+    }
+    
+    string parse = soundFile;
+    
+    while (true)
+    {
+        //查找 逗号,
+        size_t pos = parse.find(',');
+        
+        //如果找到, 查找 '(' 左括号, 将前面的字符串转换为 filename. 查找 ')' 右括号, 将括号间的字符串, 转换为frameIndex,
+        if (pos != string::npos)
+        {
+            size_t posLeft = parse.find('(');
+            size_t posRight = parse.find(')');
+            
+            AudioInfo audio;
+            audio.filename = parse.substr(0, posLeft).c_str();
+            audio.frameIndex = atoi(parse.substr(posLeft + 1, posRight - posLeft - 1).c_str());
+            
+            _sounds.push_back(audio);
+            
+            //将剩下的字符串组成一个新的字符串, 重新查找
+            parse = parse.substr(pos + 1, parse.length() - posRight);
+        }
+        //如果没找到. 表示这是最后一个音效, 转换完成后, 退出循环
+        else
+        {
+            size_t posLeft = parse.find('(');
+            size_t posRight = parse.find(')');
+            
+            AudioInfo audio;
+            audio.filename = parse.substr(0, posLeft).c_str();
+            
+            if(posLeft != string::npos)
+            {
+                audio.frameIndex = atoi(parse.substr(posLeft + 1, posRight - posLeft - 1).c_str());
+                _sounds.push_back(audio);
+            }
+            else
+            {   //0 表示攻击帧放
+                audio.frameIndex = 0;
+                _atkSound = audio;
+            }
+            
+            break;
+        }
+    }
+}
+
+
+
 void Part::makeNewPart()
 {
     m_vFrameUsed.clear();           //清除以前的.
@@ -259,6 +315,11 @@ void Part::checkIfNeedToStart(int iFrameIndex)
         m_bOnWait = false;
         m_iCurFrameIndex = 0;
         m_fAccumulate = 0;
+        
+        _atkSound.frameIndex = -1;
+        for (int i = 0; i < _sounds.size(); i++) {
+            _sounds.at(i).played = false;
+        }
 
         if (m_bMain) {
             //跳回来的时候不需要重新设置坐标
@@ -341,6 +402,23 @@ void Part::checkIfNeedToStart(int iFrameIndex)
 void Part::update(float delta)
 {
     if (m_bRunning) {
+        //播放音效
+        for (int i = 0; i < _sounds.size(); i++) {
+            if (_sounds.at(i).frameIndex == m_iCurFrameIndex + 1 && !_sounds.at(i).played) {
+                _sounds.at(i).played = true;
+                xAudio->playEffect(_sounds.at(i).filename);
+            }
+        }
+        
+        //攻击帧音效
+        if (getAtkFrame(_iMotionStart + m_iCurFrameIndex)) {
+            CCLOG("%s", _atkSound.filename.c_str());
+            if (_atkSound.frameIndex != m_iCurFrameIndex && !_atkSound.filename.empty()) {
+                _atkSound.frameIndex = m_iCurFrameIndex;
+                xAudio->playEffect(_atkSound.filename);
+            }
+        }
+        
         //累积时间
         m_fAccumulate += delta;
         
@@ -857,7 +935,7 @@ void Part::addAudio(const string& filename)
     
     AudioInfo info;
     info.filename = filename;
-    info.frameIndex = m_iCurFrameIndex;
+    info.frameIndex = m_iCurFrameIndex + 1;
     
     _sounds.push_back(info);
 }
@@ -866,10 +944,14 @@ void Part::addAudio(const string& filename)
 void Part::deleteCurIndexAudio()
 {
     for (vector<AudioInfo>::iterator it = _sounds.begin(); it != _sounds.end(); it++) {
-        if (it->frameIndex == m_iCurFrameIndex) {
+        if (it->frameIndex == m_iCurFrameIndex + 1) {
             _sounds.erase(it);
             break;
         }
     }
 }
 
+void Part::setMotionStart(int iMotionStart)
+{
+    _iMotionStart = iMotionStart;
+}

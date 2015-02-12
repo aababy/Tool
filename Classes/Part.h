@@ -24,6 +24,7 @@ public:
     void setMain();
     bool getMain();
     void saveReduceFrame(ofstream &fout);
+    void setMotionStart(int iMotionStart);
 
     vector<FramesName> m_vFrameOriginal;
     vector<FramesName> m_vFrameUsed;
@@ -48,6 +49,7 @@ public:
     void setFlags(flagIndex index, int bFlag);
     int getFlags(flagIndex index);
     void setAllFlags(int *bFlag);
+    void parseSoundFile(const string &soundFile);
 
     CCSprite* getSprite();
     CCSprite* getPreview();
@@ -132,8 +134,9 @@ private:
     CCNode *m_partnerForFrame;                  //现在特效加到背景上, 所以和主体是同一级, 主体为特效的partner.
     void makeNewPart();
 
-
+    AudioInfo _atkSound;
     vector<AudioInfo>   _sounds;                //攻击帧音效, 大多数动画都只在攻击帧放1个音效, 这个vector通常为空
+    int _iMotionStart;
 };
 
 

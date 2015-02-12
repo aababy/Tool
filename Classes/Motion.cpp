@@ -46,6 +46,7 @@ void Motion::importPart(vector<string> &vNames)
 {
     if (m_vParts.empty()) {
         m_mainPart = new Part(vNames, location, location, m_preview, m_iFrameBG, m_vFrameNameOrdered, sSaveName);
+        m_mainPart->setMotionStart(iStart);
         m_mainPart->setMain();
         m_vParts.push_back(m_mainPart);
         
@@ -59,6 +60,7 @@ void Motion::importPart(vector<string> &vNames)
         CCPoint point = CCPointZero;
         
         Part* part = new Part(vNames, point, location, m_preview, m_show, m_showPreview, m_iAccIndex, sSaveName);
+        part->setMotionStart(iStart);
         m_iAccIndex++;
         part->setStartFrameIndex(m_iMainIndex);
         m_vParts.push_back(part);
@@ -72,6 +74,7 @@ Part* Motion::importEffect(vector<string> &vNames, int iImportIndex)
     CCPoint point = CCPointZero;
     
     Part* part = new Part(vNames, point, location, m_preview, m_show, m_showPreview, m_iAccIndex, sSaveName);
+    part->setMotionStart(iStart);
     m_iAccIndex++;
     part->setStartFrameIndex(iImportIndex);
     m_vParts.push_back(part);
@@ -472,4 +475,9 @@ int Motion::findRealStartFrameIndex(int iStartFrameIndexOriginal)
 void Motion::addAudio(const string& filename)
 {
     m_mainPart->addAudio(filename);
+}
+
+void Motion::parseSoundFile(const string& filename)
+{
+    m_mainPart->parseSoundFile(filename);
 }

@@ -87,6 +87,7 @@ public:
     int iStart = 0;
 
     Part* getCurPart();
+    void parseSoundFile(const string& filename);
     
 private:
    
