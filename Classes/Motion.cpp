@@ -468,3 +468,8 @@ int Motion::findRealStartFrameIndex(int iStartFrameIndexOriginal)
 
     return iStartFrameIndexOriginal;
 }
+
+void Motion::addAudio(const string& filename)
+{
+    m_mainPart->addAudio(filename);
+}

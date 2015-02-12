@@ -67,6 +67,11 @@ public:
     void importOldPlist(string &str, int flag);
     void error(CCObject *sender);
     
+    void addAudio();
+    void forward(const string &key);
+    bool checkIfMP3(const string &str);
+    void updateList();
+    
 protected:
     void setFrameCount(CCObject *sender);
     ~MainScene();
@@ -86,7 +91,10 @@ protected:
     
     UIListView * listView;
     UIListView * motionlist;
+    UIListView * _listAudio;
     Layout *listroot;
+    Layout *_layoutAudio;
+    Button *_btnAddAudio;
     
     Button *btnPre5;
     Button *btnNext5;
@@ -121,6 +129,8 @@ protected:
     int         iBGIndex;
     
     Layout*     m_root;
+    
+    vector<string> m_vFileName;
 };
 
 #endif // __HELLOWORLD_SCENE_H__

@@ -54,7 +54,7 @@ public:
     
     string getEffectName();
     
-    int m_iCurIndex = 0;
+    int m_iCurIndex = 0;        //绝对下标
     int m_iFrameCount = 0;
     int iStartFrameIndex = 0;   //这个也是相对的.
     int iStartFrameIndexOriginal = 0;
@@ -78,6 +78,8 @@ public:
     bool saveAttackFrame(CCDictionary *effect, int iMotionStart);
     void saveDelay(CCDictionary *effect);
     void parseDelay(CCString *delay);
+    void addAudio(const string& filename);
+    void deleteCurIndexAudio();
 
     ~Part();
     
@@ -100,7 +102,7 @@ private:
     
     CCAnimate * m_pAction;
     
-    int m_iCurFrameIndex;
+    int m_iCurFrameIndex;               //相对下标
     int m_iMoveIndex = 0;
     float m_iMoveCount = 0;
     float m_fAccumulate = 0.f;
@@ -131,6 +133,7 @@ private:
     void makeNewPart();
 
 
+    vector<AudioInfo>   _sounds;                //攻击帧音效, 大多数动画都只在攻击帧放1个音效, 这个vector通常为空
 };
 
 

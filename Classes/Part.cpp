@@ -850,3 +850,26 @@ void Part::setAccIndex(int iAcc)
     m_iAccIndex = iAcc;
 }
 
+
+void Part::addAudio(const string& filename)
+{
+    deleteCurIndexAudio();
+    
+    AudioInfo info;
+    info.filename = filename;
+    info.frameIndex = m_iCurFrameIndex;
+    
+    _sounds.push_back(info);
+}
+
+
+void Part::deleteCurIndexAudio()
+{
+    for (vector<AudioInfo>::iterator it = _sounds.begin(); it != _sounds.end(); it++) {
+        if (it->frameIndex == m_iCurFrameIndex) {
+            _sounds.erase(it);
+            break;
+        }
+    }
+}
+

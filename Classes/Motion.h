@@ -81,6 +81,7 @@ public:
     
     bool isMainIndex();
     void saveMainDelay(CCDictionary *dic);
+    void addAudio(const string& filename);
 
     int iEnd = 0;
     int iStart = 0;

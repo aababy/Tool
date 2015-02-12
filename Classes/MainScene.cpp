@@ -46,6 +46,10 @@ enum UITag
     CHANGE_BG = 406,
     BULLET_TYPE = 446,
     HIGH_LIGHT = 457,
+    T_ADD_AUDIO = 469,
+    T_SELECT_AUDIO = 470,
+    T_LIST_AUDIO = 472,
+    T_AUDIO_BACK = 482,
 
     LIST_BG = 1000,
     LIST_MOTION = 1100,
@@ -169,10 +173,16 @@ bool MainScene::init(CCScene* pScene)
         Layout* defaultItem = (Layout*)UIHelper::seekWidgetByTag(listroot, 32);         //还有转一层, 一来至少加2个Panel
         listView->setItemModel(defaultItem);
         
+        _listAudio = (UIListView*)UIHelper::seekWidgetByTag(root, T_LIST_AUDIO);
+        _listAudio->setItemModel(defaultItem);
+        initButton(T_AUDIO_BACK, root, this, toucheventselector(MainScene::touchEvent));
         
         motionlist = (UIListView*)UIHelper::seekWidgetByTag(root, MOTION_LIST);
         motionlist->setItemModel(defaultItem);
         
+        _layoutAudio = (Layout*)UIHelper::seekWidgetByTag(root, T_SELECT_AUDIO);
+        _layoutAudio->setVisible(false);
+        _btnAddAudio = initButton(T_ADD_AUDIO, root, this, toucheventselector(MainScene::touchEvent));
         
         xNotify->addObserver(this, callfuncO_selector(MainScene::updateProperty), UPDATE_PROPERTY, NULL);
         xNotify->addObserver(this, callfuncO_selector(MainScene::updateList), UPDATE_EFFECT_LIST, NULL);
@@ -402,6 +412,12 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
             xSkill->deletePart();
         }
             break;
+        case T_ADD_AUDIO:
+        {
+            _layoutAudio->setVisible(true);
+            addAudio();
+        }
+            break;
         case BUTTON_2X:
         {
             if(xCurAtk)
@@ -433,6 +449,20 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
         {
             float fDelay = xCurAtk->getDelay(xSkill->m_iCurIndex);
             xCurAtk->setDelay(fDelay);
+        }
+            break;
+        case T_LIST_AUDIO:
+        {
+            int index = _listAudio->getCurSelectedIndex();
+            _btnAddAudio->setTitleText(m_vFileName.at(index));
+            xCurAtk->addAudio(m_vFileName.at(index));
+            
+            _layoutAudio->setVisible(false);
+        }
+            break;
+        case T_AUDIO_BACK:
+        {
+            _layoutAudio->setVisible(false);
         }
             break;
         default:
@@ -845,3 +875,80 @@ void MainScene::updateCheckBox()
 }
 
 
+void MainScene::addAudio()
+{
+    string str = CCUserDefault::sharedUserDefault()->getStringForKey(SEARCH_PATH);
+    if (!str.empty()) {
+        //检查就的关键字
+        forward("");
+    }
+}
+
+void MainScene::forward(const string &key)
+{
+    char address[200];
+    char fullPathName[200];
+    //1. 将指定地址下的文件列出来, 存放到临时文件里面.
+    const char * szAddress = CCUserDefault::sharedUserDefault()->getStringForKey(SEARCH_PATH).c_str();
+    
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+    sprintf(address, "dir \"%s\" /b > \"%s/temp.txt\"", szAddress, szAddress);
+#else
+    sprintf(address, "ls \"%s\" > \"%s/temp.txt\"", szAddress, szAddress);
+#endif
+    
+    //使用shell/dos命令来操作
+    system(address);
+    
+    //2. 将文件中的内容读出来, 存放到vector里面.
+    sprintf(fullPathName, "%s/temp.txt", szAddress);
+    //int lines = countLines(fullPathName);
+    
+    m_vFileName.clear();
+    ifstream fin(fullPathName);
+    string strLine;
+    while(getline(fin,strLine))
+    {
+        if (checkIfMP3(strLine)) {
+            m_vFileName.push_back(strLine);
+        }
+    }
+    
+    fin.close();
+    
+    //3. 将vector的内容用列表显示出来.
+    updateList();
+}
+
+bool MainScene::checkIfMP3(const string &str)
+{
+    int iDot = str.rfind('.');
+    if (iDot != -1) {
+        string suffix = str.substr(iDot + 1, str.size() - iDot);
+        
+        if (suffix.compare("mp3") == 0) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+void MainScene::updateList()
+{
+    _listAudio->removeAllItems();
+    
+    for (int i = 0; i < m_vFileName.size(); ++i)
+    {
+        _listAudio->pushBackDefaultItem();
+    }
+    
+    CCArray* items = _listAudio->getItems();
+    for (int i = 0; i < items->count(); i++) {
+        Layout * bg = (Layout*)items->objectAtIndex(i);
+        bg->addTouchEventListener(this, toucheventselector(MainScene::touchEvent));
+        bg->setTag(T_LIST_AUDIO);
+        Label *label = (Label*)UIHelper::seekWidgetByTag(bg, 22);
+        label->setText(m_vFileName.at(i));
+    }
+}

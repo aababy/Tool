@@ -26,6 +26,12 @@ USING_NS_CC;
 using namespace cocos2d::extension;
 using namespace ui;
 
+struct AudioInfo
+{
+    string  filename;
+    int     frameIndex;
+    bool    played = false;
+};
 
 struct FramesName
 {
