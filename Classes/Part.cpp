@@ -154,7 +154,7 @@ void Part::parseSoundFile(const string &soundFile)
             }
             else
             {   //0 表示攻击帧放
-                audio.frameIndex = 0;
+                audio.frameIndex = -1;
                 _atkSound = audio;
             }
             
@@ -404,7 +404,7 @@ void Part::update(float delta)
     if (m_bRunning) {
         //播放音效
         for (int i = 0; i < _sounds.size(); i++) {
-            if (_sounds.at(i).frameIndex == m_iCurFrameIndex + 1 && !_sounds.at(i).played) {
+            if (_sounds.at(i).frameIndex == m_iCurFrameIndex && !_sounds.at(i).played) {
                 _sounds.at(i).played = true;
                 xAudio->playEffect(_sounds.at(i).filename);
             }
@@ -770,6 +770,28 @@ bool Part::saveAttackFrame(CCDictionary *effect, int iMotionStart)
     }
 }
 
+void Part::saveSoundFileName(CCDictionary *dic)
+{
+    if (!_atkSound.filename.empty()) {
+        insertString(dic, "soundFileName", _atkSound.filename);
+    }
+    else
+    {
+        string str;
+        for (int i = 0; i < _sounds.size(); i++)
+        {
+            if (!str.empty()) {
+                str += ",";
+            }
+            
+            str += _sounds.at(i).filename;
+            str += "(" + any2string(_sounds.at(i).frameIndex) + ")";
+        }
+        
+        insertString(dic, "soundFileName", str);
+    }
+}
+
 void Part::setDelay(int idx, float delay)
 {
     if (idx >= iStartFrameIndex && idx - iStartFrameIndex < m_iFrameCount) {
@@ -929,22 +951,39 @@ void Part::setAccIndex(int iAcc)
 }
 
 
-void Part::addAudio(const string& filename)
+void Part::addAudio(const string& filename, int globalIndex)
 {
-    deleteCurIndexAudio();
+    _atkSound.filename.clear();         //一旦添加音效后, 攻击帧音效就失效
+    deleteCurIndexAudio(globalIndex - _iMotionStart);
     
     AudioInfo info;
-    info.filename = filename;
-    info.frameIndex = m_iCurFrameIndex + 1;
+    int iDot = filename.rfind('.');
+    if (iDot != -1) {
+        info.filename = filename.substr(0, iDot);
+        
+    }
+    info.frameIndex = globalIndex - _iMotionStart;
     
     _sounds.push_back(info);
 }
 
 
-void Part::deleteCurIndexAudio()
+string Part::getAudio(int index)
+{
+    string audio;
+    for (int i = 0; i < _sounds.size(); i ++) {
+        if (_sounds.at(i).frameIndex == index) {
+            return _sounds.at(i).filename;
+        }
+    }
+    return audio;
+}
+
+
+void Part::deleteCurIndexAudio(int localIndex)
 {
     for (vector<AudioInfo>::iterator it = _sounds.begin(); it != _sounds.end(); it++) {
-        if (it->frameIndex == m_iCurFrameIndex + 1) {
+        if (it->frameIndex == localIndex) {
             _sounds.erase(it);
             break;
         }

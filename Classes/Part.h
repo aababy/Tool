@@ -25,6 +25,7 @@ public:
     bool getMain();
     void saveReduceFrame(ofstream &fout);
     void setMotionStart(int iMotionStart);
+    void saveSoundFileName(CCDictionary *dic);
 
     vector<FramesName> m_vFrameOriginal;
     vector<FramesName> m_vFrameUsed;
@@ -80,8 +81,9 @@ public:
     bool saveAttackFrame(CCDictionary *effect, int iMotionStart);
     void saveDelay(CCDictionary *effect);
     void parseDelay(CCString *delay);
-    void addAudio(const string& filename);
-    void deleteCurIndexAudio();
+    void addAudio(const string& filename, int index);
+    string getAudio(int index);
+    void deleteCurIndexAudio(int localIndex);
 
     ~Part();
     

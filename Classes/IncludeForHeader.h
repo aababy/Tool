@@ -29,7 +29,7 @@ using namespace ui;
 struct AudioInfo
 {
     string  filename;
-    int     frameIndex;
+    int     frameIndex;             //这是相对index, 从当前动作的第一帧开始, 从0开始
     bool    played = false;
 };
 

@@ -415,6 +415,11 @@ void Motion::setMainAllAtkFrame(CCString *atkFrames)
     m_mainPart->setAllAtkFrame(atkFrames, iStart + 1);
 }
 
+void Motion::saveMainSoundFileName(CCDictionary *dic)
+{
+    m_mainPart->saveSoundFileName(dic);
+}
+
 bool Motion::isMainIndex()
 {
     if (m_iCurOperationIndex == 0) {
@@ -472,9 +477,14 @@ int Motion::findRealStartFrameIndex(int iStartFrameIndexOriginal)
     return iStartFrameIndexOriginal;
 }
 
-void Motion::addAudio(const string& filename)
+void Motion::addAudio(const string& filename, int index)
 {
-    m_mainPart->addAudio(filename);
+    m_mainPart->addAudio(filename, index);
+}
+
+string Motion::getAudio(int index)
+{
+    return m_mainPart->getAudio(index - iStart);
 }
 
 void Motion::parseSoundFile(const string& filename)

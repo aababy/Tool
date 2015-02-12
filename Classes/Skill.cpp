@@ -450,7 +450,8 @@ void Skill::saveAtksAndEffect(CCDictionary *dic, bool bJoin)
         sprintf(buff, "%s,%d", motion->m_vFrameNameOrdered.at(0).c_str(), motion->getFramesCount());
         insertString(dictionary, "frames", buff);
         
-        insertString(dictionary, "soundFileName", "");
+        //音效
+        motion->saveMainSoundFileName(dictionary);
         
         insertString(dictionary, "flags", getMotionMainPartFlags(motion));
         

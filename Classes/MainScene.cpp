@@ -454,8 +454,15 @@ void MainScene::touchEvent(CCObject *pSender, TouchEventType type)
         case T_LIST_AUDIO:
         {
             int index = _listAudio->getCurSelectedIndex();
-            _btnAddAudio->setTitleText(m_vFileName.at(index));
-            xCurAtk->addAudio(m_vFileName.at(index));
+            
+            string filename;
+            int iDot = m_vFileName.at(index).rfind('.');
+            if (iDot != -1) {
+                filename = m_vFileName.at(index).substr(0, iDot);
+                
+            }
+            _btnAddAudio->setTitleText(filename);
+            xCurAtk->addAudio(m_vFileName.at(index), xSkill->m_iCurIndex);
             
             _layoutAudio->setVisible(false);
         }
@@ -616,6 +623,15 @@ void MainScene::updateProperty(CCObject *sender)
     sprintf(buffer, "%d", xCurAtk->getFlags(FI_BULLET_TYPE));
     m_ebBulletType->setText(string(buffer));
     
+    //音效文件
+    string audio = xCurAtk->getAudio(xSkill->m_iCurIndex);
+    if (!audio.empty()) {
+        _btnAddAudio->setTitleText(audio);
+    }
+    else
+    {
+        _btnAddAudio->setTitleText(xStr("add_audio"));
+    }
 }
 
 void MainScene::editBoxEditingDidBegin(CCEditBox* editBox)

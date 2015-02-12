@@ -76,18 +76,20 @@ public:
     bool saveMainAttackFrame(CCDictionary *dic);
     void setMainAllAtkFrame(CCString *atkFrames);
     void saveReduceFrame(ofstream &fout);
+    void saveMainSoundFileName(CCDictionary *dic);
 
     vector<string> m_vFrameNameOrdered;
     
     bool isMainIndex();
     void saveMainDelay(CCDictionary *dic);
-    void addAudio(const string& filename);
+    void addAudio(const string& filename, int index);
 
     int iEnd = 0;
     int iStart = 0;
 
     Part* getCurPart();
     void parseSoundFile(const string& filename);
+    string getAudio(int index);
     
 private:
    

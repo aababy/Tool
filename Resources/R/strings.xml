@@ -16,5 +16,7 @@
 	<string>新技能</string>
 	<key>error_no_attack_frame</key>
 	<string>没有攻击帧</string>
+    <key>add_audio</key>
+    <string>添加音效</string>
 </dict>
 </plist>
